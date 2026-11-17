@@ -74,6 +74,16 @@
    ]
   },
   {
+   "name": "La potence parfaite",
+   "url": "potence.html",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
    "name": "Boîtier de pédalier",
    "url": "boitier.html",
    "icons": [
