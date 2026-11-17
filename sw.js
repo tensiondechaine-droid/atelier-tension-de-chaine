@@ -1,4 +1,4 @@
-const C='tdc-atelier-v7',F=["./", "index.html", "ratio.html", "comparateur.html", "pression.html", "rayons.html", "boitier.html", "ligne-de-chaine.html", "compatibilite.html", "labo-tirages.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
+const C='tdc-atelier-v8',F=["./", "index.html", "ratio.html", "comparateur.html", "pression.html", "rayons.html", "boitier.html", "ligne-de-chaine.html", "compatibilite.html", "labo-tirages.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);
