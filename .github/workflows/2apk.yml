@@ -1,0 +1,81 @@
+name: Construire l'APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Récupérer les fichiers
+        uses: actions/checkout@v5
+
+      - name: Ranger les fichiers
+        run: |
+          if [ ! -f www/index.html ]; then
+            mkdir -p www/icons
+            cp *.html sw.js manifest.webmanifest www/
+            cp icon-192.png icon-512.png maskable-512.png www/icons/
+          fi
+          if [ ! -f assets/icon-only.png ]; then
+            mkdir -p assets
+            cp icon-only.png icon-foreground.png icon-background.png assets/ || true
+          fi
+          ls -R www assets
+
+      - name: Installer Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Installer Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Installer Capacitor
+        run: npm install
+
+      - name: Créer le projet Android
+        run: npx cap add android
+
+      - name: Masquer les barres de défilement natives
+        run: |
+          F=android/app/src/main/java/com/tensiondechaine/atelier/MainActivity.java
+          cat > "$F" <<'JAVA'
+          package com.tensiondechaine.atelier;
+
+          import android.os.Bundle;
+          import com.getcapacitor.BridgeActivity;
+
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  getBridge().getWebView().setVerticalScrollBarEnabled(false);
+                  getBridge().getWebView().setHorizontalScrollBarEnabled(false);
+              }
+          }
+          JAVA
+          cat "$F"
+
+      - name: Générer les icônes
+        run: npx @capacitor/assets generate --android || echo "Icônes par défaut"
+
+      - name: Copier l'app dans le projet Android
+        run: npx cap sync android
+
+      - name: Construire l'APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Mettre l'APK à disposition
+        uses: actions/upload-artifact@v4
+        with:
+          name: atelier-tension-de-chaine-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
