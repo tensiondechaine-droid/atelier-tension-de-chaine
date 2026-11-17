@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Compatibilité et chapes – L’atelier Tension de chaine</title>
+<meta name="description" content="Levier ↔ dérailleur, capacité de chape, longueur de chaîne.">
+<meta name="theme-color" content="#0e1230">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+.tdc-menu,.tdc-mnav{display:none!important}
+.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-template-columns:repeat(7,1fr);background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
+.app-bar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 1px;border-radius:12px;color:#fff;text-decoration:none;font-weight:800;font-size:10px;line-height:1.1;-webkit-tap-highlight-color:transparent}
+.app-bar a.on{background:#d81b6a}
+.app-bar a:active{background:#ff4f9a;color:#0e1230}
+.app-bar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-bar .en,.app-bar .zh{display:none}
+html.l-en .app-bar .fr,html.l-zh .app-bar .fr{display:none}
+html.l-en .app-bar .en{display:inline}html.l-zh .app-bar .zh{display:inline}
+.app-off{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));translate:-50% 0;z-index:9999;background:#0e1230;color:#fff;font:800 12px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:99px;display:none}
+html.offline .app-off{display:block}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Base ---------- */
+.tdc{--rose:#ff4f9a;--rose-deep:#d81b6a;--rose-soft:#ffe3ef;--bleu:#2346ff;--bleu-soft:#e4e9ff;--ink:#0e1230;--blanc:#fff;
+  --r-s:14px;--r-m:22px;--r-l:32px;--ease:cubic-bezier(.2,.9,.2,1);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--blanc);line-height:1.5;font-size:16px;
+  width:100%;max-width:1240px;margin:0 auto;overflow:clip;-webkit-font-smoothing:antialiased}
+.tdc *,.tdc *::before,.tdc *::after{box-sizing:border-box}
+.tdc h1,.tdc h2,.tdc h3{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;line-height:1.05;margin:0;letter-spacing:-.01em;color:inherit}
+.tdc p,.tdc ul{margin:0}
+.tdc img{max-width:100%}
+.tdc a{transition:color .2s}
+.tdc a:focus-visible{outline:3px solid var(--bleu);outline-offset:3px;border-radius:99px}
+.tdc section{padding:72px 28px}
+.tdc .tdc-kicker{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:12px}
+.tdc h2{font-size:clamp(32px,5vw,52px);margin-bottom:32px}
+.tdc-block{margin:0 12px;border-radius:var(--r-l)}
+.tdc-block+.tdc-block{margin-top:24px}
+/* ---------- Thème WordPress : fond blanc, sans en-tête ni titre (uniquement sur cette page) ---------- */
+html,body,.wp-site-blocks,.site,.site-content,.entry-content,main{background:#fff!important}
+body>.wp-site-blocks>header,header.wp-block-template-part,.site-header,
+.wp-block-site-title,.wp-block-post-title,.entry-title,.page-title{display:none!important}
+.wp-site-blocks,.entry-content,main{padding-top:0!important;margin-top:0!important}
+/* Ton thème coupe l'écran en 2 colonnes (contenu à gauche, en-tête à droite) : on passe en une seule colonne pleine largeur */
+.wp-block-columns:has(.tdc){display:block!important;gap:0!important}
+.wp-block-columns:has(.tdc)>.wp-block-column:not(:has(.tdc)){display:none!important}
+.wp-block-column:has(.tdc){width:100%!important;max-width:none!important;flex-basis:auto!important}
+body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{display:none!important}
+:where(.wp-block-group,.entry-content,.wp-block-post-content,main):has(.tdc){max-width:none!important;width:100%!important;min-width:0!important;align-self:stretch!important;
+  padding-left:0!important;padding-right:0!important;padding-top:0!important;margin-left:0!important;margin-right:0!important;margin-top:0!important;gap:0!important}
+.wp-block-columns:has(.tdc) .wp-block-group:not(:has(.tdc)):has(.wp-block-navigation),footer.wp-block-template-part{display:none!important}
+/* ---------- Langue (sans script) ---------- */
+.tdc .en{display:none!important}
+.tdc:target .fr{display:none!important}
+.tdc:target .en{display:revert!important}
+.tdc:target .tdc-kicker.en{display:inline-block!important}
+.tdc:target small.en,.tdc:target .tdc-brm strong.en{display:block!important}
+.tdc:target .tdc-cta-btn .en{display:inline!important}
+.tdc .zh{display:none!important}
+.tdc-zw{display:block;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+.tdc-zw:target .tdc .fr,.tdc-zw:target .tdc .en{display:none!important}
+.tdc-zw:target .tdc .zh{display:revert!important}
+.tdc-zw:target .tdc .tdc-kicker.zh{display:inline-block!important}
+.tdc-zw:target .tdc small.zh,.tdc-zw:target .tdc .tdc-brm strong.zh{display:block!important}
+.tdc-zw:target .tdc .tdc-cta-btn .zh{display:inline!important}
+.tdc-zw:target .tdc .tdc-lang .b-fr{background:transparent}
+.tdc-zw:target .tdc-lang .b-zh{background:var(--rose-deep)}
+.tdc .zh{line-height:1.7}
+.tdc h1.zh,.tdc h2.zh,.tdc h3.zh,.tdc .tdc-big.zh,.tdc .tdc-tag.zh,.tdc .tdc-stat b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900;letter-spacing:0;line-height:1.25}
+.tdc .tdc-tag.zh{font-weight:600;line-height:1.7}
+/* Toujours visible en haut à droite */
+.tdc-lang{position:fixed;top:calc(16px + var(--wp-admin--admin-bar--height,0px));right:16px;z-index:9999;display:flex;pointer-events:none}
+.tdc-lang div{pointer-events:auto;background:var(--ink);border-radius:99px;padding:4px;display:flex;gap:2px;box-shadow:0 6px 20px rgba(14,18,48,.25)}
+.tdc-lang a{color:#fff!important;text-decoration:none!important;font-weight:800;font-size:13px;padding:9px 15px;border-radius:99px;line-height:1}
+.tdc:not(:target) .tdc-lang .b-fr,.tdc:target .tdc-lang .b-en{background:var(--rose-deep)}
+/* ---------- Hero ---------- */
+.tdc-hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;padding-top:56px!important;padding-bottom:56px!important}
+.tdc-hero h1{font-size:clamp(52px,6vw,84px)}
+.tdc-hero h1 span{color:var(--rose)}
+.tdc-tag{font-size:clamp(18px,2vw,21px);font-weight:600;margin:22px 0 24px!important;max-width:32ch}
+.tdc-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.tdc-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 22px;border-radius:99px;font-weight:800;font-size:16px;
+  color:#fff!important;text-decoration:none!important;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  transition:background-color .2s,transform .2s var(--ease),box-shadow .2s}
+.tdc-cta-btn.c1{background:var(--rose-deep)}
+.tdc-cta-btn.c2{background:var(--bleu)}
+.tdc-cta-btn.c1:hover,.tdc-cta-btn.c1:focus-visible,.tdc-cta-btn.c1:active{background:var(--bleu)}
+.tdc-cta-btn.c2:hover,.tdc-cta-btn.c2:focus-visible,.tdc-cta-btn.c2:active{background:var(--rose-deep)}
+.tdc-cta-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tdc-pills{display:flex;flex-wrap:wrap;gap:8px}
+.tdc-pills span{background:var(--bleu-soft);color:var(--bleu);font-weight:800;font-size:13px;padding:6px 12px;border-radius:99px}
+.tdc-net-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;max-width:330px}
+.tdc-net-btns a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;font-size:14px;padding:11px 15px;border-radius:99px}
+.tdc-net-btns a:nth-child(odd){background:var(--rose-deep)}
+.tdc-net-btns svg{width:18px;height:18px;fill:currentColor;flex:none}
+.tdc-photo{position:relative;display:flex;justify-content:center;align-items:center}
+.tdc-photo img{display:block;width:100%;height:auto;border-radius:var(--r-l)}
+/* ---------- Bandeau ---------- */
+.tdc-ticker{background:var(--rose);color:var(--ink);rotate:-2deg;margin:8px -24px 64px;padding:14px 0;overflow:hidden;
+  font-family:"Archivo Black",Impact,sans-serif;font-size:20px;white-space:nowrap;border-block:3px solid var(--ink)}
+.tdc-ticker>div{display:inline-flex}
+/* ---------- Chiffres ---------- */
+.tdc-stats{background:var(--ink);color:#fff}
+.tdc-stats .tdc-kicker{color:var(--rose)}
+.tdc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tdc-stat{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:22px}
+.tdc-stat b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.1;color:var(--rose)}
+.tdc-stat small{display:block;opacity:.8;font-size:13px;margin-top:6px}
+.tdc-net{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+.tdc-audience{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:32px;font-size:15px}
+.tdc-audience strong{color:var(--rose)}
+.tdc-foot{font-size:13px;opacity:.75;margin-top:18px!important}
+/* ---------- Cartes ---------- */
+.tdc-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.tdc-card{position:relative;border:3px solid var(--ink);border-radius:var(--r-m);padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.tdc-card h3{font-size:22px}
+.tdc-num{font-weight:800;color:var(--bleu);font-size:15px}
+.tdc-card.rose{background:var(--rose-soft)}
+.tdc-card.bleu{background:var(--bleu-soft)}
+.tdc-video{position:relative;aspect-ratio:16/9;width:100%;border-radius:var(--r-s);background:var(--ink);overflow:hidden}
+.tdc-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tdc-ig{aspect-ratio:auto;height:560px;max-width:340px;margin:0 auto;background:#fff;border:1px solid #e6e6e6}
+.tdc-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r-s);overflow:hidden;background:var(--ink)}
+.tdc-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:scale .4s var(--ease)}
+.tdc-thumb::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:28px;translate:-50% -50%;border-radius:8px;
+  background:var(--rose-deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9 7v10l8-5z'/%3E%3C/svg%3E") center/18px no-repeat;
+  box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.tdc-card .tdc-btn{margin-top:4px;text-align:center;font-size:15px}
+/* ---------- Ils m'ont fait confiance (masqué tant qu'il n'y a pas de logo) ---------- */
+.tdc-logos:not(:has(img)){display:none!important}
+.tdc-logos{padding-bottom:0!important}
+/* Deux rangées de logos qui glissent en sens inverse quand on fait défiler la page */
+.tdc-marquee{display:grid;gap:14px;margin:0 -28px;padding:6px 0 10px;overflow:clip;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tdc-row{display:flex;gap:14px;width:max-content}
+.tdc-logo{flex:0 0 auto;width:210px;display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;padding:20px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-m);transition:box-shadow .25s,border-color .25s}
+.tdc-logo img{display:block;max-width:88%;max-height:52px;width:auto;height:auto;object-fit:contain}
+.tdc-logo.carre img{max-height:84px}
+.tdc-row-b .tdc-logo{background:var(--bleu-soft)}
+@media (hover:hover){.tdc-logo:hover{box-shadow:6px 6px 0 var(--rose)}}
+@keyframes tdc-row-ltr{from{translate:-45% 0}to{translate:0 0}}
+@keyframes tdc-row-rtl{from{translate:0 0}to{translate:-45% 0}}
+@media (prefers-reduced-motion:no-preference){
+  /* Navigateurs récents : le mouvement suit le scroll */
+  @supports (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+    .tdc-row-b{animation:tdc-row-rtl linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+  /* Autres navigateurs : léger va-et-vient automatique */
+  @supports not (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr 40s ease-in-out infinite alternate}
+    .tdc-row-b{animation:tdc-row-rtl 40s ease-in-out infinite alternate}
+  }
+}
+/* Animations réduites : rangées défilables au doigt */
+@media (prefers-reduced-motion:reduce){.tdc-marquee{overflow-x:auto}}
+@media (max-width:980px){.tdc-logo{width:170px;padding:14px}.tdc-logo img{max-height:42px}.tdc-logo.carre img{max-height:66px}}
+@media (max-width:720px){.tdc-marquee{gap:10px;margin:0 -20px}.tdc-row{gap:10px}.tdc-logo{width:140px;padding:12px}.tdc-logo img{max-height:36px}.tdc-logo.carre img{max-height:58px}}
+/* ---------- Étude de cas ---------- */
+.tdc-rosa{background:var(--rose-soft)}
+.tdc-rosa .tdc-kicker{color:#b8155a}
+.tdc-case{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tdc-brands{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}
+.tdc-brands span{border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px;background:#fff}
+.tdc-big{font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(34px,4vw,44px);line-height:1.1;color:var(--rose-deep);margin-bottom:6px!important}
+.tdc-sub{font-weight:800;margin-bottom:16px!important}
+.tdc-bars{display:flex;flex-direction:column;gap:12px}
+.tdc-bar{display:grid;grid-template-columns:118px 1fr 76px;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.tdc-bar i{display:block;height:14px;border-radius:99px;background:var(--rose)}
+.tdc-bar:nth-child(even) i{background:var(--bleu)}
+.tdc-bar em{font-style:normal;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.tdc-bar small{opacity:.6;font-size:12px}
+.tdc-shot{display:block;width:100%;height:auto;border-radius:var(--r-m);margin-top:26px;border:3px solid var(--ink)}
+/* ---------- Podcast La Selle ---------- */
+.tdc-pod{background:var(--bleu-soft)}
+.tdc-pod-in{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.tdc-pod .tdc-kicker{color:var(--bleu)}
+.tdc-pod p{max-width:52ch}
+.tdc-pod-series{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
+.tdc-pod-series span{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px}
+.tdc-pod-note{font-size:14px;opacity:.8;margin-top:14px!important}
+.tdc-pod-cover{display:block;aspect-ratio:1;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff;box-shadow:10px 10px 0 var(--rose);transition:transform .25s var(--ease),box-shadow .25s}
+.tdc-pod-cover img{display:block;width:100%;height:100%;object-fit:cover}
+@media (hover:hover){.tdc-pod-cover:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:14px 14px 0 var(--rose)}}
+@media (max-width:720px){.tdc-pod-in{grid-template-columns:1fr;gap:28px}.tdc-pod-cover{max-width:300px;width:100%;margin:0 auto;box-shadow:8px 8px 0 var(--rose)}}
+/* ---------- Étude de cas 2 : Superséxu (fond bleu nuit) ---------- */
+.tdc-sexu{background:var(--ink);color:#fff}
+.tdc-sexu .tdc-kicker{color:var(--rose)}
+.tdc-sexu .tdc-brands span{background:#fff;color:var(--ink);border-color:#fff}
+.tdc-sexu .tdc-big{color:var(--rose)}
+.tdc-sexu .tdc-bar em{color:#fff}
+.tdc-sexu .tdc-thumbs{margin-top:10px}
+.tdc-sexu .tdc-video{border:2px solid rgba(255,255,255,.15)}
+.tdc-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.tdc-kpis>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:18px 16px}
+.tdc-kpis b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;color:var(--rose)}
+.tdc-kpis b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900}
+.tdc-kpis small{display:block;font-size:13px;opacity:.85;margin-top:4px}
+.tdc-kpi-note{font-size:15px;margin-top:16px!important;opacity:.9}
+/* ---------- Offres ---------- */
+.tdc-offers .tdc-card{padding-top:20px}
+.tdc-idx{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink)}
+.tdc-card ul{padding-left:18px;font-size:15px;display:grid;gap:4px}
+.tdc-cta{margin-top:32px;text-align:center}
+.tdc-cta>p:first-child,.tdc-cta>p.en:nth-child(2){font-weight:800;font-size:18px}
+.tdc-note{font-size:13px;opacity:.75;margin-top:18px!important;text-align:center}
+.tdc-btn{display:inline-block;margin-top:20px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;padding:16px 28px;border-radius:99px;font-size:17px}
+.tdc-btn.rose{background:var(--rose-deep)}
+.tdc-contact-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.tdc-contact-btns .tdc-btn{margin-top:0}
+.tdc-btn.tdc-btn-ghost{background:transparent;color:var(--ink)!important;border:3px solid var(--ink);padding:13px 25px}
+.tdc-brm{position:relative;margin-top:64px;color:#fff;border-radius:var(--r-l);padding:44px 36px;min-height:240px;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+  background:linear-gradient(100deg,rgba(14,18,48,.92) 0%,rgba(35,70,255,.75) 60%,rgba(35,70,255,.3) 100%),
+  url("https://tensiondechaine.com/wp-content/uploads/2026/11/PXL_20260719_1609079542.jpg") center/cover var(--ink)}
+.tdc-brm b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:44px;line-height:1}
+.tdc-brm strong{display:block;font-size:19px;margin-bottom:6px}
+.tdc-brm p{max-width:46ch}
+/* ---------- Me soutenir (liens affiliés) ---------- */
+.tdc-support{padding-top:24px!important}
+.tdc-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-perk{border:3px solid var(--ink);border-radius:var(--r-m);padding:20px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.tdc-perk:nth-child(odd){background:var(--rose-soft)}
+.tdc-perk h3{font-size:20px;min-height:34px;display:flex;align-items:center}
+.tdc-perk-logo img{display:block;height:34px;width:auto;max-width:100%}
+.tdc-perk p{font-size:15px}
+.tdc-code{align-self:flex-start;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:16px;letter-spacing:.08em;background:var(--ink);color:#fff;border-radius:8px;padding:6px 12px;user-select:all}
+.tdc-perk .tdc-btn{margin-top:auto;padding:12px 18px;font-size:15px;text-align:center}
+.tdc-affil{font-size:13px;opacity:.75;margin-top:16px!important}
+@media (max-width:980px){.tdc-support-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.tdc-support-grid{grid-template-columns:1fr}}
+/* ---------- Contact ---------- */
+.tdc-contact{position:relative;background:var(--rose);color:var(--ink);margin-top:40px;margin-bottom:24px}
+.tdc-contact-in{padding-right:44%;min-height:300px}
+.tdc-contact h2{color:#fff;margin-bottom:14px;-webkit-text-stroke:0}
+.tdc-mail{font-weight:800;margin-top:8px!important;font-size:18px}
+.tdc-contact-img{position:absolute;right:2%;bottom:-40px;width:420px;height:420px;max-width:42%;object-fit:cover;object-position:50% 50%;pointer-events:none;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
+.tdc-socials{display:flex;flex-wrap:wrap;gap:0 20px;margin-top:14px;font-weight:800}
+.tdc-socials a{color:var(--ink)!important;display:inline-block;padding:10px 0}
+.tdc-peace{margin-top:14px!important;font-weight:600}
+/* ---------- Animations (CSS uniquement) ---------- */
+@keyframes tdc-marquee{to{translate:-50% 0}}
+@keyframes tdc-up{from{opacity:0;translate:0 60px}to{opacity:1;translate:0 0}}
+@keyframes tdc-left{from{opacity:0;translate:-70px 0;rotate:-3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-right{from{opacity:0;translate:70px 0;rotate:3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-zoom{from{opacity:0;scale:.6;rotate:-6deg}to{opacity:1;scale:1;rotate:0deg}}
+@keyframes tdc-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes tdc-pop{0%{opacity:0;scale:.3;rotate:-20deg}60%{opacity:1;scale:1.15;rotate:6deg}100%{opacity:1;scale:1;rotate:-3deg}}
+@keyframes tdc-grow{from{scale:0 1}to{scale:1 1}}
+@keyframes tdc-float{50%{translate:0 -12px;rotate:1deg}}
+@keyframes tdc-spin{to{rotate:360deg}}
+@keyframes tdc-wiggle{0%,100%{rotate:0deg}25%{rotate:-6deg}75%{rotate:6deg}}
+@keyframes tdc-pulse{0%{box-shadow:0 0 0 0 rgba(14,18,48,.45)}100%{box-shadow:0 0 0 22px rgba(14,18,48,0)}}
+@keyframes tdc-shine{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes tdc-rise{from{opacity:0;translate:0 120px;scale:.85}to{opacity:1;translate:0 0;scale:1}}
+@keyframes tdc-parallax{to{translate:0 -60px}}
+@media (prefers-reduced-motion:no-preference){
+  .tdc-ticker>div{animation:tdc-marquee 24s linear infinite}
+  /* Ouverture de page */
+  .tdc-hero>div:first-child>*{animation:tdc-up .9s var(--ease) both}
+  .tdc-hero h1{animation-delay:.08s}
+  .tdc-tag{animation-delay:.2s!important}
+  .tdc-hero h1 span{display:inline-block;animation:tdc-pop 1s .5s var(--ease) both}
+  .tdc-pills span,.tdc-net-btns a,.tdc-cta-btn{animation:tdc-zoom .5s var(--ease) both}
+  .tdc-cta-btn.c2{animation-delay:.3s}.tdc-cta-btn.c1{animation-delay:.38s}
+  .tdc-ctas{animation:none!important}
+  .tdc-pills span:nth-child(1){animation-delay:.45s}.tdc-pills span:nth-child(2){animation-delay:.5s}
+  .tdc-pills span:nth-child(3),.tdc-pills span:nth-child(4){animation-delay:.55s}
+  .tdc-pills span:nth-child(5){animation-delay:.6s}.tdc-pills span:nth-child(6){animation-delay:.65s}
+  .tdc-net-btns a:nth-child(1){animation-delay:.7s}.tdc-net-btns a:nth-child(2){animation-delay:.78s}
+  .tdc-net-btns a:nth-child(3){animation-delay:.86s}.tdc-net-btns a:nth-child(4){animation-delay:.94s}
+  .tdc-photo{animation:tdc-zoom 1s .15s var(--ease) both}
+  .tdc-photo img{animation:tdc-float 5s 1.2s ease-in-out infinite}
+    .tdc-lang div{animation:tdc-zoom .6s .9s var(--ease) both}
+  /* En continu */
+  .tdc-contact .tdc-btn{animation:tdc-pulse 1.8s ease-out infinite}
+  .tdc-big{background:linear-gradient(100deg,var(--rose-deep) 40%,var(--rose) 50%,var(--rose-deep) 60%) 0 0/250% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:tdc-shine 4s linear infinite}
+  /* Au scroll : Chrome, Edge, Safari récents. Ailleurs, tout s'affiche sans animation. */
+  @supports (animation-timeline:view()){
+    .tdc-hero{animation:tdc-parallax linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+    .tdc h2{animation:tdc-reveal linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+    .tdc-kicker{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+    .tdc-stat{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    .tdc-stat:nth-child(2){animation-range:entry 8% entry 68%}
+    .tdc-stat:nth-child(3){animation-range:entry 16% entry 76%}
+    .tdc-stat:nth-child(4){animation-range:entry 24% entry 84%}
+    .tdc-audience>span{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-card:nth-child(odd){animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-card:nth-child(even){animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-case>div:first-child{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-case>div:last-child{animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-brands span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-bar i{transform-origin:left;animation:tdc-grow linear both;animation-timeline:view();animation-range:entry 30% cover 40%}
+    .tdc-pod-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-pod-series span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-kpis>div{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+    .tdc-perk{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-shot{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-brm{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-contact-img{animation:tdc-rise linear both;animation-timeline:view();animation-range:entry 10% entry 70%}
+    .tdc-contact h2{animation:tdc-pop linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+  }
+  /* Survol : uniquement souris/trackpad, pas sur téléphone */
+  @media (hover:hover){
+    .tdc-card,.tdc-stat{transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
+    .tdc-card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:10px 10px 0 var(--rose)}
+    .tdc-card.rose:hover{box-shadow:10px 10px 0 var(--bleu)}
+    .tdc-stat:hover{transform:translateY(-6px) rotate(1deg);background-color:rgba(255,79,154,.18)}
+    .tdc-btn,.tdc-net-btns a,.tdc-pills span,.tdc-brands span,.tdc-shot{transition:transform .2s var(--ease)}
+    .tdc-btn:hover,.tdc-net-btns a:hover{transform:scale(1.07) rotate(-3deg)}
+    .tdc-cta-btn:hover{transform:translate(-2px,-2px) rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+    .tdc-pills span:hover,.tdc-brands span:hover{transform:rotate(-6deg) scale(1.12)}
+    .tdc-shot:hover{transform:scale(1.02) rotate(.5deg)}
+    .tdc-thumb:hover img{scale:1.08}
+    .tdc-card a.tdc-btn:hover{animation:tdc-wiggle .3s ease-in-out 3}
+    .tdc-ticker:hover>div{animation-play-state:paused}
+    .tdc-socials a:hover{color:#fff!important}
+  }
+}
+/* ---------- Petits ordis et tablettes : 2 cartes par ligne (les reels Instagram ont besoin de 326 px minimum) ---------- */
+@media (max-width:1180px){
+  .tdc-grid3{grid-template-columns:1fr 1fr}
+  .tdc-grid3>.tdc-card:last-child{grid-column:1/-1}
+  .tdc-grid3>.tdc-card:last-child :is(.tdc-video,.tdc-thumbs){width:100%;max-width:640px;margin-inline:auto}
+}
+@media (max-width:900px){.tdc-grid3{grid-template-columns:1fr}}
+/* ---------- Tablette ---------- */
+@media (max-width:980px){
+  .tdc-grid4{grid-template-columns:repeat(2,1fr)}
+}
+/* ---------- Mobile ---------- */
+@media (max-width:720px){
+  .tdc section{padding:52px 20px}
+  .tdc-block{margin:0 8px}
+  .tdc-block+.tdc-block{margin-top:16px}
+  .tdc-hero,.tdc-case{grid-template-columns:1fr}
+  .tdc-lang{top:calc(10px + env(safe-area-inset-top,0px));right:10px}
+  .tdc-lang a{font-size:12px;padding:9px 12px}
+  .tdc-lang div{padding:3px}
+  .tdc-hero{gap:28px}
+  .tdc-ctas{flex-direction:column}
+  .tdc-cta-btn{width:100%}
+  .tdc-photo{max-width:440px;margin:0 auto}
+  .tdc-grid3{grid-template-columns:1fr}
+  .tdc-card .tdc-ig{max-width:none;width:calc(100% + 48px);margin:0 -24px;border-left:0;border-right:0;border-radius:0}
+  .tdc-grid4{gap:10px}
+  .tdc-stat{padding:16px}
+  .tdc-ticker{font-size:16px;margin-bottom:48px}
+  .tdc-bar{grid-template-columns:96px 1fr 64px;font-size:13px}
+  .tdc-brm{grid-template-columns:1fr;padding:32px 24px;gap:14px}
+  .tdc-brm b{font-size:38px}
+  .tdc-kpis{gap:8px}
+  .tdc-kpis>div{padding:14px 10px}
+  .tdc-kpis b{font-size:22px;white-space:nowrap}
+  .tdc-kpis small{font-size:12px}
+  .tdc-contact{display:flex;flex-direction:column;padding-bottom:0!important;margin-top:48px;text-align:center}
+  .tdc-contact-in{padding-right:0;min-height:0}
+  .tdc-socials{justify-content:center}
+  .tdc-contact-btns{justify-content:center}
+  .tdc-contact-img{position:relative;right:auto;bottom:auto;order:2;display:block;width:300px;height:300px;max-width:85%;margin:24px auto -29px}
+}
+/* ---------- Accueil : L'atelier ---------- */
+.tdc-atelier .tdc-at-lead{max-width:60ch;margin-bottom:24px}
+.tdc-at-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-at-card{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:16px;color:var(--ink)!important;text-decoration:none!important;box-shadow:8px 8px 0 var(--rose);transition:translate .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.tdc-at-card:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--rose)}}
+.tdc-at-card:active{translate:4px 4px;box-shadow:4px 4px 0 var(--rose)}
+.tdc-at-ic{flex:none;width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.tdc-at-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tdc-at-tx{display:grid;gap:4px;flex:1;min-width:0}
+.tdc-at-tx b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:18px;line-height:1.1}
+.tdc-at-tx small{font-size:13px;font-weight:600;opacity:.8;line-height:1.35}
+.tdc-at-go{font-family:"Archivo Black",Impact,sans-serif;font-size:22px}
+@media (max-width:980px){.tdc-at-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.tdc-at-grid{grid-template-columns:1fr}.tdc-at-card{box-shadow:6px 6px 0 var(--rose)}}
+/* ---------- Menu flottant (bord droit) ---------- */
+.tdc-menu{position:fixed;right:14px;top:50%;translate:0 -50%;z-index:9998;display:flex;flex-direction:column;gap:6px;background:var(--ink);padding:6px;border-radius:99px;box-shadow:0 8px 24px rgba(14,18,48,.3)}
+.tdc-menu a,.tdc-mnav a,.tdc-mnav summary{-webkit-tap-highlight-color:transparent}
+.tdc-menu a{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff!important;text-decoration:none!important;transition:background-color .2s}
+.tdc-menu svg,.tdc-mnav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tdc-menu a.is-active{background:var(--rose-deep)}
+.tdc-sub{position:relative}
+.tdc-sub-b{all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff;cursor:pointer;transition:background-color .2s;-webkit-tap-highlight-color:transparent}
+.tdc-sub.is-active .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub.open .tdc-sub-b{background:rgba(255,255,255,.18)}.tdc-sub.is-active.open .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub-b:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.tdc-sub-panel{position:absolute;right:calc(100% + 14px);top:50%;translate:0 -50%;min-width:260px;display:none;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+.tdc-sub-panel::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:16px}
+.tdc-sub.open .tdc-sub-panel{display:grid}
+.tdc-sub-t,.tdc-mnav-t{margin:0!important;padding:8px 12px 4px;color:var(--rose)!important;font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.tdc-sub-panel a{width:auto;height:auto;border-radius:14px;justify-content:flex-start;gap:12px;padding:11px 14px;font-weight:800;font-size:14px;line-height:1.2;white-space:nowrap}
+.tdc-sub.open .tdc-menu-label{opacity:0!important}
+@media (hover:hover){.tdc-sub:hover .tdc-sub-panel{display:grid}.tdc-sub:hover .tdc-menu-label{opacity:0!important}.tdc-sub-b:hover{background:rgba(255,255,255,.14)}.tdc-sub.is-active .tdc-sub-b:hover{background:var(--rose-deep)}}
+@media (prefers-reduced-motion:no-preference){.tdc-sub.open .tdc-sub-panel,.tdc-sub:hover .tdc-sub-panel{animation:tdc-zoom .25s var(--ease) both}}
+.tdc-menu-label{position:absolute;right:calc(100% + 12px);top:50%;translate:0 -50%;white-space:nowrap;background:var(--ink);color:#fff;font-weight:800;font-size:13px;line-height:1;padding:9px 13px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s;box-shadow:0 6px 16px rgba(14,18,48,.25)}
+@media (hover:hover){.tdc-menu a:hover{background:rgba(255,255,255,.14)}.tdc-menu a.is-active:hover{background:var(--rose-deep)}.tdc-menu>a:hover .tdc-menu-label,.tdc-sub-b:hover .tdc-menu-label{opacity:1;translate:-4px -50%}}
+.tdc-menu>a:focus-visible .tdc-menu-label{opacity:1}
+@media (prefers-reduced-motion:no-preference){.tdc-menu{animation:tdc-zoom .6s 1s var(--ease) both}}
+@media (min-width:1025px){.tdc{max-width:min(1240px,calc(100vw - 172px))!important}}
+/* Menu mobile : un bouton qui ouvre la liste des pages avec leur nom */
+.tdc-mnav{display:none}
+@media (max-width:1024px){
+  .tdc-menu{display:none}
+  .tdc-mnav{display:block;position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9998}
+  .tdc-mnav summary{list-style:none;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(14,18,48,.35);transition:background-color .2s}
+  .tdc-mnav summary::-webkit-details-marker{display:none}
+  .tdc-mnav summary::marker{content:""}
+  .tdc-mnav .i-close{display:none}
+  .tdc-mnav[open] summary{background:var(--rose-deep)}
+  .tdc-mnav[open] .i-open{display:none}
+  .tdc-mnav[open] .i-close{display:block}
+  .tdc-mnav-panel{position:absolute;right:0;bottom:calc(100% + 10px);min-width:236px;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;transform-origin:100% 100%;display:grid;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+  .tdc-mnav-panel a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;color:#fff!important;text-decoration:none!important;font-weight:800;font-size:15px;line-height:1.2;white-space:nowrap}
+  .tdc-mnav-panel a{transition:background-color .15s,scale .15s}
+  .tdc-mnav-panel a.is-active{background:var(--rose-deep)}
+  .tdc-mnav-t{border-top:1px solid rgba(255,255,255,.15);margin-top:4px!important;padding-top:12px}
+  .tdc-mnav-panel a.sub{padding:10px 14px 10px 22px;font-size:14px}
+  .tdc-mnav-lang{display:flex;gap:4px;padding:4px;margin-bottom:4px;background:rgba(255,255,255,.08);border-radius:16px}
+  .tdc-mnav-panel .tdc-mnav-lang a{flex:1;justify-content:center;padding:10px 6px;font-size:14px;border-radius:12px}
+  .tdc:not(:target) .tdc-mnav-lang .b-fr,.tdc:target .tdc-mnav-lang .b-en,.tdc-zw:target .tdc-mnav-lang .b-zh{background:var(--rose-deep)}
+  .tdc-zw:target .tdc .tdc-mnav-lang .b-fr{background:transparent}
+  .tdc-lang{position:absolute!important}
+  .tdc-mnav-panel a:active,.tdc-mnav-panel a:focus{background:var(--rose)!important;color:var(--ink)!important;scale:.96;outline:none}
+  @media (prefers-reduced-motion:no-preference){.tdc-mnav[open] .tdc-mnav-panel{animation:tdc-zoom .25s var(--ease) both}.tdc-mnav{animation:tdc-zoom .6s 1s var(--ease) both}}
+}
+.tdc-swipe{display:none;margin:0 0 8px!important;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rose-deep)}
+.tdc-swipe b{display:inline-block;animation:tdc-swipe 1.6s ease-in-out infinite}
+@keyframes tdc-swipe{0%,100%{translate:-3px 0}50%{translate:3px 0}}
+@media (max-width:900px){.tdc-swipe{display:block}}
+@media (max-width:720px){.tdc-page-hero h1{font-size:min(52px,calc((100vw - 48px)/7.9))!important}.tdc-hero>*{min-width:0}}
+.tdc h1>span.t1{color:inherit!important;animation:none!important;display:inline}
+.tdc h1>span.t1.en,.tdc h1>span.t1.zh{display:none}
+/* ---------- Pages Podcast & Cabinet ---------- */
+.tdc-page-hero{padding-top:56px!important}
+.tdc-lead{font-size:clamp(18px,2vw,21px);font-weight:600;margin:20px 0 24px!important;max-width:36ch}
+.tdc-lead-wide{max-width:60ch;font-weight:400}
+.tdc-player{border:3px solid var(--ink);border-radius:var(--r-m);overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--rose)}
+.tdc-player iframe{display:block}
+.tdc-actions{display:flex;flex-wrap:wrap;gap:10px}
+.tdc-actions .tdc-btn{margin-top:0}
+.tdc-cover{display:block;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;box-shadow:12px 12px 0 var(--rose);max-width:460px;width:100%;justify-self:center}
+.tdc-cover img{display:block;width:100%;height:auto}
+.tdc-series{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tdc-series .tdc-card h3{font-size:20px}
+.tdc-tag-new{align-self:flex-start;background:var(--bleu);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:5px 10px}
+.tdc-eps{display:grid;gap:12px}
+.tdc-ep{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;border:3px solid var(--ink);border-radius:var(--r-m);padding:18px 22px;background:#fff}
+.tdc-ep-n{font-family:"Archivo Black",Impact,sans-serif;font-size:34px;line-height:1;color:var(--rose-deep)}
+.tdc-ep h3{font-size:20px}
+.tdc-ep p{font-size:15px;opacity:.85}
+.tdc-ep.soon{background:var(--bleu-soft);border-style:dashed}
+.tdc-ep .tdc-btn{margin-top:0;padding:12px 18px;font-size:15px}
+.tdc-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+.tdc-step{border:3px solid var(--ink);border-radius:var(--r-m);padding:22px;background:#fff;counter-increment:st}
+.tdc-step::before{content:counter(st,decimal-leading-zero);display:block;font-family:"Archivo Black",Impact,sans-serif;font-size:40px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink);margin-bottom:10px}
+.tdc-step h3{font-size:20px;margin-bottom:6px}
+.tdc-step p{font-size:15px}
+.tdc-scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:8px}
+.tdc-scale>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:16px 10px;text-align:center}
+.tdc-teeth{display:flex;justify-content:center;gap:2px;min-height:26px;flex-wrap:wrap}
+.tdc-teeth svg{width:22px;height:22px;fill:var(--rose);stroke:none}
+.tdc-scale b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:26px;margin-top:8px}
+.tdc-scale small{display:block;font-size:13px;opacity:.85;min-height:2.6em;margin-top:4px}
+.tdc-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-rules .tdc-card p{font-size:15px}
+.tdc-final{text-align:center}
+.tdc-final p{max-width:46ch;margin:0 auto!important}
+.tdc-final .tdc-actions{justify-content:center;margin-top:22px}
+.tdc-final .tdc-peace{margin-top:22px!important}
+@media (max-width:980px){.tdc-series{grid-template-columns:repeat(2,minmax(0,1fr))}.tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr))}.tdc-scale small{font-size:12px}}
+@media (max-width:720px){
+  .tdc-steps,.tdc-rules,.tdc-series{grid-template-columns:1fr}
+  .tdc-ep{grid-template-columns:auto 1fr;padding:16px}
+  .tdc-ep .tdc-btn{grid-column:1/-1;text-align:center}
+  .tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .tdc-scale>div{padding:12px 4px}
+  .tdc-teeth svg{width:14px;height:14px}
+  .tdc-scale b{font-size:20px}
+  .tdc-scale small{font-size:11px}
+  .tdc-cover{max-width:340px;box-shadow:8px 8px 0 var(--rose)}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-step,.tdc-ep,.tdc-scale>div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  .tdc-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Calculateur de ratio ---------- */
+.tdc-hero.tdc-solo{grid-template-columns:1fr;padding-bottom:36px!important}
+.tdc-hero.tdc-solo .tdc-lead{max-width:52ch}
+.tdc-calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:stretch}
+.tdc-ctrl{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:24px;display:grid;gap:18px;align-content:start;box-shadow:10px 10px 0 var(--ink)}
+.tdc-fl{display:block;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.tdc-fl small{font-weight:600;letter-spacing:0;text-transform:none;opacity:.7}
+.tdc-num{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;border:3px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.tdc-num:focus-within{box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-num button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;line-height:1;background:var(--rose-soft);color:var(--ink);transition:background-color .15s,scale .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.tdc-num button:active{background:var(--rose)}
+.tdc-num button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+@media (hover:hover){.tdc-num button:hover{background:var(--rose)}}
+.tdc-num input{all:unset;box-sizing:border-box;width:100%;min-width:0;text-align:center;font-family:"Archivo Black",Impact,sans-serif;font-size:30px;line-height:1;padding:10px 0;color:var(--ink);-moz-appearance:textfield;appearance:textfield}
+.tdc-num input::-webkit-inner-spin-button,.tdc-num input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-sel{box-sizing:border-box;width:100%;-webkit-appearance:none;appearance:none;border:3px solid var(--ink);border-radius:16px;padding:14px 46px 14px 16px;font:800 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e1230' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/20px;cursor:pointer}
+.tdc-sel:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-switch{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800;cursor:pointer;border-top:2px dashed rgba(14,18,48,.2);padding-top:16px}
+.tdc-switch small{display:block;font-weight:600;font-size:13px;opacity:.7}
+.tdc-switch input{-webkit-appearance:none;appearance:none;flex:none;width:56px;height:32px;margin:0;border:3px solid var(--ink);border-radius:99px;background:#fff;position:relative;cursor:pointer;transition:background-color .2s}
+.tdc-switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:translate .2s var(--ease)}
+.tdc-switch input:checked{background:var(--rose)}
+.tdc-switch input:checked::after{translate:24px 0}
+.tdc-switch input:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-bp{position:relative;border:3px solid var(--ink);border-radius:var(--r-l);overflow:clip;color:#fff;background-color:var(--bleu);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px);background-size:16px 16px,16px 16px,80px 80px,80px 80px;box-shadow:10px 10px 0 var(--rose);display:flex;align-items:center}
+.tdc-bp svg{display:block;width:100%;height:auto}
+.tdc-bp .ln{fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tdc-bp .lf{fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:1}
+.tdc-bp .tire{fill:none;stroke:#fff;stroke-opacity:.14}
+.tdc-bp .sk{fill:none;stroke:var(--rose);stroke-width:6;stroke-linecap:round}
+.tdc-bp .ch{fill:none;stroke:var(--rose);stroke-width:3.5;stroke-dasharray:5 3.5;stroke-linejoin:round}
+.tdc-bp text{fill:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
+.tdc-bp .t-big{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;letter-spacing:0}
+.tdc-bp .t-rose{fill:var(--rose)}
+.tdc-bp-play{all:unset;position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+.tdc-bp-play:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media (hover:hover){.tdc-bp-play:hover{background:var(--rose-deep)}}
+.tdc-bp-play svg{width:16px;height:16px;fill:currentColor}
+.tdc-bp-play .i-play{display:none}
+.tdc-bp.paused .tdc-bp-play .i-play{display:block}
+.tdc-bp.paused .tdc-bp-play .i-pause{display:none}
+.tdc-res{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px}
+.tdc-res>div{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tdc-res>div.hot{background:var(--ink);color:#fff}
+.tdc-res>div.pk{background:var(--rose)}
+.tdc-res .tdc-rl{font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.tdc-res b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(26px,2.8vw,36px);line-height:1;font-variant-numeric:tabular-nums}
+.tdc-res b i{font-style:normal;font-size:.5em;margin-left:3px}
+.tdc-res small{font-size:13px;line-height:1.35;opacity:.85}
+.tdc-verdict{margin-top:16px;border:3px dashed var(--ink);border-radius:var(--r-m);padding:16px 20px;background:var(--rose-soft);font-weight:600;display:flex;gap:14px;align-items:flex-start}
+.tdc-verdict>b{flex:none;font-size:26px;line-height:1}
+.tdc-verdict p{margin:0!important}
+.tdc-eqt{width:100%;border-collapse:separate;border-spacing:0 8px;font-variant-numeric:tabular-nums;margin-top:-8px}
+.tdc-eqt th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:0 14px;font-weight:800;opacity:.75}
+.tdc-eqt th:last-child,.tdc-eqt td:last-child{text-align:right}
+.tdc-eqt td{background:#fff;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:12px 14px;font-weight:700;transition:background-color .15s}
+.tdc-eqt td:first-child{border-left:3px solid var(--ink);border-radius:14px 0 0 14px;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;white-space:nowrap}
+.tdc-eqt td:last-child{border-right:3px solid var(--ink);border-radius:0 14px 14px 0}
+.tdc-eqt tr.go{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tdc-eqt tr.go:active td{background:var(--rose)}
+@media (hover:hover){.tdc-eqt tr.go:hover td{background:var(--rose-soft)}}
+.tdc-eqt .d0{color:var(--rose-deep)}
+.tdc-eqt button{all:unset;cursor:pointer;background:var(--ink);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.tdc-eqt button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-cad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tdc-cad div{border:3px solid var(--ink);border-radius:var(--r-m);padding:12px 16px;background:#fff;transition:background-color .2s}
+.tdc-cad div.on{background:var(--rose)}
+.tdc-cad b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tdc-cad span{font-size:13px;font-weight:700;opacity:.8}
+.tdc-note{font-size:14px;opacity:.75;margin-top:16px!important}
+.tdc-cmp{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center}
+.tdc-cmp-c{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:12px;box-shadow:8px 8px 0 var(--ink)}
+.tdc-cmp-c.b{box-shadow:8px 8px 0 var(--rose)}
+.tdc-cmp-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cmp-h b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px}
+.tdc-cmp-h button{all:unset;cursor:pointer;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:99px;padding:5px 10px;-webkit-tap-highlight-color:transparent}
+.tdc-cmp-h button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cmp-h button:hover{background:var(--rose-soft)}}
+.tdc-cmp-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-cmp .tdc-fl{font-size:11px;margin-bottom:6px}
+.tdc-cmp .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cmp .tdc-num input{font-size:22px;padding:7px 0}
+.tdc-cmp .tdc-num button{font-size:20px}
+.tdc-cmp .tdc-sel{padding:11px 40px 11px 12px;font-size:16px;border-radius:14px}
+.tdc-cmp-o{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:2px dashed rgba(14,18,48,.2);padding-top:12px}
+.tdc-cmp-o div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tdc-cmp-o span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tdc-cmp-o b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdc-cmp-o b span{font-size:inherit;letter-spacing:0;text-transform:none;opacity:1;font-weight:400}
+.tdc-cmp-o b i{font-style:normal;font-size:.5em;margin-left:2px}
+.tdc-cmp-bar{height:10px;border-radius:99px;background:var(--bleu-soft);overflow:hidden}
+.tdc-cmp-bar i{display:block;height:100%;border-radius:99px;background:var(--ink);transition:width .4s var(--ease)}
+.tdc-cmp-c.b .tdc-cmp-bar i{background:var(--rose)}
+.tdc-vs{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-cmp-sum{margin-top:22px}
+@media (max-width:980px){
+  .tdc-cmp{grid-template-columns:1fr}
+  .tdc-vs{justify-self:center;width:48px;height:48px;margin:-4px 0}
+  .tdc-calc{grid-template-columns:1fr}
+  .tdc-bp{order:-1}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-res>div.hot{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .tdc-ctrl{padding:14px;box-shadow:6px 6px 0 var(--ink)}
+  /* vue compacte mobile : tout l'essentiel sur un écran */
+  .tdc-calc{gap:16px}
+  .tdc-ctrl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 10px}
+  .tdc-ctrl>div:nth-child(3){grid-column:1/-1}
+  .tdc-ctrl .tdc-fl{font-size:11px;margin-bottom:5px;letter-spacing:.06em}
+  .tdc-ctrl .tdc-fl small{display:none}
+  .tdc-ctrl .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+  .tdc-ctrl .tdc-num input{font-size:22px;padding:7px 0}
+  .tdc-ctrl .tdc-num button{font-size:20px}
+  .tdc-ctrl .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-switch{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;border:0;padding:0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .tdc-switch small{display:none}
+  .tdc-switch input{height:30px;width:54px}
+  .tdc-switch input:checked::after{translate:22px 0}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+  .tdc-res>div{padding:10px 12px;gap:2px;border-radius:14px}
+  .tdc-res>div.hot{grid-column:auto}
+  .tdc-res>div:nth-child(5){display:none}
+  .tdc-res small{display:none}
+  .tdc-res .tdc-rl{font-size:10px;letter-spacing:.06em}
+  .tdc-res b{font-size:26px}
+  .tdc-verdict{margin-top:10px;font-size:14px;line-height:1.4}
+  .tdc-verdict>b{font-size:20px}
+  .tdc-bp{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-num{grid-template-columns:50px minmax(0,1fr) 50px}
+  .tdc-eqt th{padding:0 8px;font-size:11px;letter-spacing:.04em}
+  .tdc-eqt td{padding:10px 8px;font-size:14px}
+  .tdc-eqt td:first-child{font-size:16px}
+  .tdc-eqt .c-dev{display:none}
+  .tdc-eqt button{padding:6px 10px;font-size:12px}
+  .tdc-cad{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-verdict{padding:14px 16px}
+  .tdc-bp text{font-size:18px}
+  .tdc-bp .t-big,#rt-l2{display:none}
+  .tdc-bp-play{width:36px;height:36px;right:10px;bottom:10px}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-res>div,.tdc-cad div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Comparateur de transmissions ---------- */
+.tdc-x{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
+.tdc-xc{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px;display:grid;gap:14px;align-content:start;box-shadow:10px 10px 0 var(--bleu)}
+.tdc-xc.b{box-shadow:10px 10px 0 var(--rose)}
+.tdc-xh{display:flex;align-items:center;gap:12px}
+.tdc-xh i{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:"Archivo Black",Impact,sans-serif;font-size:20px;color:#fff;background:var(--bleu)}
+.tdc-xc.b .tdc-xh i{background:var(--rose-deep)}
+.tdc-xh b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;line-height:1.1}
+.tdc-xh small{display:block;font-weight:700;font-size:13px;opacity:.7;margin-top:2px}
+.tdc-x2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-xin{box-sizing:border-box;width:100%;border:3px solid var(--ink);border-radius:16px;padding:12px 14px;font:700 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff}
+.tdc-xin:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-mode{display:flex;width:max-content;max-width:100%;margin:0 auto 10px;border:3px solid var(--ink);border-radius:99px;padding:4px;background:#fff;gap:4px}
+.tdc-mode button{all:unset;cursor:pointer;padding:10px 18px;border-radius:99px;font-weight:800;font-size:15px;line-height:1.2;text-align:center;-webkit-tap-highlight-color:transparent;transition:background-color .2s,color .2s}
+.tdc-mode button.on{background:var(--ink);color:#fff}
+.tdc-mode button[data-mode="pro"].on{background:var(--rose-deep)}
+.tdc-mode button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-mode button:not(.on):hover{background:var(--rose-soft)}}
+.tdc-mode-t{text-align:center;font-size:14px;font-weight:600;opacity:.8;margin:0 auto 22px!important;max-width:60ch}
+#tdc-cmpx .tdc-mode-t.p,#tdc-cmpx.is-pro .tdc-mode-t.s{display:none}
+#tdc-cmpx.is-pro .tdc-mode-t.p{display:block}
+.tdc-cats{display:flex;flex-wrap:wrap;gap:6px}
+.tdc-cat{all:unset;cursor:pointer;border:2px solid var(--ink);border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;line-height:1.2;background:#fff;-webkit-tap-highlight-color:transparent;transition:background-color .15s,color .15s}
+.tdc-cat.on{background:var(--ink);color:#fff}
+.tdc-xc.b .tdc-cat.on{background:var(--rose-deep);border-color:var(--rose-deep)}
+.tdc-xc.a .tdc-cat.on{background:var(--bleu);border-color:var(--bleu)}
+.tdc-cat:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-cat:not(.on):hover{background:var(--rose-soft)}}
+.tdc-cat:active{scale:.96}
+#tdc-cmpx:not(.is-pro) .tdc-cat.pro,#tdc-cmpx:not(.is-pro) .tdc-cls,#tdc-cmpx:not(.is-pro) .tdc-sch{display:none!important}
+.tdc-xc.is-custom .tdc-gw{display:none}
+.tdc-xcus{display:none;gap:12px}
+.tdc-cls{padding-top:12px!important;font-size:14px}
+.tdc-cls input{width:52px!important;height:30px!important}
+.tdc-cls input:checked::after{translate:22px 0!important}
+.tdc-xc.has-hub .tdc-cls,.tdc-xc.is-custom .tdc-cls{display:none}
+.tdc-xnote{display:none;margin:0!important;border-radius:12px;background:var(--rose-soft);padding:10px 12px;font-size:13px;font-weight:700;line-height:1.4}
+.tdc-xnote.on{display:block}
+.tdc-xc.is-custom .tdc-xnote{display:none}
+.tdc-cnt{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;border:3px solid var(--ink);border-radius:99px;overflow:hidden}
+.tdc-cnt button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;background:var(--rose-soft);-webkit-tap-highlight-color:transparent;transition:background-color .15s}
+.tdc-cnt button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cnt button:hover{background:var(--rose)}}
+.tdc-cnt button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+.tdc-cnt b{display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;padding:6px 0}
+.tdc-teeth{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px}
+.tdc-teeth label{display:grid;gap:3px;text-align:center;font-size:11px;font-weight:800;opacity:.9}
+.tdc-teeth input{box-sizing:border-box;width:100%;min-width:0;border:2px solid var(--ink);border-radius:12px;padding:9px 2px;text-align:center;font:400 18px/1 "Archivo Black",Impact,sans-serif;color:var(--ink);background:#fff;-moz-appearance:textfield;appearance:textfield}
+.tdc-teeth input::-webkit-inner-spin-button,.tdc-teeth input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-teeth input:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 3px var(--bleu-soft)}
+.tdc-teeth input.bad{border-color:var(--rose-deep);background:var(--rose-soft)}
+.tdc-xc.is-custom .tdc-xcus,.tdc-xc.cr .tdc-xcus,.tdc-xc.cc .tdc-xcus{display:grid}
+.tdc-xcus .cu-r,.tdc-xcus .cu-c{display:none;gap:8px}
+.tdc-xc.is-custom .cu-r,.tdc-xc.cr .cu-r,.tdc-xc.is-custom .cu-c,.tdc-xc.cc .cu-c{display:grid}
+.tdc-cuh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cuh .tdc-fl{margin:0!important}
+.tdc-cuh .tdc-cnt{width:132px;grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cuh .tdc-cnt b{font-size:18px;padding:4px 0}
+.tdc-cuh .tdc-cnt button{font-size:18px}
+.tdc-xfun{margin:0!important;border-radius:12px;background:var(--ink);color:#fff;padding:10px 12px;font-size:13px;font-weight:800;line-height:1.4}
+.tdc-xc.is-custom .tdc-xstd{display:none}
+.tdc-xvs{align-self:center;width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-chart{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px 22px 16px;box-shadow:10px 10px 0 var(--ink)}
+.tdc-chart-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin-bottom:10px}
+.tdc-chart-h h3{margin:0!important;font-size:20px}
+.tdc-leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;font-weight:700}
+.tdc-leg span{display:inline-flex;align-items:center;gap:6px}
+.tdc-leg i{display:inline-block;width:14px;height:14px;border-radius:50%}
+.tdc-leg .la{background:var(--bleu)}
+.tdc-leg .lb{background:var(--rose)}
+.tdc-leg .lc{background:#fff;border:3px solid var(--ink)}
+.tdc-leg .lz{width:22px;border-radius:4px;background:repeating-linear-gradient(45deg,rgba(14,18,48,.14) 0 4px,transparent 4px 8px)}
+#cx-svg{width:100%;overflow:hidden}
+#cx-svg svg{display:block;width:100%;height:auto;touch-action:manipulation}
+#cx-svg text{font-family:Inter,system-ui,sans-serif;font-size:12px;fill:var(--ink)}
+#cx-svg .rl{font-weight:800;font-size:13px}
+#cx-svg .tk{stroke:rgba(14,18,48,.12);stroke-width:1}
+#cx-svg .tt{fill:rgba(14,18,48,.6);font-size:11px}
+#cx-svg .zz{fill:url(#cx-hatch)}
+#cx-svg .ln{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3;opacity:.55}
+#cx-svg .row{stroke:rgba(14,18,48,.18);stroke-width:2}
+#cx-svg circle{cursor:pointer;transition:r .15s}
+#cx-svg circle.a{fill:var(--bleu)}
+#cx-svg circle.b{fill:var(--rose)}
+#cx-svg circle.cm{stroke:var(--ink);stroke-width:3}
+#cx-svg circle.on{stroke:var(--ink);stroke-width:4}
+.tdc-read{margin-top:10px;min-height:44px;border-radius:14px;background:var(--bleu-soft);padding:11px 14px;font-weight:700;font-size:14px;line-height:1.4}
+.tdc-read b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400}
+.tdc-xt{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff}
+.tdc-xt-r{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);align-items:center;border-top:2px solid rgba(14,18,48,.1)}
+.tdc-xt-r:first-child{border-top:0;background:var(--ink);color:#fff}
+.tdc-xt-r>*{padding:13px 16px;min-width:0}
+.tdc-xt-r>span:first-child{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tdc-xt-r>b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tdc-xt-r>b.w{background:var(--rose-soft);position:relative;padding-right:34px}
+.tdc-xt-r>b.w::after{content:"✓";position:absolute;right:12px;top:50%;translate:0 -50%;font-family:Inter,system-ui,sans-serif;font-weight:900;font-size:14px;color:var(--rose-deep)}
+.tdc-xt-r:first-child>b{font-size:16px}
+.tdc-xt-r:first-child .ha{color:#9fb0ff}
+.tdc-xt-r:first-child .hb{color:var(--rose)}
+.tdc-xt-r>b i{font-style:normal;font-size:.6em;white-space:nowrap}
+.tdc-xt-r>b{white-space:nowrap}
+.tdc-xt-r>b small{white-space:normal}
+.tdc-xt-r small{display:block;font-family:Inter,system-ui,sans-serif;font-size:12px;font-weight:700;opacity:.65}
+.tdc-mxs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.tdc-mxs details{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff}
+.tdc-mxs summary{cursor:pointer;padding:14px 16px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.tdc-mxs summary::-webkit-details-marker{display:none}
+.tdc-mxs summary::after{content:"+";font-size:22px;line-height:1}
+.tdc-mxs details[open] summary::after{content:"−"}
+.tdc-mx{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.tdc-mx th,.tdc-mx td{padding:7px 10px;text-align:right;border-top:1px solid rgba(14,18,48,.1)}
+.tdc-mx th:first-child,.tdc-mx td:first-child{text-align:left;font-weight:800}
+.tdc-mx thead th{background:var(--ink);color:#fff}
+.tdc-mx td.cm{background:var(--rose-soft);font-weight:800}
+@media (max-width:980px){
+  .tdc-x{grid-template-columns:1fr;gap:12px}
+  .tdc-xvs{justify-self:center;width:46px;height:46px;font-size:15px}
+  .tdc-mxs{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .tdc-mode button{padding:9px 12px;font-size:13px}
+  .tdc-cat{padding:6px 10px;font-size:12px}
+  .tdc-xc{padding:16px;gap:10px;box-shadow:6px 6px 0 var(--bleu)}
+  .tdc-xc.b{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-xc .tdc-fl{font-size:11px;margin-bottom:5px}
+  .tdc-xc .tdc-cls{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;gap:12px!important}
+  .tdc-xc .tdc-cls small{display:block!important}
+  .tdc-xc .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-chart{padding:14px 12px 12px;box-shadow:6px 6px 0 var(--ink)}
+  .tdc-xt-r>*{padding:10px 10px}
+  .tdc-xt-r>span:first-child{font-size:11px;letter-spacing:.02em}
+  .tdc-xt-r>b{font-size:17px}
+  .tdc-xt-r>b.w{padding-right:26px}
+  .tdc-xt-r>b.w::after{right:8px}
+}
+.tdc-fb{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;border:3px dashed var(--ink);border-radius:var(--r-l);background:var(--bleu-soft);padding:24px 26px}
+.tdc-fb h3{margin:0 0 6px!important}
+.tdc-fb p{margin:0!important;max-width:46ch}
+.tdc-fb .tdc-actions{margin:0!important}
+@media (max-width:720px){.tdc-fb{padding:18px}.tdc-fb .tdc-actions{width:100%}.tdc-fb .tdc-btn{flex:1 1 100%;justify-content:center;text-align:center}}
+/* ---------- Page Compatibilité ---------- */
+#tdc-cpt .tdc-mode{margin-bottom:18px}
+.cp-pick{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:end}
+.cp-arrow{font-family:"Archivo Black",Impact,sans-serif;font-size:30px;padding-bottom:10px}
+.cp-ver{margin-top:22px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;padding:22px;box-shadow:10px 10px 0 var(--ink);transition:background-color .2s}
+.cp-ver.s2{background:#d9f7e6}.cp-ver.s1{background:#fff3cc}.cp-ver.s0{background:var(--rose-soft)}
+.cp-ver .big{grid-row:span 2;font-size:58px;line-height:1}
+.cp-ver h3{margin:0!important;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:28px;line-height:1.1}
+.cp-ver p{margin:0!important;font-weight:600}
+.cp-cards{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.cp-card{border:2px solid var(--ink);border-radius:var(--r-m);background:rgba(255,255,255,.7);padding:12px 14px;font-size:13px;display:grid;gap:4px}
+.cp-card b{font-size:15px}
+.cp-card span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.cp-filt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:34px 0 14px}
+.cp-filt .sep{width:2px;height:24px;background:rgba(14,18,48,.15);margin:0 4px}
+.cp-mxw{overflow:auto;max-height:78vh;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;box-shadow:10px 10px 0 var(--rose)}
+.cp-mx{border-collapse:separate;border-spacing:0;font-size:13px}
+.cp-mx th,.cp-mx td{border-right:1px solid rgba(14,18,48,.08);border-bottom:1px solid rgba(14,18,48,.08);padding:0}
+.cp-mx thead th{position:sticky;top:0;z-index:2;background:#fff;vertical-align:bottom;padding:10px 4px}
+.cp-mx thead th:first-child{left:0;z-index:3;text-align:left;padding:12px;font-size:12px;font-weight:800;vertical-align:bottom;min-width:190px}
+.cp-mx thead th div{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font-weight:800;font-size:12px;margin:0 auto;max-height:210px;overflow:hidden;text-overflow:ellipsis}
+.cp-mx tbody th{position:sticky;left:0;z-index:1;background:#fff;text-align:left;padding:8px 12px;font-weight:800;white-space:nowrap;font-size:13px}
+.cp-mx td{width:38px;min-width:38px;height:38px;text-align:center;cursor:pointer;font-weight:900;font-size:15px;transition:transform .1s}
+.cp-mx td.s2{background:#bfeed3;color:#0b6b3a}.cp-mx td.s1{background:#ffe79a;color:#7a5600}.cp-mx td.s0{background:#fff;color:rgba(14,18,48,.18)}
+.cp-mx td.on{outline:3px solid var(--ink);outline-offset:-3px}
+.cp-mx td.hl,.cp-mx th.hl{box-shadow:inset 0 0 0 999px rgba(43,59,255,.08)}
+.cp-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:0}
+.cp-mx thead .cp-dot{margin:0 0 6px}
+.b-sh{background:var(--bleu)}.b-sr{background:var(--rose)}.b-ca{background:#19a974}.b-ni,.b-rt{background:#8b5cf6}
+.cp-tag{display:inline-block;font-size:10px;font-weight:800;border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:1px;background:var(--ink);color:#fff}
+.cp-tag.m{background:#e7e9f6;color:var(--ink)}
+.cp-leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;font-weight:700;margin-top:14px}
+.cp-leg i{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-3px;margin-right:5px;text-align:center;font-style:normal;font-weight:900;font-size:11px;line-height:16px}
+.cp-empty{padding:28px;text-align:center;font-weight:700}
+.cp-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.cp-rule{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:10px;align-content:start}
+.cp-rule h3{margin:0!important;display:flex;align-items:center;gap:8px}
+.cp-rule ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.cp-rule.sh{border-top:12px solid var(--bleu)}.cp-rule.sr{border-top:12px solid var(--rose)}.cp-rule.ca{border-top:12px solid #19a974}.cp-rule.ni{border-top:12px solid #8b5cf6}
+.tdc-disc{display:flex;gap:14px;align-items:flex-start;max-width:900px;margin:0 auto 28px;border:3px solid var(--ink);border-radius:var(--r-m);background:#fff3cc;padding:16px 20px}
+.tdc-disc>b{flex:none;font-size:24px;line-height:1}
+.tdc-disc p{margin:0!important;font-size:14px;line-height:1.5;font-weight:600}
+.cp-geek{margin-top:14px;border:3px solid var(--ink);border-radius:var(--r-m);background:#fff}
+.cp-geek>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cp-geek>summary::-webkit-details-marker{display:none}.cp-geek>summary::marker{content:""}
+.cp-geek>summary::after{content:"+";font-family:"Archivo Black",Impact,sans-serif;font-size:22px;line-height:1}
+.cp-geek[open]>summary::after{content:"−"}
+.cp-geek>div,.cp-geek>p,.cp-geek>.cp-tw{margin:0 18px 16px!important}
+.cp-gk-p{font-size:14px;line-height:1.5;margin:0 0 10px!important}
+.cp-gk-n{font-size:12px;font-weight:600;opacity:.75;line-height:1.45;margin:10px 0 0!important}
+.cp-gk-svg{display:block;width:100%;height:auto;border-radius:14px;background:var(--bleu-soft)}
+.cp-gk-svg text{font:700 17px Inter,system-ui,sans-serif;fill:var(--ink)}
+.cp-ref{margin-top:18px}
+.cp-tw{overflow-x:auto}
+.cp-tab{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.cp-tab th,.cp-tab td{padding:8px 10px;border-bottom:1px solid rgba(14,18,48,.1);text-align:right;white-space:nowrap}
+.cp-tab th:first-child,.cp-tab td:first-child{text-align:left;white-space:normal}
+.cp-tab thead th{background:var(--ink);color:#fff}
+@media (max-width:720px){.cp-tab{font-size:12px}.cp-tab th,.cp-tab td{padding:7px 6px}.cp-geek>div,.cp-geek>p,.cp-geek>.cp-tw{margin:0 12px 14px!important}.cp-ref .cp-gk-p{margin:0 12px 12px!important}}
+@media (max-width:980px){.cp-rules{grid-template-columns:1fr}}
+@media (max-width:720px){.cp-pick{grid-template-columns:1fr}.cp-arrow{display:none}.cp-ver{padding:16px;box-shadow:6px 6px 0 var(--ink)}.cp-ver .big{font-size:44px}.cp-ver h3{font-size:22px}.cp-cards{grid-template-columns:1fr}.cp-mxw{box-shadow:6px 6px 0 var(--rose)}.cp-mx thead th:first-child{min-width:130px}.cp-mx tbody th{font-size:12px;padding:6px 8px;white-space:normal;min-width:130px}.cp-mx td{width:32px;min-width:32px;height:34px}}
+/* ---------- Bloc Est-ce que ça passe ---------- */
+.ft{margin-top:46px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:24px;box-shadow:10px 10px 0 var(--bleu)}
+.ft h2{margin:0 0 6px!important}
+.ft-lead{margin:0 0 18px!important;font-weight:600;opacity:.85}
+.ft-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:end}
+.ft-grid .w2{grid-column:span 2}
+.ft-x{display:flex;gap:4px;border:2px solid var(--ink);border-radius:99px;padding:3px;width:max-content}
+.ft-x button{all:unset;cursor:pointer;padding:7px 14px;border-radius:99px;font-weight:800;font-size:13px;-webkit-tap-highlight-color:transparent}
+.ft-x button.on{background:var(--ink);color:#fff}
+.ft-x button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+#tdc-ft.one .ft-2x{opacity:.35;pointer-events:none}
+.ft-res{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.ft-c{border:3px solid var(--ink);border-radius:var(--r-m);padding:14px;display:grid;gap:6px;background:#fff;min-width:0}
+.ft-c>span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.ft-c b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.ft-c small{font-size:12px;font-weight:600;opacity:.85;line-height:1.35}
+.ft-c.s2{background:#d9f7e6}.ft-c.s1{background:#fff3cc}.ft-c.s0{background:var(--rose-soft)}.ft-c.sn{background:#f4f5fb}
+.ft-bar{height:10px;border-radius:99px;background:rgba(14,18,48,.12);overflow:hidden}
+.ft-bar i{display:block;height:100%;border-radius:99px;background:var(--ink)}
+.ft-v{margin-top:16px;border:3px dashed var(--ink);border-radius:var(--r-m);padding:16px 20px;font-weight:700;display:flex;gap:14px;align-items:flex-start}
+.ft-v>b{font-size:28px;line-height:1;flex:none}
+.ft-v p{margin:0!important}
+.ft-src{font-size:12px;font-weight:600;opacity:.7;margin:10px 0 0!important}
+@media (max-width:980px){.ft-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ft-res{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.ft{padding:16px;box-shadow:6px 6px 0 var(--bleu)}.ft-c b{font-size:20px}}
+</style>
+<span id="tdc-fr"></span>
+<div class="tdc-zw" id="tdc-zh"><div class="tdc" id="tdc-en">
+  <nav class="tdc-lang" aria-label="Langue / Language"><div>
+    <a class="b-fr" href="#tdc-fr" hreflang="fr">FR</a>
+    <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
+    <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
+  </div></nav>
+  <section class="tdc-hero tdc-page-hero tdc-solo">
+    <div>
+      <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
+      <h1><span class="fr t1">Le tableau de <span>compatibilité</span></span><span class="en t1" lang="en">The <span>compatibility</span> chart</span><span class="zh t1" lang="zh-Hans"><span>兼容性</span>对照表</span></h1>
+      <p class="fr tdc-lead">Ce levier va-t-il tirer ce dérailleur&nbsp;? SRAM, Shimano, Campagnolo, de 10 à 13 vitesses, méca et électronique. Géekerie ultime, zéro bla-bla : vert ça matche, jaune ça passe avec un bémol, blanc on oublie.</p><p class="en tdc-lead" lang="en">Will this shifter pull that derailleur? SRAM, Shimano, Campagnolo, 10 to 13 speeds, mechanical and electronic. Ultimate geekery, no waffle: green it matches, yellow it works with a catch, white forget it.</p><p class="zh tdc-lead" lang="zh-Hans">这个指拨能带动那个拨链器吗？SRAM、Shimano、Campagnolo，10 到 13 速，机械与电子。终极极客表：绿色匹配，黄色有条件可用，白色别想了。</p>
+    </div>
+  </section>
+  <section id="tdc-cpt" style="padding-top:0">
+    <div class="tdc-mode" role="group" aria-label="Dérailleur"><button type="button" class="on" data-side="r"><span class="fr">Dérailleur arrière</span><span class="en" lang="en">Rear derailleur</span><span class="zh" lang="zh-Hans">后拨</span></button><button type="button" data-side="f"><span class="fr">Dérailleur avant</span><span class="en" lang="en">Front derailleur</span><span class="zh" lang="zh-Hans">前拨</span></button></div>
+    <div class="cp-pick">
+      <div><label class="tdc-fl" for="cp-s">🕹️ <span class="fr">Mon levier</span><span class="en" lang="en">My shifter</span><span class="zh" lang="zh-Hans">我的指拨</span></label><select class="tdc-sel" id="cp-s"></select></div>
+      <div class="cp-arrow" aria-hidden="true">→</div>
+      <div><label class="tdc-fl" for="cp-d">⚙️ <span class="fr">Mon dérailleur</span><span class="en" lang="en">My derailleur</span><span class="zh" lang="zh-Hans">我的拨链器</span></label><select class="tdc-sel" id="cp-d"></select></div>
+    </div>
+    <div class="cp-ver" id="cp-v" aria-live="polite"></div>
+    <details class="cp-geek" id="cp-geek"><summary>🔬 <span class="fr">Le calcul pour les geeks</span><span class="en" lang="en">The maths for geeks</span><span class="zh" lang="zh-Hans">极客计算</span></summary><div id="cp-gk"></div></details>
+    <div class="cp-filt" id="cp-f">
+      <button type="button" class="tdc-cat on" data-fb="sh"><i class="cp-dot b-sh"></i>Shimano</button><button type="button" class="tdc-cat on" data-fb="sr"><i class="cp-dot b-sr"></i>SRAM</button><button type="button" class="tdc-cat on" data-fb="ca"><i class="cp-dot b-ca"></i>Campagnolo</button><button type="button" class="tdc-cat on" data-fb="ni"><i class="cp-dot b-ni"></i><span class="fr">Niche et bidouilles</span><span class="en" lang="en">Niche and hacks</span><span class="zh" lang="zh-Hans">小众与改装</span></button><span class="sep"></span>
+      <button type="button" class="tdc-cat on" data-fs="10">10v</button><button type="button" class="tdc-cat on" data-fs="11">11v</button><button type="button" class="tdc-cat on" data-fs="12">12v</button><button type="button" class="tdc-cat on" data-fs="13">13v</button><span class="sep"></span>
+      <button type="button" class="tdc-cat on" data-ft="m">🔧 <span class="fr">Méca</span><span class="en" lang="en">Mechanical</span><span class="zh" lang="zh-Hans">机械</span></button><button type="button" class="tdc-cat on" data-ft="e">⚡ <span class="fr">Électronique</span><span class="en" lang="en">Electronic</span><span class="zh" lang="zh-Hans">电子</span></button>
+    </div>
+    <p class="tdc-swipe" aria-hidden="true"><span class="fr">Glisse le tableau</span><span class="en" lang="en">Swipe the table</span><span class="zh" lang="zh-Hans">左右滑动表格</span> <b>⇆</b></p><div class="cp-mxw"><div id="cp-mx"></div></div>
+    <div class="cp-leg"><span><i style="background:#bfeed3;color:#0b6b3a">✓</i><span class="fr">Ça matche</span><span class="en" lang="en">It matches</span><span class="zh" lang="zh-Hans">匹配</span></span><span><i style="background:#ffe79a;color:#7a5600">~</i><span class="fr">Ça passe, avec un bémol</span><span class="en" lang="en">Works, with a catch</span><span class="zh" lang="zh-Hans">有条件可用</span></span><span><i style="background:#fff;border:1px solid #ccc;color:#bbb">·</i><span class="fr">Incompatible</span><span class="en" lang="en">Incompatible</span><span class="zh" lang="zh-Hans">不兼容</span></span><span><span class="fr">Lignes = leviers, colonnes = dérailleurs. Touche une case.</span><span class="en" lang="en">Rows = shifters, columns = derailleurs. Tap a cell.</span><span class="zh" lang="zh-Hans">行 = 指拨，列 = 拨链器。点击格子。</span></span></div>
+    <div class="ft" id="tdc-ft">
+      <h2 class="fr">Est-ce que ça passe&nbsp;? 🔧</h2><h2 class="en" lang="en">Will it fit? 🔧</h2><h2 class="zh" lang="zh-Hans">能装吗？🔧</h2>
+      <p class="fr ft-lead">Ton dérailleur, tes plateaux, ta cassette, ta roue : je vérifie le pignon max, la capacité de chape, l’écart des plateaux, la garde au sol et je te sors la longueur de chaîne.</p><p class="en ft-lead" lang="en">Your derailleur, chainrings, cassette and wheel: I check max cog, cage capacity, chainring gap, ground clearance and give you the chain length.</p><p class="zh ft-lead" lang="zh-Hans">你的后拨、牙盘、飞轮和车轮：检查最大飞轮、后拨容量、牙盘差、离地间隙，并算出链条长度。</p>
+      <div class="ft-grid">
+        <div class="w2"><label class="tdc-fl" for="ft-rd"><span class="fr">Dérailleur arrière et chape</span><span class="en" lang="en">Rear derailleur and cage</span><span class="zh" lang="zh-Hans">后拨与导轮笼</span></label><select class="tdc-sel" id="ft-rd"></select></div>
+        <div><span class="tdc-fl"><span class="fr">Plateaux</span><span class="en" lang="en">Chainrings</span><span class="zh" lang="zh-Hans">牙盘</span></span><div class="ft-x" role="group"><button type="button" data-ftx="1">1x</button><button type="button" class="on" data-ftx="2">2x</button></div></div>
+        <div><label class="tdc-fl" for="ft-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></label><select class="tdc-sel" id="ft-w"><option value="622">700C / 29 pouces</option><option value="584">650B / 27,5 pouces</option><option value="559">26 pouces</option><option value="507">24 pouces</option><option value="406">20 pouces (406)</option><option value="349">16 pouces Brompton (349)</option></select></div>
+        <div><label class="tdc-fl" for="ft-fb"><span class="fr">Grand plateau</span><span class="en" lang="en">Big ring</span><span class="zh" lang="zh-Hans">大盘</span></label><input class="tdc-xin" type="number" inputmode="numeric" id="ft-fb" value="50"></div>
+        <div class="ft-2x"><label class="tdc-fl" for="ft-fs"><span class="fr">Petit plateau</span><span class="en" lang="en">Small ring</span><span class="zh" lang="zh-Hans">小盘</span></label><input class="tdc-xin" type="number" inputmode="numeric" id="ft-fs" value="34"></div>
+        <div><label class="tdc-fl" for="ft-cs"><span class="fr">Petit pignon</span><span class="en" lang="en">Smallest cog</span><span class="zh" lang="zh-Hans">最小飞轮</span></label><input class="tdc-xin" type="number" inputmode="numeric" id="ft-cs" value="11"></div>
+        <div><label class="tdc-fl" for="ft-cb"><span class="fr">Grand pignon</span><span class="en" lang="en">Largest cog</span><span class="zh" lang="zh-Hans">最大飞轮</span></label><input class="tdc-xin" type="number" inputmode="numeric" id="ft-cb" value="34"></div>
+        <div><label class="tdc-fl" for="ft-sp"><span class="fr">Vitesses de la cassette</span><span class="en" lang="en">Cassette speeds</span><span class="zh" lang="zh-Hans">飞轮速数</span></label><select class="tdc-sel" id="ft-sp"><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></div>
+        <div><label class="tdc-fl" for="ft-cl"><span class="fr">Longueur des bases</span><span class="en" lang="en">Chainstay length</span><span class="zh" lang="zh-Hans">后下叉长度</span> <small>mm</small></label><input class="tdc-xin" type="number" inputmode="numeric" id="ft-cl" value="415"></div>
+      </div>
+      <div class="ft-res" id="ft-res"></div>
+      <div class="ft-v" id="ft-v"></div>
+      <p class="ft-src"><span class="fr">Chiffres repris des fiches fabricants. ≈ = valeur courante non confirmée sur la fiche officielle, vérifie avant d’acheter. Chaîne : formule classique grand plateau + grand pignon (pour Eagle et Transmission, suis l’outil de SRAM).</span><span class="en" lang="en">Figures from manufacturer sheets. ≈ = common value not confirmed on the official sheet, check before buying. Chain: classic big ring + big cog formula (for Eagle and Transmission, follow SRAM’s tool).</span><span class="zh" lang="zh-Hans">数据来自厂商资料。≈ 表示未在官方资料确认的常见值，购买前请核实。链条：经典大盘 + 大飞轮公式（Eagle 与 Transmission 请按 SRAM 工具）。</span></p>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <span class="fr tdc-kicker">Les règles d’or</span><span class="en tdc-kicker" lang="en">The golden rules</span><span class="zh tdc-kicker" lang="zh-Hans">黄金法则</span>
+    <h2 class="fr">Pourquoi ça matche (ou pas)</h2><h2 class="en" lang="en">Why it matches (or not)</h2><h2 class="zh" lang="zh-Hans">为什么兼容（或不兼容）</h2>
+    <div class="cp-rules">
+      <article class="cp-rule sh"><h3><i class="cp-dot b-sh"></i>Shimano</h3><ul>
+        <li><span class="fr">Route 10v : tout se mélange, sauf Tiagra 4700 et GRX 400 qui ont leur propre tirage.</span><span class="en" lang="en">Road 10s: everything mixes, except Tiagra 4700 and GRX 400 with their own pull.</span><span class="zh" lang="zh-Hans">公路 10 速：都能混用，Tiagra 4700 和 GRX 400 除外。</span></li>
+        <li><span class="fr">Route 11v : tous les leviers et dérailleurs route se mélangent, GRX 810 compris. Le VTT 11v, non.</span><span class="en" lang="en">Road 11s: all road shifters and derailleurs mix, GRX 810 included. MTB 11s doesn’t.</span><span class="zh" lang="zh-Hans">公路 11 速：所有公路指拨和拨链器可混用，含 GRX 810，山地 11 速不行。</span></li>
+        <li><span class="fr">12v méca : nouveau tirage, 105 R7100 et GRX 820 ensemble uniquement. Pas avec le VTT 12v.</span><span class="en" lang="en">12s mechanical: new pull, 105 R7100 and GRX 820 together only. Not with MTB 12s.</span><span class="zh" lang="zh-Hans">12 速机械：新拉线比，只能 105 R7100 与 GRX 820 互配，不能配山地 12 速。</span></li>
+        <li><span class="fr">Di2 : le 11v se mélange entre séries, le 12v reste entre 12v.</span><span class="en" lang="en">Di2: 11s mixes across series, 12s stays with 12s.</span><span class="zh" lang="zh-Hans">Di2：11 速可跨系列混用，12 速只能配 12 速。</span></li>
+      </ul></article>
+      <article class="cp-rule sr"><h3><i class="cp-dot b-sr"></i>SRAM</h3><ul>
+        <li><span class="fr">Exact Actuation (route 10 et 11v, VTT 10v) : tout se mélange, le levier décide du nombre de vitesses.</span><span class="en" lang="en">Exact Actuation (road 10 and 11s, MTB 10s): everything mixes, the shifter sets the speeds.</span><span class="zh" lang="zh-Hans">Exact Actuation（公路 10/11 速、山地 10 速）：可混用，速数由指拨决定。</span></li>
+        <li><span class="fr">Apex 12v méca tire tous les dérailleurs Eagle méca.</span><span class="en" lang="en">Apex 12s mechanical pulls every mechanical Eagle derailleur.</span><span class="zh" lang="zh-Hans">Apex 12 速机械可带动所有 Eagle 机械后拨。</span></li>
+        <li><span class="fr">AXS : tout ce qui porte AXS s’appaire, route, VTT, 12 ou 13v. L’Les leviers AXS (les mêmes en 12 et 13v) pilotent aussi les dérailleurs eTap 11v, mais pas l’inverse.</span><span class="en" lang="en">AXS: anything AXS pairs, road, MTB, 12 or 13s. AXS shifters (same for 12 and 13s) also drive 11s eTap derailleurs, not the other way round.</span><span class="zh" lang="zh-Hans">AXS：凡 AXS 皆可配对，公路、山地、12 或 13 速。AXS 指拨（12、13 速通用）也能驱动 eTap 11 速拨链器，反之不行。</span></li>
+      </ul></article>
+      <article class="cp-rule ca"><h3><i class="cp-dot b-ca"></i>Campagnolo</h3><ul>
+        <li><span class="fr">10v et 11v d’avant 2015 : même ratio de dérailleur, ça se règle.</span><span class="en" lang="en">10s and pre-2015 11s: same derailleur ratio, it can be tuned.</span><span class="zh" lang="zh-Hans">10 速与 2015 前 11 速：后拨比例相同，可调通。</span></li>
+        <li><span class="fr">À partir de 2015 : une lettre est gravée sur les pièces, Campa veut qu’elles correspondent.</span><span class="en" lang="en">From 2015: a letter is marked on parts and Campagnolo wants them to match.</span><span class="zh" lang="zh-Hans">2015 起：零件上刻有字母，官方要求一致。</span></li>
+        <li><span class="fr">12v, Ekar 13v, EPS, Wireless, 13v sans fil : chacun reste dans sa famille.</span><span class="en" lang="en">12s, Ekar 13s, EPS, Wireless, 13s wireless: each stays in its own family.</span><span class="zh" lang="zh-Hans">12 速、Ekar 13 速、EPS、Wireless、13 速无线：各自独立。</span></li>
+      </ul></article>
+      <article class="cp-rule ni"><h3><i class="cp-dot b-ni"></i><span class="fr">Niche et bidouilles</span><span class="en" lang="en">Niche and hacks</span><span class="zh" lang="zh-Hans">小众与改装</span></h3><ul>
+        <li><span class="fr">Ingrid (Italie) : le VTT 12v reprend le tirage Eagle. Le RD1-R12S route se pilote en Campa 12v, Ekar (en 12v) ou SRAM + Ratio. Le RD1-R11S, en SRAM 11v.</span><span class="en" lang="en">Ingrid (Italy): MTB 12s uses the Eagle pull. The road RD1-R12S runs on Campagnolo 12s, Ekar (in 12s) or SRAM + Ratio. The RD1-R11S on SRAM 11s.</span><span class="zh" lang="zh-Hans">Ingrid（意大利）：山地 12 速沿用 Eagle 拉线比。公路 RD1-R12S 配 Campagnolo 12 速、Ekar（12 速）或 SRAM + Ratio；RD1-R11S 配 SRAM 11 速。</span></li>
+        <li><span class="fr">Madrone Jab (Oregon) : 1x uniquement, une came par combo levier + cassette. SRAM et Shimano, VTT et route, 11 et 12v, même Ratio.</span><span class="en" lang="en">Madrone Jab (Oregon): 1x only, one cam per shifter + cassette combo. SRAM and Shimano, MTB and road, 11 and 12s, even Ratio.</span><span class="zh" lang="zh-Hans">Madrone Jab（俄勒冈）：仅 1x，每种指拨 + 飞轮组合一个凸轮。SRAM 与 Shimano、山地与公路、11 与 12 速，甚至 Ratio。</span></li>
+        <li><span class="fr">Ratio Technology (UK) : un nouveau rochet dans ton vieux levier SRAM méca, et il passe en 12 ou 13v. Le levier 10v demande en plus le Cable Spool.</span><span class="en" lang="en">Ratio Technology (UK): a new ratchet in your old SRAM mechanical lever and it goes 12 or 13s. A 10s lever also needs the Cable Spool.</span><span class="zh" lang="zh-Hans">Ratio Technology（英国）：给旧 SRAM 机械指拨换新棘轮，即可升级 12 或 13 速。10 速指拨还需 Cable Spool。</span></li>
+      </ul></article>
+    </div>
+    <details class="cp-geek cp-ref"><summary>📐 <span class="fr">Les tirages de câble, famille par famille</span><span class="en" lang="en">Cable pulls, family by family</span><span class="zh" lang="zh-Hans">各系列拉线数据</span></summary>
+      <p class="cp-gk-p"><span class="fr"><b>Tirage × ratio = déplacement du dérailleur à chaque clic.</b> Si ce chiffre colle au pas de la cassette, ça indexe. Sinon l’erreur s’accumule clic après clic et ça décroche en bout de cassette.</span><span class="en" lang="en"><b>Pull × ratio = derailleur travel per click.</b> If it matches the cassette pitch, it indexes. If not, the error builds up click after click and it drops at the end of the cassette.</span><span class="zh" lang="zh-Hans"><b>拉线 × 比例 = 每次换挡的后拨位移。</b>与飞轮间距一致即可精准换挡，否则误差逐挡累积，在飞轮两端失准。</span></p>
+      <div class="cp-tw"><table class="cp-tab"><thead><tr><th><span class="fr">Famille</span><span class="en" lang="en">Family</span><span class="zh" lang="zh-Hans">系列</span></th><th><span class="fr">Tirage × ratio</span><span class="en" lang="en">Pull × ratio</span><span class="zh" lang="zh-Hans">拉线 × 比例</span></th><th><span class="fr">Par clic</span><span class="en" lang="en">Per click</span><span class="zh" lang="zh-Hans">每挡</span></th><th><span class="fr">Pas</span><span class="en" lang="en">Pitch</span><span class="zh" lang="zh-Hans">间距</span></th></tr></thead><tbody><tr><td>Shimano 10v route (avant 2015)</td><td>2,3 × 1,7</td><td><b>3,91</b></td><td>3,95</td></tr><tr><td>Shimano 10v Tiagra 4700 / GRX 400</td><td>2,8 × 1,4</td><td><b>3,92</b></td><td>3,95</td></tr><tr><td>Shimano 10v VTT</td><td>3,4 × 1,2</td><td><b>4,08</b></td><td>3,95</td></tr><tr><td>Shimano 11v route / GRX</td><td>2,7 × 1,4</td><td><b>3,78</b></td><td>3,7</td></tr><tr><td>Shimano 11v VTT</td><td>3,6 × 1,1</td><td><b>3,96</b></td><td>3,9</td></tr><tr><td>Shimano 12v VTT</td><td>3,2 × 1,12</td><td><b>3,58</b></td><td>3,55</td></tr><tr><td>SRAM 10v Exact Actuation</td><td>3,1 × 1,3</td><td><b>4,03</b></td><td>3,95</td></tr><tr><td>SRAM 11v route</td><td>2,9 × 1,3</td><td><b>3,77</b></td><td>3,72</td></tr><tr><td>SRAM 11v VTT X-Actuation</td><td>3,5 × 1,12</td><td><b>3,92</b></td><td>3,9</td></tr><tr><td>SRAM 12v Eagle</td><td>3,25 × 1,12</td><td><b>3,64</b></td><td>3,65</td></tr><tr><td>Campagnolo 10v</td><td>2,8 × 1,5</td><td><b>4,2</b></td><td>4,15</td></tr><tr><td>Campagnolo 11v</td><td>2,6 × 1,5</td><td><b>3,9</b></td><td>3,75</td></tr><tr><td>Campagnolo 12v</td><td>–</td><td><b>–</b></td><td>3,5</td></tr><tr><td>Campagnolo Ekar 13v</td><td>2,42 × –</td><td><b>–</b></td><td>3,36</td></tr><tr><td>Sensah 11v « Shimano » (Team Pro)</td><td>2,68 × 1,4</td><td><b>3,75</b></td><td>3,8</td></tr><tr><td>Sensah 11v « SRAM » (Empire)</td><td>2,9 × 1,3</td><td><b>3,77</b></td><td>3,8</td></tr></tbody></table></div>
+      <p class="cp-gk-n"><span class="fr">10v et 11v : tableau de muZarde. 12v et 13v : VeloBotan et mesures d’atelier de la commu. « – » = pas de mesure fiable. Les vraies valeurs bougent d’un cran à l’autre (surtout chez Campa) : c’est un ordre de grandeur, pas une garantie. Astuce muZarde : en 11v, les cassettes route Shimano, SRAM et Campa ont un pas assez proche pour s’échanger.</span><span class="en" lang="en">10s and 11s: muZarde’s table. 12s and 13s: VeloBotan and community workshop measurements. “–” = no reliable measurement. Real values vary from click to click (especially Campagnolo): it’s a ballpark, not a guarantee. muZarde tip: in 11s, Shimano, SRAM and Campagnolo road cassettes have close enough pitches to swap.</span><span class="zh" lang="zh-Hans">10/11 速：muZarde 数据表。12/13 速：VeloBotan 与社区实测。“–”表示无可靠数据。实际数值每挡不同（尤其 Campagnolo），仅供参考。muZarde 提示：11 速公路飞轮 Shimano、SRAM、Campagnolo 间距接近，可互换。</span></p>
+      <p class="cp-gk-p"><a href="labo-tirages.html" style="color:inherit;font-weight:800">🧪 <span class="fr">Pour bidouiller avec des adaptateurs : le labo des tirages →</span><span class="en" lang="en">To hack it with adapters: the cable pull lab →</span><span class="zh" lang="zh-Hans">用转换器改装：拉线实验室 →</span></a></p>
+    </details>
+    <p class="fr tdc-note">Le « ~ » veut dire : non officiel ou à régler finement. Avant d’acheter, vérifie la fiche du fabricant, les tableaux évoluent. Sources : Shimano, SRAM, Campagnolo, Ingrid, Madrone, Ratio Technology, BetterShifting, Escape Collective, BikeRadar, Blister, Retrograde.</p><p class="en tdc-note" lang="en">“~” means unofficial or needs fine tuning. Before buying, check the manufacturer sheet, charts change. Sources: Shimano, SRAM, Campagnolo, Ingrid, Madrone, Ratio Technology, BetterShifting, Escape Collective, BikeRadar, Blister, Retrograde.</p><p class="zh tdc-note" lang="zh-Hans">“~”表示非官方或需精调。购买前请查看厂商资料，兼容表会更新。来源：Shimano、SRAM、Campagnolo、Ingrid、Madrone、Ratio Technology、BetterShifting、Escape Collective、BikeRadar、Blister、Retrograde。</p>
+  </section>
+  <section style="padding-top:0;padding-bottom:0"><aside class="tdc-disc" role="note"><b>⚠️</b><p><span class="fr">Ce tableau est un outil d’aide, pas une notice officielle. Il est fait à partir des données publiées par SRAM, Shimano, Campagnolo, Ingrid, Madrone et Ratio, de la presse vélo et de retours de la communauté. Les marques changent leurs pièces, leurs firmwares et leurs tableaux sans prévenir, et les cases « ~ » sont des bidouilles non officielles. Tension de chaine ne garantit pas l’exactitude à 100&nbsp;% de ces infos et ne pourra être tenu responsable d’un achat, d’un montage ou d’une casse. Avant d’acheter ou de monter : vérifie la fiche du fabricant ou demande à ton vélociste.</span><span class="en" lang="en">This chart is a helper tool, not an official manual. It is based on data published by SRAM, Shimano, Campagnolo, Ingrid, Madrone and Ratio, the cycling press and community feedback. Brands change parts, firmware and charts without notice, and “~” cells are unofficial hacks. Tension de chaine does not guarantee 100% accuracy of this information and cannot be held liable for any purchase, assembly or damage. Before buying or fitting: check the manufacturer sheet or ask your bike shop.</span><span class="zh" lang="zh-Hans">本表是辅助工具，并非官方说明。内容基于 SRAM、Shimano、Campagnolo、Ingrid、Madrone、Ratio 公布的数据、自行车媒体和社区反馈。品牌可能随时更改零件、固件和兼容表，“~”格子为非官方改装。Tension de chaine 不保证信息百分之百准确，对任何购买、安装或损坏不承担责任。购买或安装前，请查看厂商资料或咨询车店。</span></p></aside></section>
+    <section style="padding-top:0">
+    <div class="tdc-fb">
+      <div><h3 class="fr">Une idée&nbsp;? Un bug&nbsp;?</h3><h3 class="en" lang="en">An idea? A bug?</h3><h3 class="zh" lang="zh-Hans">有想法？发现 bug？</h3><p class="fr">Il manque un groupe, une combinaison testée, une fonction&nbsp;? Un truc s’affiche de travers&nbsp;? Écris-moi, je lis tout.</p><p class="en" lang="en">Missing a groupset, a tested combo, a feature? Something looks off? Drop me a line, I read everything.</p><p class="zh" lang="zh-Hans">缺少某个套件或实测组合或功能？显示有问题？给我写信，我都会看。</p></div>
+      <div class="tdc-actions"><a class="tdc-btn " href="mailto:tensiondechaine@gmail.com?subject=Tableau%20de%20compatibilit%C3%A9%20%3A%20id%C3%A9e%20de%20fonction"><span class="fr">💡 Proposer une idée</span><span class="en" lang="en">💡 Suggest a feature</span><span class="zh" lang="zh-Hans">💡 提建议</span></a><a class="tdc-btn rose" href="mailto:tensiondechaine@gmail.com?subject=Tableau%20de%20compatibilit%C3%A9%20%3A%20bug"><span class="fr">🐞 Signaler un bug</span><span class="en" lang="en">🐞 Report a bug</span><span class="zh" lang="zh-Hans">🐞 报告 bug</span></a></div>
+    </div>
+  </section>
+  <section class="tdc-contact tdc-block tdc-final" style="margin-top:0">
+    <h2 class="fr">Ton combo est validé&nbsp;?</h2><h2 class="en" lang="en">Combo validated?</h2><h2 class="zh" lang="zh-Hans">组合确认了吗？</h2>
+    <p class="fr">Compare maintenant tes développements, ou vérifie ta ligne de chaîne.</p><p class="en" lang="en">Now compare your gearing, or check your chainline.</p><p class="zh" lang="zh-Hans">接下来比较齿比，或检查链线。</p>
+    <div class="tdc-actions"><a class="tdc-btn " href="comparateur.html"><span class="fr">⇄ Comparateur de transmissions</span><span class="en" lang="en">⇄ Drivetrain comparator</span><span class="zh" lang="zh-Hans">⇄ 传动对比器</span></a><a class="tdc-btn rose" href="ligne-de-chaine.html"><span class="fr">📏 Ligne de chaîne</span><span class="en" lang="en">📏 Chainline</span><span class="zh" lang="zh-Hans">📏 链线</span></a></div>
+    <p class="tdc-peace">Peace ✌️</p>
+  </section>
+</div></div>
+<script>
+(function(){
+var R=document.getElementById('tdc-cpt');if(!R)return;
+var F=[{"id": "sh10", "b": "sh", "s": 10, "t": "m", "n": ["Shimano route 10v", "Shimano road 10s", "Shimano 公路 10 速"], "m": "Dura-Ace 7900 · Ultegra 6700 · 105 5700 · Tiagra 4600", "r": 1, "f": 1, "h": 1, "p": [2.3, 1.7, 3.95, ""]}, {"id": "sh10t", "b": "sh", "s": 10, "t": "m", "n": ["Shimano Tiagra 4700 / GRX 400", "Shimano Tiagra 4700 / GRX 400", "Shimano Tiagra 4700 / GRX 400"], "m": "Tiagra 4700 · GRX RX400", "r": 1, "f": 1, "h": 1, "p": [2.8, 1.4, 3.95, ""]}, {"id": "sh11", "b": "sh", "s": 11, "t": "m", "n": ["Shimano route 11v", "Shimano road 11s", "Shimano 公路 11 速"], "m": "Dura-Ace 9000, R9100 · Ultegra 6800, R8000 · 105 5800, R7000 · GRX RX810, RX812", "r": 1, "f": 1, "h": 1, "p": [2.7, 1.4, 3.7, ""]}, {"id": "sh12", "b": "sh", "s": 12, "t": "m", "n": ["Shimano 12v méca", "Shimano 12s mechanical", "Shimano 12 速机械"], "m": "105 R7100 méca · GRX RX820, RX822, RX610", "r": 1, "f": 1, "h": 1, "p": [null, null, null, "nm"]}, {"id": "sh11d", "b": "sh", "s": 11, "t": "e", "n": ["Shimano Di2 11v", "Shimano Di2 11s", "Shimano Di2 11 速"], "m": "Dura-Ace 9070, R9150 · Ultegra 6870, R8050 · GRX RX815", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "sh12d", "b": "sh", "s": 12, "t": "e", "n": ["Shimano Di2 12v", "Shimano Di2 12s", "Shimano Di2 12 速"], "m": "Dura-Ace R9200 · Ultegra R8100 · 105 R7100 Di2 · GRX RX825, RX827", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "sr10", "b": "sr", "s": 10, "t": "m", "n": ["SRAM 10v Exact Actuation", "SRAM 10s Exact Actuation", "SRAM 10 速 Exact Actuation"], "m": "Red · Force · Rival · Apex 10v · X0, X9 10v VTT", "r": 1, "f": 1, "h": 1, "p": [3.1, 1.3, 3.95, ""]}, {"id": "sr11", "b": "sr", "s": 11, "t": "m", "n": ["SRAM route 11v", "SRAM road 11s", "SRAM 公路 11 速"], "m": "Red 22 · Force 22, Force 1 · Rival 22, Rival 1 · Apex 11, Apex 1", "r": 1, "f": 1, "h": 1, "p": [2.9, 1.3, 3.72, ""]}, {"id": "sr11x", "b": "sr", "s": 11, "t": "m", "n": ["SRAM VTT 11v X-Actuation", "SRAM MTB 11s X-Actuation", "SRAM 山地 11 速 X-Actuation"], "m": "XX1 · X01 · X1 · GX 11v", "r": 1, "f": 0, "h": 1, "p": [3.5, 1.12, 3.9, ""]}, {"id": "sr12", "b": "sr", "s": 12, "t": "m", "n": ["SRAM 12v méca (Eagle)", "SRAM 12s mechanical (Eagle)", "SRAM 12 速机械（Eagle）"], "m": "Apex 12v méca · Apex Eagle · NX, SX, GX, X01, XX1 Eagle", "r": 1, "f": 0, "h": 1, "p": [3.25, 1.12, 3.65, ""]}, {"id": "sr11e", "b": "sr", "s": 11, "t": "e", "n": ["SRAM Red eTap 11v", "SRAM Red eTap 11s", "SRAM Red eTap 11 速"], "m": "Red eTap (2015)", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "sr12e", "b": "sr", "s": [12, 13], "t": "e", "n": ["SRAM AXS", "SRAM AXS", "SRAM AXS"], "m": "Leviers Red, Force, Rival, Apex AXS (les mêmes en 12 et 13v) · dérailleurs AXS 12v · Eagle AXS · Eagle Transmission", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "sr13e", "b": "sr", "s": 13, "t": "e", "n": ["SRAM XPLR AXS 13v (dérailleur)", "SRAM XPLR AXS 13s (derailleur)", "SRAM XPLR AXS 13 速（后拨）"], "m": "Dérailleurs Red, Force, Rival XPLR AXS 13v (E1) · pilotés par les leviers AXS", "r": 1, "f": 0, "h": 0, "p": null}, {"id": "ca10", "b": "ca", "s": 10, "t": "m", "n": ["Campagnolo 10v", "Campagnolo 10s", "Campagnolo 10 速"], "m": "Record · Chorus · Centaur · Veloce 10v", "r": 1, "f": 1, "h": 1, "p": [2.8, 1.5, 4.15, "cv"]}, {"id": "ca11", "b": "ca", "s": 11, "t": "m", "n": ["Campagnolo 11v avant 2015", "Campagnolo 11s pre-2015", "Campagnolo 11 速（2015 前）"], "m": "Super Record · Record · Chorus · Athena 11 (2009 à 2014)", "r": 1, "f": 1, "h": 1, "p": [2.6, 1.5, 3.75, "cv"]}, {"id": "ca11n", "b": "ca", "s": 11, "t": "m", "n": ["Campagnolo 11v 2015 et +", "Campagnolo 11s 2015+", "Campagnolo 11 速（2015 后）"], "m": "Super Record · Record · Chorus · Potenza · Centaur 11", "r": 1, "f": 1, "h": 1, "p": [2.6, 1.5, 3.75, "cv"]}, {"id": "ca12", "b": "ca", "s": 12, "t": "m", "n": ["Campagnolo 12v méca", "Campagnolo 12s mechanical", "Campagnolo 12 速机械"], "m": "Super Record · Record · Chorus 12", "r": 1, "f": 1, "h": 1, "p": [null, null, 3.5, "nm"]}, {"id": "ca13", "b": "ca", "s": 13, "t": "m", "n": ["Campagnolo Ekar 13v", "Campagnolo Ekar 13s", "Campagnolo Ekar 13 速"], "m": "Ekar · Ekar GT", "r": 1, "f": 0, "h": 1, "p": [2.42, null, 3.36, "ek"]}, {"id": "ca11e", "b": "ca", "s": 11, "t": "e", "n": ["Campagnolo EPS 11v", "Campagnolo EPS 11s", "Campagnolo EPS 11 速"], "m": "Super Record · Record · Chorus EPS (V2 à V4)", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "ca12e", "b": "ca", "s": 12, "t": "e", "n": ["Campagnolo EPS 12v", "Campagnolo EPS 12s", "Campagnolo EPS 12 速"], "m": "Super Record EPS 12v", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "ca12w", "b": "ca", "s": 12, "t": "e", "n": ["Campagnolo Super Record Wireless", "Campagnolo Super Record Wireless", "Campagnolo Super Record Wireless"], "m": "Super Record Wireless 12v", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "ca13w", "b": "ca", "s": 13, "t": "e", "n": ["Campagnolo 13v sans fil", "Campagnolo 13s wireless", "Campagnolo 13 速无线"], "m": "Super Record 13 · Record 13", "r": 1, "f": 1, "h": 1, "p": null}, {"id": "sr12t", "b": "sr", "s": 12, "t": "m", "n": ["SRAM Eagle 70/90 méca (T-Type)", "SRAM Eagle 70/90 mechanical (T-Type)", "SRAM Eagle 70/90 机械（T-Type）"], "m": "Eagle 70 · Eagle 90 Transmission méca", "r": 1, "f": 0, "h": 1, "p": [3.28, null, 3.65, "tt"]}, {"id": "in12m", "b": "ni", "s": 12, "t": "m", "n": ["Ingrid VTT 12v", "Ingrid MTB 12s", "Ingrid 山地 12 速"], "m": "Ingrid Trigger Shifter · Ingrid RD1 VTT 12v", "r": 1, "f": 0, "h": 1, "p": [3.25, 1.12, 3.65, ""]}, {"id": "in12r", "b": "ni", "s": 12, "t": "m", "n": ["Ingrid RD1-R12S (route 12v)", "Ingrid RD1-R12S (road 12s)", "Ingrid RD1-R12S（公路 12 速）"], "m": "Dérailleur 1x12 Gran Turismo R · chape courte 46T ou longue 52T", "r": 1, "f": 0, "h": 0, "p": [null, null, null, "nm"]}, {"id": "in11r", "b": "ni", "s": 11, "t": "m", "n": ["Ingrid RD1-R11S (route 11v)", "Ingrid RD1-R11S (road 11s)", "Ingrid RD1-R11S（公路 11 速）"], "m": "Dérailleur 1x11 Gran Turismo R", "r": 1, "f": 0, "h": 0, "p": [null, 1.3, 3.72, ""]}, {"id": "jab", "b": "ni", "s": 12, "t": "m", "n": ["Madrone Jab", "Madrone Jab", "Madrone Jab"], "m": "Dérailleur 1x à cames interchangeables · chape courte 40-46T ou longue 44-52T · patte, UDH ou UDH T-Type", "r": 1, "f": 0, "h": 0, "p": [null, null, null, "jab"]}, {"id": "rt112", "b": "rt", "s": 12, "t": "m", "n": ["SRAM 11v + Ratio 1x12", "SRAM 11s + Ratio 1x12", "SRAM 11 速 + Ratio 1x12"], "m": "Levier SRAM 10v (avec Cable Spool) ou 11v méca + rochet Ratio 12v · cassette Eagle", "r": 0, "f": 0, "h": 1, "p": [null, null, null, "rt"]}, {"id": "rt212", "b": "rt", "s": 12, "t": "m", "n": ["SRAM 11v + Ratio 2x12", "SRAM 11s + Ratio 2x12", "SRAM 11 速 + Ratio 2x12"], "m": "Levier SRAM 11v méca + rochet Ratio · cassette SRAM AXS 12v", "r": 0, "f": 0, "h": 1, "p": [null, null, null, "rt"]}, {"id": "rt212sh", "b": "rt", "s": 12, "t": "m", "n": ["SRAM 10/11v + Ratio 2x12SH", "SRAM 10/11s + Ratio 2x12SH", "SRAM 10/11 速 + Ratio 2x12SH"], "m": "Levier SRAM 10v (avec Cable Spool) ou 11v + rochet 12SH · cassette Shimano 12v route, 32T max", "r": 0, "f": 0, "h": 1, "p": [null, null, null, "rt"]}, {"id": "rt113", "b": "rt", "s": 13, "t": "m", "n": ["SRAM 10/11v + Ratio 1x13C", "SRAM 10/11s + Ratio 1x13C", "SRAM 10/11 速 + Ratio 1x13C"], "m": "Levier SRAM 10v (avec Cable Spool) ou 11v + rochet 13C + galets · cassette et chaîne Campa Ekar", "r": 0, "f": 0, "h": 1, "p": [null, null, null, "rt"]}, {"id": "rtdb", "b": "rt", "s": 12, "t": "m", "n": ["Apex 12v + Ratio Drop Bar Conversion", "Apex 12s + Ratio Drop Bar Conversion", "Apex 12 速 + Ratio Drop Bar Conversion"], "m": "Levier SRAM Apex 12v méca + kit Ratio · cassette et chaîne T-Type", "r": 0, "f": 0, "h": 1, "p": [null, null, null, "rt"]}],RD={"sh10t>sh11": [1, "Le dérailleur route 11v a le même ratio que le 4700 : ça marche sur cassette 10v. Non officiel.", "A road 11s derailleur has the same ratio as 4700: works on a 10s cassette. Unofficial.", "公路 11 速后拨与 4700 比例相同：可配 10 速飞轮。非官方。"], "sh11>sh10t": [1, "Même ratio de dérailleur : levier 11v + RD-4700 sur cassette 11v, ça passe. Non officiel.", "Same derailleur ratio: 11s shifter + RD-4700 on an 11s cassette works. Unofficial.", "后拨比例相同：11 速指拨 + RD-4700 配 11 速飞轮可用。非官方。"], "sh11>sh12": [0, "Shimano a changé le tirage en 12v méca : pas de mélange avec le 11v.", "Shimano changed the pull for 12s mechanical: no mixing with 11s.", "Shimano 12 速机械拉线比已改：不能与 11 速混用。"], "sh12>sh11": [0, "Shimano a changé le tirage en 12v méca : pas de mélange avec le 11v.", "Shimano changed the pull for 12s mechanical: no mixing with 11s.", "Shimano 12 速机械拉线比已改：不能与 11 速混用。"], "sh11d>sh12d": [0, "Le Di2 12v ne reconnaît presque rien du Di2 11v (à part quelques boutons satellites).", "12s Di2 recognises almost nothing from 11s Di2 (apart from a few satellite buttons).", "12 速 Di2 几乎不识别 11 速 Di2（少数辅助按键除外）。"], "sh12d>sh11d": [0, "Le Di2 12v ne reconnaît presque rien du Di2 11v (à part quelques boutons satellites).", "12s Di2 recognises almost nothing from 11s Di2 (apart from a few satellite buttons).", "12 速 Di2 几乎不识别 11 速 Di2（少数辅助按键除外）。"], "sr10>sr11": [2, "Même Exact Actuation : c’est le levier qui fixe le nombre de vitesses.", "Same Exact Actuation: the shifter sets the number of speeds.", "同为 Exact Actuation：速数由指拨决定。"], "sr11>sr10": [2, "Même Exact Actuation : c’est le levier qui fixe le nombre de vitesses.", "Same Exact Actuation: the shifter sets the number of speeds.", "同为 Exact Actuation：速数由指拨决定。"], "sr10>sr11x": [0, "X-Actuation VTT et Exact Actuation route : tirages différents.", "MTB X-Actuation and road Exact Actuation: different pulls.", "山地 X-Actuation 与公路 Exact Actuation：拉线比不同。"], "sr11>sr11x": [0, "X-Actuation VTT et Exact Actuation route : tirages différents.", "MTB X-Actuation and road Exact Actuation: different pulls.", "山地 X-Actuation 与公路 Exact Actuation：拉线比不同。"], "sr11x>sr10": [0, "X-Actuation VTT et Exact Actuation route : tirages différents.", "MTB X-Actuation and road Exact Actuation: different pulls.", "山地 X-Actuation 与公路 Exact Actuation：拉线比不同。"], "sr11x>sr11": [0, "X-Actuation VTT et Exact Actuation route : tirages différents.", "MTB X-Actuation and road Exact Actuation: different pulls.", "山地 X-Actuation 与公路 Exact Actuation：拉线比不同。"], "sr11e>sr12e": [0, "Les leviers eTap 11v ne pilotent pas l’AXS. L’inverse, oui.", "11s eTap shifters can’t drive AXS. The other way round works.", "eTap 11 速指拨无法驱动 AXS，反过来可以。"], "sr12e>sr11e": [2, "Les leviers AXS s’appairent avec les dérailleurs eTap 11v. L’inverse ne marche pas.", "AXS shifters pair with 11s eTap derailleurs. Not the other way round.", "AXS 指拨可与 eTap 11 速拨链器配对，反之不行。"], "sr11e>sr13e": [0, "Les leviers eTap 11v ne pilotent pas l’AXS. L’inverse, oui.", "11s eTap shifters can’t drive AXS. The other way round works.", "eTap 11 速指拨无法驱动 AXS，反过来可以。"], "sr12e>sr13e": [2, "Tout ce qui est AXS se parle. Prends cassette et chaîne 13v.", "Everything AXS talks to each other. Use a 13s cassette and chain.", "AXS 全系互通。需配 13 速飞轮和链条。"], "sh10t>ca10": [1, "Bidouille validée par muZarde : levier Tiagra 4700 + dérailleur Campa 10v, sur cassette Campa 10v.", "Hack validated by muZarde: Tiagra 4700 lever + Campagnolo 10s derailleur, on a Campagnolo 10s cassette.", "muZarde 验证的改装：Tiagra 4700 指拨 + Campagnolo 10 速后拨，配 Campagnolo 10 速飞轮。"], "ca10>sh10t": [1, "Bidouille validée par muZarde : levier Campa 10v + dérailleur Tiagra 4700, sur cassette Shimano 10v.", "Hack validated by muZarde: Campagnolo 10s lever + Tiagra 4700 derailleur, on a Shimano 10s cassette.", "muZarde 验证的改装：Campagnolo 10 速指拨 + Tiagra 4700 后拨，配 Shimano 10 速飞轮。"], "ca10>ca11": [1, "Campa a gardé le même ratio de dérailleur de 10 à 11v : ça se règle, mais non officiel.", "Campagnolo kept the same derailleur ratio from 10 to 11s: it can be tuned, but unofficial.", "Campagnolo 10 到 11 速后拨比例未变：可调通，但非官方。"], "ca11>ca10": [1, "Campa a gardé le même ratio de dérailleur de 10 à 11v : ça se règle, mais non officiel.", "Campagnolo kept the same derailleur ratio from 10 to 11s: it can be tuned, but unofficial.", "Campagnolo 10 到 11 速后拨比例未变：可调通，但非官方。"], "ca11>ca11n": [1, "Officiellement non : Campa veut des lettres de compatibilité identiques. En pratique, beaucoup le font tourner.", "Officially no: Campagnolo wants matching compatibility letters. In practice many make it work.", "官方不支持：需兼容字母一致。实际上很多人能用。"], "ca11n>ca11": [1, "Officiellement non : Campa veut des lettres de compatibilité identiques. En pratique, beaucoup le font tourner.", "Officially no: Campagnolo wants matching compatibility letters. In practice many make it work.", "官方不支持：需兼容字母一致。实际上很多人能用。"], "ca11e>ca11e": [1, "Vérifie la génération (V2, V3, V4) : interface et firmware doivent suivre.", "Check the generation (V2, V3, V4): interface and firmware must match.", "请确认代数（V2、V3、V4）：接口和固件需匹配。"], "sr12>sr12t": [0, "Eagle 70/90 Transmission méca a son propre tirage T-Type : il faut le kit Ratio Drop Bar Conversion.", "Eagle 70/90 mechanical Transmission has its own T-Type pull: you need the Ratio Drop Bar Conversion kit.", "Eagle 70/90 机械 Transmission 有专用 T-Type 拉线比：需 Ratio Drop Bar Conversion 套件。"], "sr12t>sr12": [0, "Tirage T-Type différent du tirage Eagle classique.", "T-Type pull differs from classic Eagle pull.", "T-Type 拉线比与经典 Eagle 不同。"], "rtdb>sr12t": [2, "C’est le but du kit : levier Apex 12v route qui tire un Eagle 70/90 méca, cassette et chaîne T-Type.", "That’s the point of the kit: Apex 12s drop-bar lever pulling an Eagle 70/90 mechanical, T-Type cassette and chain.", "这正是该套件的用途：Apex 12 速弯把指拨带动 Eagle 70/90 机械后拨，配 T-Type 飞轮和链条。"], "in12m>sr12": [2, "Ingrid VTT reprend le tirage SRAM Eagle : ça matche.", "Ingrid MTB uses the SRAM Eagle pull: it matches.", "Ingrid 山地沿用 SRAM Eagle 拉线比：匹配。"], "sr12>in12m": [2, "Ingrid VTT reprend le tirage SRAM Eagle : ton levier Eagle ou Apex 12v le tire.", "Ingrid MTB uses the SRAM Eagle pull: your Eagle or Apex 12s shifter pulls it.", "Ingrid 山地沿用 SRAM Eagle 拉线比：Eagle 或 Apex 12 速指拨可带动。"], "rt112>in12m": [1, "En théorie oui : tirage Eagle. Non listé par Ratio, à tester.", "In theory yes: Eagle pull. Not listed by Ratio, test it.", "理论上可以：Eagle 拉线比。Ratio 未列出，需实测。"], "ca12>in12r": [2, "Le RD1-R12S est pensé pour les leviers Campa 12v méca.", "The RD1-R12S is designed for Campagnolo 12s mechanical shifters.", "RD1-R12S 专为 Campagnolo 12 速机械指拨设计。"], "ca13>in12r": [1, "Ingrid le valide avec Ekar, mais ton levier est réduit à 12 vitesses.", "Ingrid approves it with Ekar, but your lever is limited to 12 speeds.", "Ingrid 认可配 Ekar，但指拨只能用 12 速。"], "rt112>in12r": [2, "Ingrid le valide avec le kit Ratio sur levier SRAM 10 ou 11v.", "Ingrid approves it with the Ratio kit on a SRAM 10 or 11s lever.", "Ingrid 认可配 SRAM 10/11 速指拨加 Ratio 套件。"], "sr11>in11r": [2, "Le RD1-R11S est fait pour les leviers SRAM 11v méca.", "The RD1-R11S is made for SRAM 11s mechanical shifters.", "RD1-R11S 专为 SRAM 11 速机械指拨设计。"], "sr10>in11r": [1, "Même Exact Actuation que le 11v, mais Ingrid ne liste que le 11v. À tester.", "Same Exact Actuation as 11s, but Ingrid only lists 11s. Test it.", "与 11 速同为 Exact Actuation，但 Ingrid 仅列 11 速。需实测。"], "sr12>jab": [2, "Avec la came SRAM Eagle 12v. Bonus : une came Eagle + cassette T-Type existe aussi.", "With the SRAM Eagle 12s cam. Bonus: an Eagle shifter + T-Type cassette cam also exists.", "使用 SRAM Eagle 12 速凸轮。另有 Eagle 指拨 + T-Type 飞轮凸轮。"], "sr11x>jab": [2, "Avec la came SRAM 11v VTT.", "With the SRAM 11s MTB cam.", "使用 SRAM 11 速山地凸轮。"], "sr11>jab": [2, "Avec la came SRAM 11v route (cintre route).", "With the SRAM 11s drop-bar cam.", "使用 SRAM 11 速弯把凸轮。"], "sr10>jab": [1, "Même Exact Actuation que le 11v route : came SRAM 11v route, non listé. À tester.", "Same Exact Actuation as road 11s: SRAM 11s drop-bar cam, not listed. Test it.", "与公路 11 速同为 Exact Actuation：用 SRAM 11 速弯把凸轮，未列出。需实测。"], "sh11>jab": [2, "Avec la came Shimano 11v route.", "With the Shimano 11s drop-bar cam.", "使用 Shimano 11 速弯把凸轮。"], "sh12>jab": [2, "Avec la came Shimano 12v route (105 méca, GRX 820).", "With the Shimano 12s drop-bar cam (105 mechanical, GRX 820).", "使用 Shimano 12 速弯把凸轮（105 机械、GRX 820）。"], "rt112>jab": [2, "Avec la came dédiée « SRAM 11v + Ratio 12v », cassette Eagle.", "With the dedicated “SRAM 11s + Ratio 12s” cam, Eagle cassette.", "使用专用“SRAM 11 速 + Ratio 12 速”凸轮，配 Eagle 飞轮。"], "in12m>jab": [1, "Tirage Eagle : en théorie la came Eagle fait le job. Non listé.", "Eagle pull: in theory the Eagle cam does the job. Not listed.", "Eagle 拉线比：理论上 Eagle 凸轮可用。未列出。"], "sh10t>jab": [0, "Pas de came pour ce tirage.", "No cam for this pull.", "没有适用此拉线比的凸轮。"], "rt112>sr12": [2, "C’est le kit d’origine : levier SRAM 11v (ou 10v + Cable Spool) qui tire un dérailleur Eagle méca, cassette Eagle.", "The original kit: SRAM 11s lever (or 10s + Cable Spool) pulling a mechanical Eagle derailleur, Eagle cassette.", "原始套件：SRAM 11 速（或 10 速 + Cable Spool）指拨带动 Eagle 机械后拨，配 Eagle 飞轮。"], "rt212>sr11": [2, "Ton dérailleur route 11v garde son job, sur cassette SRAM AXS 12v. Les autres cassettes 12v : non garanti.", "Your road 11s derailleur keeps its job, on a SRAM AXS 12s cassette. Other 12s cassettes: not guaranteed.", "保留公路 11 速后拨，配 SRAM AXS 12 速飞轮。其他 12 速飞轮不保证。"], "rt212sh>sr11": [2, "Dérailleur route SRAM avec galets du kit, cassette Shimano 12v route. 32 dents max.", "SRAM road derailleur with the kit pulleys, Shimano 12s road cassette. 32 teeth max.", "SRAM 公路后拨换套件导轮，配 Shimano 12 速公路飞轮，最大 32 齿。"], "rt212sh>sr10": [1, "Possible avec un dérailleur route 10v, mêmes limites : 32 dents max.", "Possible with a road 10s derailleur, same limits: 32 teeth max.", "可配公路 10 速后拨，同样最大 32 齿。"], "rt113>sr11": [2, "Dérailleur SRAM 1x11 Exact Actuation + galets 13v du kit, cassette et chaîne Ekar.", "SRAM 1x11 Exact Actuation derailleur + the kit’s 13s pulleys, Ekar cassette and chain.", "SRAM 1x11 Exact Actuation 后拨 + 套件 13 速导轮，配 Ekar 飞轮和链条。"], "rt113>sr11x": [1, "Possible avec un dérailleur X-Actuation VTT et une pièce Ratio en plus.", "Possible with an X-Actuation MTB derailleur and an extra Ratio part.", "可配 X-Actuation 山地后拨，需额外 Ratio 零件。"]},FD={"sh10>sh10t": [0, "Le 4700 a son propre tirage : dérailleur avant 4700 obligatoire.", "4700 has its own pull: a 4700 front derailleur is required.", "4700 有专用拉线比：必须用 4700 前拨。"], "sh10t>sh10": [0, "Le 4700 a son propre tirage : dérailleur avant 4700 obligatoire.", "4700 has its own pull: a 4700 front derailleur is required.", "4700 有专用拉线比：必须用 4700 前拨。"], "sh11>sh12": [0, "Shimano a changé le tirage en 12v méca : pas de mélange avec le 11v.", "Shimano changed the pull for 12s mechanical: no mixing with 11s.", "Shimano 12 速机械拉线比已改：不能与 11 速混用。"], "sh12>sh11": [0, "Shimano a changé le tirage en 12v méca : pas de mélange avec le 11v.", "Shimano changed the pull for 12s mechanical: no mixing with 11s.", "Shimano 12 速机械拉线比已改：不能与 11 速混用。"], "sh11d>sh12d": [0, "Le Di2 12v ne reconnaît presque rien du Di2 11v (à part quelques boutons satellites).", "12s Di2 recognises almost nothing from 11s Di2 (apart from a few satellite buttons).", "12 速 Di2 几乎不识别 11 速 Di2（少数辅助按键除外）。"], "sh12d>sh11d": [0, "Le Di2 12v ne reconnaît presque rien du Di2 11v (à part quelques boutons satellites).", "12s Di2 recognises almost nothing from 11s Di2 (apart from a few satellite buttons).", "12 速 Di2 几乎不识别 11 速 Di2（少数辅助按键除外）。"], "sr10>sr11": [1, "Ça peut marcher, mais le dérailleur Yaw (22) est pensé pour les leviers 22. À tester.", "It can work, but the Yaw (22) derailleur is designed for 22 shifters. Test it.", "可能能用，但 Yaw（22）前拨是为 22 指拨设计的。需实测。"], "sr11>sr10": [1, "Ça peut marcher, mais le dérailleur Yaw (22) est pensé pour les leviers 22. À tester.", "It can work, but the Yaw (22) derailleur is designed for 22 shifters. Test it.", "可能能用，但 Yaw（22）前拨是为 22 指拨设计的。需实测。"], "sr11e>sr12e": [0, "Les leviers eTap 11v ne pilotent pas l’AXS. L’inverse, oui.", "11s eTap shifters can’t drive AXS. The other way round works.", "eTap 11 速指拨无法驱动 AXS，反过来可以。"], "sr12e>sr11e": [2, "Les leviers AXS s’appairent avec les dérailleurs eTap 11v. L’inverse ne marche pas.", "AXS shifters pair with 11s eTap derailleurs. Not the other way round.", "AXS 指拨可与 eTap 11 速拨链器配对，反之不行。"], "ca10>ca11": [1, "Le levier gauche Campa est à crans multiples : ça se règle, mais non officiel.", "Campagnolo’s left lever has multiple clicks: it can be tuned, but unofficial.", "Campagnolo 左手指拨为多段：可调通，但非官方。"], "ca11>ca10": [1, "Le levier gauche Campa est à crans multiples : ça se règle, mais non officiel.", "Campagnolo’s left lever has multiple clicks: it can be tuned, but unofficial.", "Campagnolo 左手指拨为多段：可调通，但非官方。"], "ca11>ca11n": [1, "Officiellement non : Campa veut des lettres de compatibilité identiques. En pratique, beaucoup le font tourner.", "Officially no: Campagnolo wants matching compatibility letters. In practice many make it work.", "官方不支持：需兼容字母一致。实际上很多人能用。"], "ca11n>ca11": [1, "Officiellement non : Campa veut des lettres de compatibilité identiques. En pratique, beaucoup le font tourner.", "Officially no: Campagnolo wants matching compatibility letters. In practice many make it work.", "官方不支持：需兼容字母一致。实际上很多人能用。"], "ca11e>ca11e": [1, "Vérifie la génération (V2, V3, V4) : interface et firmware doivent suivre.", "Check the generation (V2, V3, V4): interface and firmware must match.", "请确认代数（V2、V3、V4）：接口和固件需匹配。"], "rt212>sr11": [2, "L’avant ne bouge pas : levier gauche et dérailleur SRAM 11v d’origine.", "Front unchanged: original SRAM 11s left lever and derailleur.", "前拨不变：原 SRAM 11 速左指拨与前拨。"], "rt212sh>sr11": [2, "L’avant ne bouge pas : levier gauche et dérailleur SRAM d’origine.", "Front unchanged: original SRAM left lever and derailleur.", "前拨不变：原 SRAM 左指拨与前拨。"], "rt212sh>sr10": [2, "L’avant ne bouge pas : levier gauche et dérailleur SRAM d’origine.", "Front unchanged: original SRAM left lever and derailleur.", "前拨不变：原 SRAM 左指拨与前拨。"]},side='r',fb={sh:1,sr:1,ca:1,ni:1},fs={10:1,11:1,12:1,13:1},ft={m:1,e:1};
+var BN={sh:'Shimano',sr:'SRAM',ca:'Campagnolo',ni:'Ingrid · Madrone',rt:'Ratio Technology'};
+function q(i){return document.getElementById(i)}
+function L3(fr,en,zh){return '<span class="fr">'+fr+'</span><span class="en" lang="en">'+en+'</span><span class="zh" lang="zh-Hans">'+zh+'</span>'}
+function lang(){var h=location.hash;return h==='#tdc-en'?1:(h==='#tdc-zh'?2:0)}
+function get(id){for(var i=0;i<F.length;i++){if(F[i].id===id)return F[i]}return null}
+function nm(f){return f.n[lang()]}
+function tag(f){return f.t==='e'?L3('élec','elec','电子'):L3('méca','mech','机械')}
+function rule(a,b){
+ var R2=side==='f'?FD:RD,k=a.id+'>'+b.id;
+ if(R2[k])return R2[k];
+ if(a.id===b.id)return [2,'Même famille : ça matche, c’est fait pour.','Same family: it matches, it’s made for it.','同一系列：天生匹配。'];
+ if(a.t!==b.t)return [0,'Un levier mécanique ne pilote pas un dérailleur électronique, et inversement.','A mechanical shifter can’t drive an electronic derailleur, and vice versa.','机械指拨无法驱动电子拨链器，反之亦然。'];
+ if(a.b!==b.b)return a.t==='m'?[0,'Tirages de câble différents. Seule bidouille possible : un adaptateur type Shiftmate ou Tanpan.','Different cable pulls. Only hack: an adapter like Shiftmate or Tanpan.','拉线比不同。唯一办法：Shiftmate、Tanpan 之类的转换器。']:[0,'Protocoles différents : ils ne se parlent pas.','Different protocols: they don’t talk.','协议不同：无法通信。'];
+ return a.t==='m'?[0,'Tirage de câble différent : l’indexation ne tombe pas juste.','Different cable pull: indexing won’t line up.','拉线比不同：档位对不准。']:[0,'Générations électroniques incompatibles.','Incompatible electronic generations.','电子代数不兼容。'];
+}
+function sp(f){var a=[].concat(f.s);for(var i=0;i<a.length;i++){if(fs[a[i]])return 1}return 0}
+function vis(f){return fb[f.b==='rt'?'ni':f.b]?(sp(f)?(ft[f.t]?1:0):0):0}
+function hasD(f){return side==='f'?f.f:f.r}
+function opts(sel,list,keep){
+ var h='',cur=keep,ok=0;['sh','sr','ca','ni','rt'].forEach(function(b){h+='<optgroup label="'+BN[b]+'">';list.forEach(function(f){if(f.b===b){h+='<option value="'+f.id+'">'+nm(f)+(f.t==='e'?' ⚡':'')+'</option>';if(f.id===keep)ok=1}});h+='</optgroup>'});
+ sel.innerHTML=h;if(ok)sel.value=cur;
+}
+var pick=['sh11','sh11'];
+function fill(){
+ opts(q('cp-s'),F.filter(function(f){return f.h}),pick[0]);
+ var ds=F.filter(hasD);opts(q('cp-d'),ds,pick[1]);
+ pick=[q('cp-s').value,q('cp-d').value];
+}
+function verdict(){
+ var a=get(pick[0]),b=get(pick[1]);if(!a)return;if(!b)return;var r=rule(a,b),v=q('cp-v');
+ var T=[['Nope.','Nope.','不行。'],['Ça passe, avec un bémol.','Works, with a catch.','有条件可用。'],['Ça matche !','It matches!','匹配！']][r[0]];
+ v.className='cp-ver s'+r[0];
+ v.innerHTML='<div class="big">'+(r[0]===2?'✅':(r[0]===1?'⚠️':'❌'))+'</div><h3>'+L3(T[0],T[1],T[2])+'</h3><p>'+L3(r[1],r[2],r[3])+'</p>'+
+ '<div class="cp-cards"><div class="cp-card"><span>'+L3('Levier','Shifter','指拨')+'</span><b><i class="cp-dot b-'+a.b+'"></i>'+nm(a)+'<em class="cp-tag'+(a.t==='m'?' m':'')+'">'+tag(a)+'</em></b>'+a.m+'</div><div class="cp-card"><span>'+(side==='f'?L3('Dérailleur avant','Front derailleur','前拨'):L3('Dérailleur arrière','Rear derailleur','后拨'))+'</span><b><i class="cp-dot b-'+b.b+'"></i>'+nm(b)+'<em class="cp-tag'+(b.t==='m'?' m':'')+'">'+tag(b)+'</em></b>'+b.m+'</div></div>';
+}
+function T3(fr,en,zh){return '<tspan class="fr">'+fr+'</tspan><tspan class="en">'+en+'</tspan><tspan class="zh">'+zh+'</tspan>'}
+function fx(x){var s=(Math.round(x*100)/100).toString();return lang()===0?s.replace('.',','):s}
+function geek(){
+ var a=get(pick[0]),b=get(pick[1]),g=q('cp-gk');if(!a)return;if(!b)return;
+ if(side==='f'){g.innerHTML='<p class="cp-gk-p">'+L3('Le calcul ne concerne que le dérailleur arrière.','The maths only applies to the rear derailleur.','此计算仅适用于后拨。')+'</p>';return}
+ if(a.t==='e'){g.innerHTML='<p class="cp-gk-p">'+L3('⚡ Levier électronique : pas de câble, donc pas de tirage. C’est le protocole radio qui décide.','⚡ Electronic shifter: no cable, so no pull. The radio protocol decides.','⚡ 电子指拨：无拉线，由无线协议决定。')+'</p>';return}
+ if(b.t==='e'){g.innerHTML='<p class="cp-gk-p">'+L3('⚡ Dérailleur électronique : pas de tirage à calculer.','⚡ Electronic derailleur: no pull to calculate.','⚡ 电子后拨：无需计算拉线。')+'</p>';return}
+ var pa=a.p||[null,null,null,''],pb=b.p||[null,null,null,''],pull=pa[0],rat=pb[1],pit=pb[2],why;
+ if(pull===null||rat===null||pit===null){
+  if(pa[3]==='rt')why=L3('Le rochet Ratio recrée un autre tirage : pas de chiffre publié.','The Ratio ratchet creates a different pull: no published figure.','Ratio 棘轮改变了拉线：无公开数据。');
+  else{if(pb[3]==='jab')why=L3('Madrone Jab : la came s’adapte à ton levier, c’est tout l’intérêt.','Madrone Jab: the cam adapts to your shifter, that’s the whole point.','Madrone Jab：凸轮适配你的指拨，这正是其意义。');
+  else{if(pa[3]==='ek')why=L3('Ekar : les mesures de la commu ne sont pas assez précises (ratio entre 1,28 et 1,35).','Ekar: community measurements are not precise enough (ratio between 1.28 and 1.35).','Ekar：社区测量不够精确（比例 1.28 到 1.35）。');
+  else{if(pb[3]==='tt')why=L3('T-Type : le levier tire environ 3,28 mm par clic, mais le ratio du dérailleur n’est pas mesuré.','T-Type: the shifter pulls about 3.28 mm per click, but the derailleur ratio is not measured.','T-Type：指拨每挡约 3.28 毫米，但后拨比例未测。');
+  else why=L3('Pas de mesure fiable pour cette famille (pour l’instant).','No reliable measurement for this family (yet).','该系列暂无可靠数据。')}}}
+  g.innerHTML='<p class="cp-gk-p">'+why+'</p>';return}
+ var n=[].concat(a.s)[0],m=pull*rat,e=m-pit,mid=(n-1)/2,mx=Math.abs(e)*mid,st=mx<=0.6?2:(mx<=1.2?1:0);
+ var W=600,H=150,x0=30,sc=(W-60)/(pit*(n-1)),sv='<svg class="cp-gk-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Alignement dérailleur et pignons">';
+ sv+='<text x="'+x0+'" y="20">'+T3('Pignons (pas '+fx(pit)+' mm)','Cogs (pitch '+fx(pit)+' mm)','飞轮（间距 '+fx(pit)+' 毫米）')+'</text><text x="'+x0+'" y="140">'+T3('Dérailleur ('+fx(m)+' mm par clic)','Derailleur ('+fx(m)+' mm per click)','后拨（每挡 '+fx(m)+' 毫米）')+'</text>';
+ for(var i=0;i<n;i++){var xc=x0+i*pit*sc,xd=x0+(mid+(i-mid)*m/pit)*pit*sc,o=Math.abs((i-mid)*e),c=o<=0.6?'#1a9e5a':(o<=1.2?'#d99a00':'#d81b6a');
+  sv+='<line x1="'+xc.toFixed(1)+'" x2="'+xc.toFixed(1)+'" y1="30" y2="62" stroke="#ff4f9a" stroke-width="5" stroke-linecap="round"/>';
+  sv+='<line x1="'+xc.toFixed(1)+'" x2="'+xd.toFixed(1)+'" y1="66" y2="94" stroke="'+c+'" stroke-width="2"/>';
+  sv+='<circle cx="'+xd.toFixed(1)+'" cy="104" r="6" fill="'+c+'"/>'}
+ sv+='</svg>';
+ var ver=[L3('ça décroche en bout de cassette','it drops at the ends of the cassette','飞轮两端会失准'),L3('ça frise, réglage pointu','borderline, finicky tuning','临界，调校要求高'),L3('ça tombe juste','it lines up','对得上')][st];
+ g.innerHTML='<p class="cp-gk-p"><b>'+fx(pull)+' mm × '+fx(rat)+' = '+fx(m)+' mm</b> '+L3('par clic, pour un pas de','per click, for a pitch of','每挡，飞轮间距')+' <b>'+fx(pit)+' mm</b>. '+L3('Réglé au milieu, l’écart monte à','Tuned in the middle, the offset reaches','以中间档调校，两端偏差达')+' <b>'+fx(mx)+' mm</b> '+L3('aux extrémités : ','at the ends: ','：')+ver+'.</p>'+sv+'<p class="cp-gk-n">'+L3('Calcul théorique avec des valeurs moyennes. Les vrais leviers ne tirent pas pareil à chaque cran','Theoretical calculation with average values. Real shifters don’t pull the same on every click','基于平均值的理论计算。实际指拨每挡拉线不同')+(pb[3]==='cv'?L3(' (Campa surtout)',' (Campagnolo especially)','（尤其 Campagnolo）'):'')+L3(' : c’est le tableau du haut qui fait foi.',': the chart above is what counts.','：以上方兼容表为准。')+'</p>';
+}
+function matrix(){
+ var rows=F.filter(function(f){return vis(f)?f.h:0}),cols=F.filter(function(f){return vis(f)?hasD(f):0});
+ if(!rows.length){q('cp-mx').innerHTML='<p class="cp-empty">'+L3('Aucun groupe avec ces filtres.','No groupset with these filters.','没有符合筛选的套件。')+'</p>';return}
+ if(!cols.length){q('cp-mx').innerHTML='<p class="cp-empty">'+L3('Aucun dérailleur avec ces filtres.','No derailleur with these filters.','没有符合筛选的拨链器。')+'</p>';return}
+ var h='<table class="cp-mx"><thead><tr><th>'+L3('Levier ↓ / Dérailleur →','Shifter ↓ / Derailleur →','指拨 ↓ / 拨链器 →')+'</th>';
+ cols.forEach(function(c){h+='<th'+(c.id===pick[1]?' class="hl"':'')+' title="'+nm(c)+'"><i class="cp-dot b-'+c.b+'"></i><div>'+nm(c)+(c.t==='e'?' ⚡':'')+'</div></th>'});
+ h+='</tr></thead><tbody>';
+ rows.forEach(function(r){h+='<tr><th'+(r.id===pick[0]?' class="hl"':'')+'><i class="cp-dot b-'+r.b+'"></i>'+nm(r)+(r.t==='e'?' ⚡':'')+'</th>';
+  cols.forEach(function(c){var s=rule(r,c)[0],on=r.id===pick[0]?(c.id===pick[1]?' on':''):'',hl=r.id===pick[0]?' hl':(c.id===pick[1]?' hl':'');h+='<td class="s'+s+on+hl+'" data-s="'+r.id+'" data-d="'+c.id+'" title="'+nm(r)+' → '+nm(c)+'">'+(s===2?'✓':(s===1?'~':'·'))+'</td>'});h+='</tr>'});
+ q('cp-mx').innerHTML=h+'</tbody></table>';
+}
+function update(){fill();verdict();geek();matrix()}
+R.addEventListener('click',function(e){
+ var b=e.target.closest('[data-side]');if(b){side=b.getAttribute('data-side');var bs=R.querySelectorAll('[data-side]');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i]===b);update();return}
+ var t=e.target.closest('#cp-mx td');if(t){pick=[t.getAttribute('data-s'),t.getAttribute('data-d')];update();q('cp-v').scrollIntoView({behavior:'smooth',block:'nearest'});return}
+ var c=e.target.closest('.tdc-cat');if(c){var k,o;if(c.hasAttribute('data-fb')){o=fb;k=c.getAttribute('data-fb')}else{if(c.hasAttribute('data-fs')){o=fs;k=c.getAttribute('data-fs')}else{o=ft;k=c.getAttribute('data-ft')}}o[k]=o[k]?0:1;c.classList.toggle('on',o[k]===1);matrix()}
+});
+R.addEventListener('change',function(e){if(e.target.id==='cp-s')pick[0]=e.target.value;if(e.target.id==='cp-d')pick[1]=e.target.value;verdict();geek();matrix()});
+window.addEventListener('hashchange',update);
+update();
+})();
+</script><script>
+(function(){
+var R=document.getElementById('tdc-ft');if(!R)return;
+var D=[{"id": "sh_r9250", "b": "sh", "n": "Dura-Ace Di2 RD-R9250", "sp": 12, "mx": 34, "mn": 30, "cap": 37, "fd": null, "cg": "u", "src": "o"}, {"id": "sh_r8150", "b": "sh", "n": "Ultegra Di2 RD-R8150", "sp": 12, "mx": 34, "mn": 30, "cap": 39, "fd": null, "cg": "u", "src": "o"}, {"id": "sh_r7150", "b": "sh", "n": "105 Di2 RD-R7150", "sp": 12, "mx": 36, "mn": 34, "cap": 41, "fd": null, "cg": "u", "src": "o"}, {"id": "sh_r7100", "b": "sh", "n": "105 méca RD-R7100", "sp": 12, "mx": 36, "mn": 34, "cap": 41, "fd": null, "cg": "u", "src": "o"}, {"id": "sh_rx820", "b": "sh", "n": "GRX RD-RX820 (2x)", "sp": 12, "mx": 36, "mn": 34, "cap": 42, "fd": 17, "cg": "m", "src": "o"}, {"id": "sh_rx825", "b": "sh", "n": "GRX Di2 RD-RX825 (2x)", "sp": 12, "mx": 36, "mn": 34, "cap": 42, "fd": 17, "cg": "m", "src": "e"}, {"id": "sh_rx822gs", "b": "sh", "n": "GRX RD-RX822-GS (1x)", "sp": 12, "mx": 45, "mn": 45, "cap": 35, "fd": 0, "cg": "m", "src": "o"}, {"id": "sh_rx822sgs", "b": "sh", "n": "GRX RD-RX822-SGS (1x)", "sp": 12, "mx": 51, "mn": 51, "cap": 41, "fd": 0, "cg": "l", "src": "o"}, {"id": "sh_m8100gs", "b": "sh", "n": "XT / XTR M8100, M9100 GS", "sp": 12, "mx": 45, "mn": 45, "cap": 35, "fd": 0, "cg": "m", "src": "o"}, {"id": "sh_m8100sgs", "b": "sh", "n": "XT / XTR M8100, M9100 SGS", "sp": 12, "mx": 51, "mn": 51, "cap": 41, "fd": 0, "cg": "l", "src": "o"}, {"id": "sh_m8120", "b": "sh", "n": "XT RD-M8120-SGS (2x)", "sp": 12, "mx": 45, "mn": 45, "cap": 45, "fd": null, "cg": "l", "src": "o"}, {"id": "sh_r8000ss", "b": "sh", "n": "Ultegra R8000 / Dura-Ace R9100 SS", "sp": 11, "mx": 30, "mn": 25, "cap": 35, "fd": 16, "cg": "c", "src": "o"}, {"id": "sh_r8000gs", "b": "sh", "n": "Ultegra R8000 / 105 R7000 GS", "sp": 11, "mx": 34, "mn": 28, "cap": 39, "fd": 16, "cg": "m", "src": "o"}, {"id": "sh_r7000ss", "b": "sh", "n": "105 R7000 SS", "sp": 11, "mx": 30, "mn": 25, "cap": 35, "fd": 16, "cg": "c", "src": "e"}, {"id": "sh_6800ss", "b": "sh", "n": "Ultegra 6800 / 105 5800 SS", "sp": 11, "mx": 28, "mn": 23, "cap": 33, "fd": 16, "cg": "c", "src": "e"}, {"id": "sh_6800gs", "b": "sh", "n": "Ultegra 6800 / 105 5800 GS", "sp": 11, "mx": 32, "mn": 28, "cap": 39, "fd": 16, "cg": "m", "src": "e"}, {"id": "sh_rx810", "b": "sh", "n": "GRX RD-RX810 (2x)", "sp": 11, "mx": 34, "mn": 30, "cap": 40, "fd": 17, "cg": "m", "src": "o"}, {"id": "sh_rx815", "b": "sh", "n": "GRX Di2 RD-RX815 (2x)", "sp": 11, "mx": 34, "mn": 30, "cap": 38, "fd": 17, "cg": "m", "src": "o"}, {"id": "sh_rx812", "b": "sh", "n": "GRX RD-RX812 (1x)", "sp": 11, "mx": 42, "mn": 40, "cap": 31, "fd": 0, "cg": "l", "src": "o"}, {"id": "sh_4700ss", "b": "sh", "n": "Tiagra RD-4700 SS", "sp": 10, "mx": 28, "mn": 25, "cap": 33, "fd": 16, "cg": "c", "src": "e"}, {"id": "sh_4700gs", "b": "sh", "n": "Tiagra RD-4700 GS (2x)", "sp": 10, "mx": 34, "mn": 28, "cap": 39, "fd": 16, "cg": "m", "src": "e"}, {"id": "sh_6700ss", "b": "sh", "n": "Ultegra 6700 / 105 5700 / DA 7900 SS", "sp": 10, "mx": 28, "mn": 23, "cap": 33, "fd": 16, "cg": "c", "src": "o"}, {"id": "sr_rede1", "b": "sr", "n": "Red AXS E1", "sp": 12, "mx": 36, "mn": 28, "cap": 42, "fd": 13, "cg": "u", "src": "o"}, {"id": "sr_redd1", "b": "sr", "n": "Red / Force AXS D1 (33T max)", "sp": 12, "mx": 33, "mn": 26, "cap": 36, "fd": 13, "cg": "c", "src": "o"}, {"id": "sr_redd136", "b": "sr", "n": "Red / Force AXS D1 36T max", "sp": 12, "mx": 36, "mn": 28, "cap": 39, "fd": 13, "cg": "m", "src": "o"}, {"id": "sr_forced2", "b": "sr", "n": "Force AXS D2", "sp": 12, "mx": 36, "mn": 28, "cap": 42, "fd": 13, "cg": "u", "src": "e"}, {"id": "sr_rival", "b": "sr", "n": "Rival AXS (D1, E1)", "sp": 12, "mx": 36, "mn": 28, "cap": 39, "fd": 13, "cg": "u", "src": "e"}, {"id": "sr_xplr12", "b": "sr", "n": "Red / Force / Rival / Apex XPLR AXS 12v", "sp": 12, "mx": 44, "mn": 36, "cap": 34, "fd": 0, "cg": "m", "src": "o"}, {"id": "sr_xplr13", "b": "sr", "n": "Red / Force / Rival XPLR AXS 13v (E1)", "sp": 13, "mx": 46, "mn": 46, "cap": 36, "fd": 0, "cg": "l", "src": "o"}, {"id": "sr_eagle", "b": "sr", "n": "Eagle méca GX / X01 / XX1 / Apex Eagle (52T)", "sp": 12, "mx": 52, "mn": 50, "cap": 42, "fd": 0, "cg": "l", "src": "o"}, {"id": "sr_eagle50", "b": "sr", "n": "Eagle méca 1re génération (50T)", "sp": 12, "mx": 50, "mn": 50, "cap": 40, "fd": 0, "cg": "l", "src": "o"}, {"id": "sr_t9070", "b": "sr", "n": "Eagle 70 / 90 Transmission (T-Type)", "sp": 12, "mx": 52, "mn": 52, "cap": 42, "fd": 0, "cg": "l", "src": "o"}, {"id": "sr_r11s", "b": "sr", "n": "Red / Force 22 court", "sp": 11, "mx": 28, "mn": 23, "cap": 31, "fd": 16, "cg": "c", "src": "e"}, {"id": "sr_r11w", "b": "sr", "n": "Red / Force / Rival 22 WiFLi (moyen)", "sp": 11, "mx": 32, "mn": 28, "cap": 37, "fd": 16, "cg": "m", "src": "o"}, {"id": "sr_f1m", "b": "sr", "n": "Force 1 / Rival 1 moyen", "sp": 11, "mx": 36, "mn": 28, "cap": 32, "fd": 0, "cg": "m", "src": "e"}, {"id": "sr_f1l", "b": "sr", "n": "Force 1 / Rival 1 / Apex 1 long", "sp": 11, "mx": 42, "mn": 36, "cap": 32, "fd": 0, "cg": "l", "src": "e"}, {"id": "sr_gx11", "b": "sr", "n": "GX / X1 / X01 11v (VTT)", "sp": 11, "mx": 42, "mn": 40, "cap": 32, "fd": 0, "cg": "l", "src": "o"}, {"id": "sr_etap11", "b": "sr", "n": "Red eTap 11v WiFLi", "sp": 11, "mx": 32, "mn": 28, "cap": 36, "fd": 16, "cg": "m", "src": "e"}, {"id": "ca_sr13", "b": "ca", "n": "Super Record 13 / Record 13", "sp": 13, "mx": 36, "mn": 29, "cap": 42, "fd": 16, "cg": "m", "src": "o"}, {"id": "ca_ekar", "b": "ca", "n": "Ekar 13v", "sp": 13, "mx": 44, "mn": 36, "cap": 35, "fd": 0, "cg": "m", "src": "o"}, {"id": "ca_ekargt", "b": "ca", "n": "Ekar GT 13v", "sp": 13, "mx": 48, "mn": 36, "cap": 39, "fd": 0, "cg": "m", "src": "o"}, {"id": "ca_12m", "b": "ca", "n": "Super Record / Record / Chorus 12 méca", "sp": 12, "mx": 34, "mn": 29, "cap": 37, "fd": 16, "cg": "m", "src": "o"}, {"id": "ca_srw12", "b": "ca", "n": "Super Record Wireless 12v", "sp": 12, "mx": 29, "mn": 25, "cap": 35, "fd": 16, "cg": "c", "src": "o"}, {"id": "ca_eps12", "b": "ca", "n": "Super Record EPS 12v", "sp": 12, "mx": 32, "mn": 29, "cap": 37, "fd": 16, "cg": "m", "src": "o"}, {"id": "ca_11s", "b": "ca", "n": "Campagnolo 11v court", "sp": 11, "mx": 29, "mn": 25, "cap": 33, "fd": 16, "cg": "c", "src": "e"}, {"id": "ca_11m", "b": "ca", "n": "Campagnolo 11v moyen (2018 et +)", "sp": 11, "mx": 32, "mn": 29, "cap": 37, "fd": 16, "cg": "m", "src": "o"}, {"id": "ni_in12c", "b": "ni", "n": "Ingrid RD1-R12S chape courte", "sp": 12, "mx": 46, "mn": 36, "cap": 36, "fd": 0, "cg": "c", "src": "e"}, {"id": "ni_in12l", "b": "ni", "n": "Ingrid RD1-R12S chape longue", "sp": 12, "mx": 52, "mn": 46, "cap": 42, "fd": 0, "cg": "l", "src": "e"}, {"id": "ni_jabc", "b": "ni", "n": "Madrone Jab chape courte", "sp": 12, "mx": 46, "mn": 40, "cap": 36, "fd": 0, "cg": "c", "src": "e"}, {"id": "ni_jabl", "b": "ni", "n": "Madrone Jab chape longue", "sp": 12, "mx": 52, "mn": 44, "cap": 42, "fd": 0, "cg": "l", "src": "e"}],BN={sh:'Shimano',sr:'SRAM',ca:'Campagnolo',ni:'Ingrid · Madrone'},one=false;
+var CG={c:['courte','short','短'],m:['moyenne','medium','中'],l:['longue','long','长'],u:['unique','single','单一']};
+function q(i){return document.getElementById(i)}
+function lang(){var h=location.hash;return h==='#tdc-en'?1:(h==='#tdc-zh'?2:0)}
+function L3(fr,en,zh){return '<span class="fr">'+fr+'</span><span class="en" lang="en">'+en+'</span><span class="zh" lang="zh-Hans">'+zh+'</span>'}
+function n(id){var v=parseInt(q(id).value,10);return isNaN(v)?0:v}
+function get(id){for(var i=0;i<D.length;i++){if(D[i].id===id)return D[i]}return D[0]}
+function fill(){var s=q('ft-rd'),cur=s.value||'sh_r7100',h='';['sh','sr','ca','ni'].forEach(function(b){h+='<optgroup label="'+BN[b]+'">';D.forEach(function(d){if(d.b===b)h+='<option value="'+d.id+'">'+d.n+' · '+d.sp+'v · '+d.mx+'T'+(d.src==='e'?' ≈':'')+'</option>'});h+='</optgroup>'});s.innerHTML=h;s.value=cur}
+function card(st,lab,val,sub,bar){return '<div class="ft-c s'+st+'"><span>'+lab+'</span><b>'+val+'</b>'+(bar===undefined?'':'<div class="ft-bar"><i style="width:'+Math.min(100,Math.round(bar*100))+'%"></i></div>')+'<small>'+sub+'</small></div>'}
+function update(){
+ var d=get(q('ft-rd').value),fb=n('ft-fb'),fs=one?fb:n('ft-fs'),cs=n('ft-cs'),cb=n('ft-cb'),sp=n('ft-sp'),w=n('ft-w'),cl=n('ft-cl');
+ if(fs>fb){var t=fs;fs=fb;fb=t}
+ var fdiff=fb-fs,cdiff=cb-cs,need=fdiff+cdiff,worst=2,h='',a='',e=d.src==='e'?' ≈':'',msg=[];
+ var s1=cb>d.mx?0:(d.mn?(cb<d.mn?1:2):2);worst=Math.min(worst,s1);
+ h+=card(s1,L3('Grand pignon','Largest cog','最大飞轮'),cb+'T / '+d.mx+'T'+e,s1===0?L3('Trop gros : la chape touche la cassette.','Too big: the cage hits the cassette.','太大：导轮笼会碰飞轮。'):(s1===1?L3('Plus petit que le mini prévu ('+d.mn+'T) : ça marche, mais le réglage sort de la plage.','Smaller than the intended minimum ('+d.mn+'T): works, but outside the tuning range.','小于设计最小值（'+d.mn+'T）：能用，但超出调校范围。'):L3('Dans la plage du dérailleur.','Within the derailleur range.','在后拨范围内。')),cb/d.mx);
+ if(s1===0)msg.push(L3('grand pignon trop gros','largest cog too big','最大飞轮太大'));
+ var s2=need>d.cap?(need>d.cap+2?0:1):2;worst=Math.min(worst,s2);
+ h+=card(s2,L3('Capacité de chape','Cage capacity','后拨容量'),need+'T / '+d.cap+'T'+e,L3('('+fb+'−'+fs+') + ('+cb+'−'+cs+')','('+fb+'−'+fs+') + ('+cb+'−'+cs+')','('+fb+'−'+fs+') + ('+cb+'−'+cs+')')+' · '+(s2===0?L3('Chaîne molle dans les petits braquets : prends une chape plus longue.','Slack chain in small-small gears: go for a longer cage.','小盘小飞轮时链条会松：换更长导轮笼。'):(s2===1?L3('Limite : évite le petit-petit.','Borderline: avoid small-small.','临界：避免小盘配小飞轮。'):L3('Ça encaisse.','It copes.','容量足够。'))),need/d.cap);
+ if(s2===0)msg.push(L3('capacité dépassée','capacity exceeded','容量超出'));
+ var s3;if(one){s3=2;h+=card(2,L3('Plateaux','Chainrings','牙盘'),'1x',L3('Pas d’écart à gérer.','No ring gap to handle.','无牙盘差。'))}
+ else{if(d.fd===0){s3=0;h+=card(0,L3('Plateaux','Chainrings','牙盘'),fdiff+'T',L3('Ce dérailleur est conçu pour le 1x uniquement.','This derailleur is 1x only.','此后拨仅适用 1x。'));msg.push(L3('dérailleur 1x sur un 2x','1x derailleur on a 2x','1x 后拨用在 2x 上'))}
+  else{if(d.fd===null){s3=2;h+=card('n',L3('Écart des plateaux','Chainring gap','牙盘差'),fdiff+'T',L3('Pas de limite publiée, la capacité fait foi.','No published limit, capacity rules.','无公布限制，以容量为准。'))}
+  else{s3=fdiff>d.fd?1:2;h+=card(s3,L3('Écart des plateaux','Chainring gap','牙盘差'),fdiff+'T / '+d.fd+'T',s3===1?L3('Au-delà de ce que prévoit la marque : le dérailleur avant risque de peiner.','Beyond the brand spec: the front shift may struggle.','超出厂商规格：前拨可能吃力。'):L3('OK pour ce groupe.','OK for this groupset.','符合该套件。'))}}}
+ worst=Math.min(worst,s3);
+ var s4=sp===d.sp?2:(d.b==='sr'?(d.sp<13?1:0):0);if(d.b==='ni')s4=sp===d.sp?2:1;worst=Math.min(worst,s4);
+ h+=card(s4,L3('Vitesses','Speeds','速数'),sp+'v / '+d.sp+'v',s4===2?L3('Même nombre de vitesses.','Same speed count.','速数一致。'):(s4===1?L3('Possible si ton levier tire ce nombre de vitesses (voir le tableau au-dessus).','Possible if your shifter pulls that many speeds (see the chart above).','若指拨支持该速数则可行（见上表）。'):L3('Ce dérailleur n’est pas fait pour ce nombre de vitesses.','This derailleur is not made for that speed count.','此后拨不适用该速数。')));
+ if(s4===0)msg.push(L3('nombre de vitesses','speed count','速数'));
+ var s5=2,gs;if(w<=349){s5=d.cg==='l'?0:(d.cg==='m'?1:2)}else{if(w<=406){s5=d.cg==='l'?1:2}}
+ gs=s5===2?L3('Rien à signaler pour cette taille de roue.','Nothing to report for this wheel size.','此轮径无问题。'):(s5===1?L3('Petite roue : la chape passe près du sol, vérifie la garde.','Small wheel: the cage sits close to the ground, check clearance.','小轮径：导轮笼离地较近，请检查间隙。'):L3('Chape longue sur roue de 16 pouces : elle va racler le sol.','Long cage on a 16 inch wheel: it will scrape the ground.','16 寸轮配长导轮笼：会刮地。'));
+ worst=Math.min(worst,s5);if(s5===0)msg.push(L3('garde au sol','ground clearance','离地间隙'));
+ h+=card(s5,L3('Garde au sol','Ground clearance','离地间隙'),L3('Chape '+CG[d.cg][0],CG[d.cg][1]+' cage',CG[d.cg][2]+'导轮笼'),gs);
+ var C=cl/25.4,L=2*C+(fb+cb)/4+1,lk=Math.ceil(L*2);if(lk%2)lk++;
+ h+=card('n',L3('Longueur de chaîne','Chain length','链条长度'),lk+' '+L3('maillons','links','节'),L3('Bases '+cl+' mm, grand plateau + grand pignon. Toujours vérifier sur le vélo.','Chainstay '+cl+' mm, big ring + big cog. Always check on the bike.','后下叉 '+cl+' 毫米，大盘 + 大飞轮。务必上车核对。'));
+ q('ft-res').innerHTML=h;
+ var V=q('ft-v'),em=worst===2?'✅':(worst===1?'⚠️':'❌');
+ V.innerHTML='<b>'+em+'</b><p>'+(worst===2?L3('Ça passe ! Ton '+d.n+' encaisse ce montage.','It fits! Your '+d.n+' handles this setup.','可以！你的 '+d.n+' 能应付此配置。'):(worst===1?L3('Ça passe, avec un bémol : regarde les cases jaunes.','It works, with a catch: check the yellow boxes.','有条件可行：请看黄色格子。'):L3('Ça ne passe pas : ','It won’t fit: ','装不了：')+msg.join(', ')+'.'))+'</p>';
+}
+R.addEventListener('click',function(e){var b=e.target.closest('[data-ftx]');if(b){one=b.getAttribute('data-ftx')==='1';R.classList.toggle('one',one);var bs=R.querySelectorAll('[data-ftx]');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i]===b);update()}});
+R.addEventListener('input',update);R.addEventListener('change',update);
+window.addEventListener('hashchange',update);
+fill();q('ft-sp').value='12';update();
+})();
+</script>
+
+<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="ligne-de-chaine.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html" class=on><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
+<script>
+(function(){
+function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
+try{var s=localStorage.getItem('tdc-lang');if(s){if(!location.hash){history.replaceState(null,'',s)}}}catch(e){}
+sync();window.addEventListener('hashchange',sync);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-app]');if(a){if(location.hash){a.setAttribute('href',a.getAttribute('href').split('#')[0]+location.hash)}}});
+function net(){document.documentElement.classList.toggle('offline',!navigator.onLine)}net();window.addEventListener('online',net);window.addEventListener('offline',net);
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')})}
+})();
+</script>
+</body>
+</html>

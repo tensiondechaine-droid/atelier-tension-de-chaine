@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Boîtier de pédalier – L’atelier Tension de chaine</title>
+<meta name="description" content="Ta boîte, ton axe, le boîtier qui marie les deux.">
+<meta name="theme-color" content="#0e1230">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+.tdc-menu,.tdc-mnav{display:none!important}
+.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-template-columns:repeat(7,1fr);background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
+.app-bar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 1px;border-radius:12px;color:#fff;text-decoration:none;font-weight:800;font-size:10px;line-height:1.1;-webkit-tap-highlight-color:transparent}
+.app-bar a.on{background:#d81b6a}
+.app-bar a:active{background:#ff4f9a;color:#0e1230}
+.app-bar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-bar .en,.app-bar .zh{display:none}
+html.l-en .app-bar .fr,html.l-zh .app-bar .fr{display:none}
+html.l-en .app-bar .en{display:inline}html.l-zh .app-bar .zh{display:inline}
+.app-off{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));translate:-50% 0;z-index:9999;background:#0e1230;color:#fff;font:800 12px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:99px;display:none}
+html.offline .app-off{display:block}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Base ---------- */
+.tdc{--rose:#ff4f9a;--rose-deep:#d81b6a;--rose-soft:#ffe3ef;--bleu:#2346ff;--bleu-soft:#e4e9ff;--ink:#0e1230;--blanc:#fff;
+  --r-s:14px;--r-m:22px;--r-l:32px;--ease:cubic-bezier(.2,.9,.2,1);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--blanc);line-height:1.5;font-size:16px;
+  width:100%;max-width:1240px;margin:0 auto;overflow:clip;-webkit-font-smoothing:antialiased}
+.tdc *,.tdc *::before,.tdc *::after{box-sizing:border-box}
+.tdc h1,.tdc h2,.tdc h3{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;line-height:1.05;margin:0;letter-spacing:-.01em;color:inherit}
+.tdc p,.tdc ul{margin:0}
+.tdc img{max-width:100%}
+.tdc a{transition:color .2s}
+.tdc a:focus-visible{outline:3px solid var(--bleu);outline-offset:3px;border-radius:99px}
+.tdc section{padding:72px 28px}
+.tdc .tdc-kicker{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:12px}
+.tdc h2{font-size:clamp(32px,5vw,52px);margin-bottom:32px}
+.tdc-block{margin:0 12px;border-radius:var(--r-l)}
+.tdc-block+.tdc-block{margin-top:24px}
+/* ---------- Thème WordPress : fond blanc, sans en-tête ni titre (uniquement sur cette page) ---------- */
+html,body,.wp-site-blocks,.site,.site-content,.entry-content,main{background:#fff!important}
+body>.wp-site-blocks>header,header.wp-block-template-part,.site-header,
+.wp-block-site-title,.wp-block-post-title,.entry-title,.page-title{display:none!important}
+.wp-site-blocks,.entry-content,main{padding-top:0!important;margin-top:0!important}
+/* Ton thème coupe l'écran en 2 colonnes (contenu à gauche, en-tête à droite) : on passe en une seule colonne pleine largeur */
+.wp-block-columns:has(.tdc){display:block!important;gap:0!important}
+.wp-block-columns:has(.tdc)>.wp-block-column:not(:has(.tdc)){display:none!important}
+.wp-block-column:has(.tdc){width:100%!important;max-width:none!important;flex-basis:auto!important}
+body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{display:none!important}
+:where(.wp-block-group,.entry-content,.wp-block-post-content,main):has(.tdc){max-width:none!important;width:100%!important;min-width:0!important;align-self:stretch!important;
+  padding-left:0!important;padding-right:0!important;padding-top:0!important;margin-left:0!important;margin-right:0!important;margin-top:0!important;gap:0!important}
+.wp-block-columns:has(.tdc) .wp-block-group:not(:has(.tdc)):has(.wp-block-navigation),footer.wp-block-template-part{display:none!important}
+/* ---------- Langue (sans script) ---------- */
+.tdc .en{display:none!important}
+.tdc:target .fr{display:none!important}
+.tdc:target .en{display:revert!important}
+.tdc:target .tdc-kicker.en{display:inline-block!important}
+.tdc:target small.en,.tdc:target .tdc-brm strong.en{display:block!important}
+.tdc:target .tdc-cta-btn .en{display:inline!important}
+.tdc .zh{display:none!important}
+.tdc-zw{display:block;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+.tdc-zw:target .tdc .fr,.tdc-zw:target .tdc .en{display:none!important}
+.tdc-zw:target .tdc .zh{display:revert!important}
+.tdc-zw:target .tdc .tdc-kicker.zh{display:inline-block!important}
+.tdc-zw:target .tdc small.zh,.tdc-zw:target .tdc .tdc-brm strong.zh{display:block!important}
+.tdc-zw:target .tdc .tdc-cta-btn .zh{display:inline!important}
+.tdc-zw:target .tdc .tdc-lang .b-fr{background:transparent}
+.tdc-zw:target .tdc-lang .b-zh{background:var(--rose-deep)}
+.tdc .zh{line-height:1.7}
+.tdc h1.zh,.tdc h2.zh,.tdc h3.zh,.tdc .tdc-big.zh,.tdc .tdc-tag.zh,.tdc .tdc-stat b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900;letter-spacing:0;line-height:1.25}
+.tdc .tdc-tag.zh{font-weight:600;line-height:1.7}
+/* Toujours visible en haut à droite */
+.tdc-lang{position:fixed;top:calc(16px + var(--wp-admin--admin-bar--height,0px));right:16px;z-index:9999;display:flex;pointer-events:none}
+.tdc-lang div{pointer-events:auto;background:var(--ink);border-radius:99px;padding:4px;display:flex;gap:2px;box-shadow:0 6px 20px rgba(14,18,48,.25)}
+.tdc-lang a{color:#fff!important;text-decoration:none!important;font-weight:800;font-size:13px;padding:9px 15px;border-radius:99px;line-height:1}
+.tdc:not(:target) .tdc-lang .b-fr,.tdc:target .tdc-lang .b-en{background:var(--rose-deep)}
+/* ---------- Hero ---------- */
+.tdc-hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;padding-top:56px!important;padding-bottom:56px!important}
+.tdc-hero h1{font-size:clamp(52px,6vw,84px)}
+.tdc-hero h1 span{color:var(--rose)}
+.tdc-tag{font-size:clamp(18px,2vw,21px);font-weight:600;margin:22px 0 24px!important;max-width:32ch}
+.tdc-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.tdc-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 22px;border-radius:99px;font-weight:800;font-size:16px;
+  color:#fff!important;text-decoration:none!important;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  transition:background-color .2s,transform .2s var(--ease),box-shadow .2s}
+.tdc-cta-btn.c1{background:var(--rose-deep)}
+.tdc-cta-btn.c2{background:var(--bleu)}
+.tdc-cta-btn.c1:hover,.tdc-cta-btn.c1:focus-visible,.tdc-cta-btn.c1:active{background:var(--bleu)}
+.tdc-cta-btn.c2:hover,.tdc-cta-btn.c2:focus-visible,.tdc-cta-btn.c2:active{background:var(--rose-deep)}
+.tdc-cta-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tdc-pills{display:flex;flex-wrap:wrap;gap:8px}
+.tdc-pills span{background:var(--bleu-soft);color:var(--bleu);font-weight:800;font-size:13px;padding:6px 12px;border-radius:99px}
+.tdc-net-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;max-width:330px}
+.tdc-net-btns a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;font-size:14px;padding:11px 15px;border-radius:99px}
+.tdc-net-btns a:nth-child(odd){background:var(--rose-deep)}
+.tdc-net-btns svg{width:18px;height:18px;fill:currentColor;flex:none}
+.tdc-photo{position:relative;display:flex;justify-content:center;align-items:center}
+.tdc-photo img{display:block;width:100%;height:auto;border-radius:var(--r-l)}
+/* ---------- Bandeau ---------- */
+.tdc-ticker{background:var(--rose);color:var(--ink);rotate:-2deg;margin:8px -24px 64px;padding:14px 0;overflow:hidden;
+  font-family:"Archivo Black",Impact,sans-serif;font-size:20px;white-space:nowrap;border-block:3px solid var(--ink)}
+.tdc-ticker>div{display:inline-flex}
+/* ---------- Chiffres ---------- */
+.tdc-stats{background:var(--ink);color:#fff}
+.tdc-stats .tdc-kicker{color:var(--rose)}
+.tdc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tdc-stat{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:22px}
+.tdc-stat b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.1;color:var(--rose)}
+.tdc-stat small{display:block;opacity:.8;font-size:13px;margin-top:6px}
+.tdc-net{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+.tdc-audience{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:32px;font-size:15px}
+.tdc-audience strong{color:var(--rose)}
+.tdc-foot{font-size:13px;opacity:.75;margin-top:18px!important}
+/* ---------- Cartes ---------- */
+.tdc-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.tdc-card{position:relative;border:3px solid var(--ink);border-radius:var(--r-m);padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.tdc-card h3{font-size:22px}
+.tdc-num{font-weight:800;color:var(--bleu);font-size:15px}
+.tdc-card.rose{background:var(--rose-soft)}
+.tdc-card.bleu{background:var(--bleu-soft)}
+.tdc-video{position:relative;aspect-ratio:16/9;width:100%;border-radius:var(--r-s);background:var(--ink);overflow:hidden}
+.tdc-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tdc-ig{aspect-ratio:auto;height:560px;max-width:340px;margin:0 auto;background:#fff;border:1px solid #e6e6e6}
+.tdc-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r-s);overflow:hidden;background:var(--ink)}
+.tdc-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:scale .4s var(--ease)}
+.tdc-thumb::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:28px;translate:-50% -50%;border-radius:8px;
+  background:var(--rose-deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9 7v10l8-5z'/%3E%3C/svg%3E") center/18px no-repeat;
+  box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.tdc-card .tdc-btn{margin-top:4px;text-align:center;font-size:15px}
+/* ---------- Ils m'ont fait confiance (masqué tant qu'il n'y a pas de logo) ---------- */
+.tdc-logos:not(:has(img)){display:none!important}
+.tdc-logos{padding-bottom:0!important}
+/* Deux rangées de logos qui glissent en sens inverse quand on fait défiler la page */
+.tdc-marquee{display:grid;gap:14px;margin:0 -28px;padding:6px 0 10px;overflow:clip;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tdc-row{display:flex;gap:14px;width:max-content}
+.tdc-logo{flex:0 0 auto;width:210px;display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;padding:20px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-m);transition:box-shadow .25s,border-color .25s}
+.tdc-logo img{display:block;max-width:88%;max-height:52px;width:auto;height:auto;object-fit:contain}
+.tdc-logo.carre img{max-height:84px}
+.tdc-row-b .tdc-logo{background:var(--bleu-soft)}
+@media (hover:hover){.tdc-logo:hover{box-shadow:6px 6px 0 var(--rose)}}
+@keyframes tdc-row-ltr{from{translate:-45% 0}to{translate:0 0}}
+@keyframes tdc-row-rtl{from{translate:0 0}to{translate:-45% 0}}
+@media (prefers-reduced-motion:no-preference){
+  /* Navigateurs récents : le mouvement suit le scroll */
+  @supports (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+    .tdc-row-b{animation:tdc-row-rtl linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+  /* Autres navigateurs : léger va-et-vient automatique */
+  @supports not (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr 40s ease-in-out infinite alternate}
+    .tdc-row-b{animation:tdc-row-rtl 40s ease-in-out infinite alternate}
+  }
+}
+/* Animations réduites : rangées défilables au doigt */
+@media (prefers-reduced-motion:reduce){.tdc-marquee{overflow-x:auto}}
+@media (max-width:980px){.tdc-logo{width:170px;padding:14px}.tdc-logo img{max-height:42px}.tdc-logo.carre img{max-height:66px}}
+@media (max-width:720px){.tdc-marquee{gap:10px;margin:0 -20px}.tdc-row{gap:10px}.tdc-logo{width:140px;padding:12px}.tdc-logo img{max-height:36px}.tdc-logo.carre img{max-height:58px}}
+/* ---------- Étude de cas ---------- */
+.tdc-rosa{background:var(--rose-soft)}
+.tdc-rosa .tdc-kicker{color:#b8155a}
+.tdc-case{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tdc-brands{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}
+.tdc-brands span{border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px;background:#fff}
+.tdc-big{font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(34px,4vw,44px);line-height:1.1;color:var(--rose-deep);margin-bottom:6px!important}
+.tdc-sub{font-weight:800;margin-bottom:16px!important}
+.tdc-bars{display:flex;flex-direction:column;gap:12px}
+.tdc-bar{display:grid;grid-template-columns:118px 1fr 76px;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.tdc-bar i{display:block;height:14px;border-radius:99px;background:var(--rose)}
+.tdc-bar:nth-child(even) i{background:var(--bleu)}
+.tdc-bar em{font-style:normal;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.tdc-bar small{opacity:.6;font-size:12px}
+.tdc-shot{display:block;width:100%;height:auto;border-radius:var(--r-m);margin-top:26px;border:3px solid var(--ink)}
+/* ---------- Podcast La Selle ---------- */
+.tdc-pod{background:var(--bleu-soft)}
+.tdc-pod-in{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.tdc-pod .tdc-kicker{color:var(--bleu)}
+.tdc-pod p{max-width:52ch}
+.tdc-pod-series{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
+.tdc-pod-series span{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px}
+.tdc-pod-note{font-size:14px;opacity:.8;margin-top:14px!important}
+.tdc-pod-cover{display:block;aspect-ratio:1;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff;box-shadow:10px 10px 0 var(--rose);transition:transform .25s var(--ease),box-shadow .25s}
+.tdc-pod-cover img{display:block;width:100%;height:100%;object-fit:cover}
+@media (hover:hover){.tdc-pod-cover:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:14px 14px 0 var(--rose)}}
+@media (max-width:720px){.tdc-pod-in{grid-template-columns:1fr;gap:28px}.tdc-pod-cover{max-width:300px;width:100%;margin:0 auto;box-shadow:8px 8px 0 var(--rose)}}
+/* ---------- Étude de cas 2 : Superséxu (fond bleu nuit) ---------- */
+.tdc-sexu{background:var(--ink);color:#fff}
+.tdc-sexu .tdc-kicker{color:var(--rose)}
+.tdc-sexu .tdc-brands span{background:#fff;color:var(--ink);border-color:#fff}
+.tdc-sexu .tdc-big{color:var(--rose)}
+.tdc-sexu .tdc-bar em{color:#fff}
+.tdc-sexu .tdc-thumbs{margin-top:10px}
+.tdc-sexu .tdc-video{border:2px solid rgba(255,255,255,.15)}
+.tdc-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.tdc-kpis>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:18px 16px}
+.tdc-kpis b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;color:var(--rose)}
+.tdc-kpis b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900}
+.tdc-kpis small{display:block;font-size:13px;opacity:.85;margin-top:4px}
+.tdc-kpi-note{font-size:15px;margin-top:16px!important;opacity:.9}
+/* ---------- Offres ---------- */
+.tdc-offers .tdc-card{padding-top:20px}
+.tdc-idx{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink)}
+.tdc-card ul{padding-left:18px;font-size:15px;display:grid;gap:4px}
+.tdc-cta{margin-top:32px;text-align:center}
+.tdc-cta>p:first-child,.tdc-cta>p.en:nth-child(2){font-weight:800;font-size:18px}
+.tdc-note{font-size:13px;opacity:.75;margin-top:18px!important;text-align:center}
+.tdc-btn{display:inline-block;margin-top:20px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;padding:16px 28px;border-radius:99px;font-size:17px}
+.tdc-btn.rose{background:var(--rose-deep)}
+.tdc-contact-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.tdc-contact-btns .tdc-btn{margin-top:0}
+.tdc-btn.tdc-btn-ghost{background:transparent;color:var(--ink)!important;border:3px solid var(--ink);padding:13px 25px}
+.tdc-brm{position:relative;margin-top:64px;color:#fff;border-radius:var(--r-l);padding:44px 36px;min-height:240px;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+  background:linear-gradient(100deg,rgba(14,18,48,.92) 0%,rgba(35,70,255,.75) 60%,rgba(35,70,255,.3) 100%),
+  url("https://tensiondechaine.com/wp-content/uploads/2026/11/PXL_20260719_1609079542.jpg") center/cover var(--ink)}
+.tdc-brm b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:44px;line-height:1}
+.tdc-brm strong{display:block;font-size:19px;margin-bottom:6px}
+.tdc-brm p{max-width:46ch}
+/* ---------- Me soutenir (liens affiliés) ---------- */
+.tdc-support{padding-top:24px!important}
+.tdc-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-perk{border:3px solid var(--ink);border-radius:var(--r-m);padding:20px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.tdc-perk:nth-child(odd){background:var(--rose-soft)}
+.tdc-perk h3{font-size:20px;min-height:34px;display:flex;align-items:center}
+.tdc-perk-logo img{display:block;height:34px;width:auto;max-width:100%}
+.tdc-perk p{font-size:15px}
+.tdc-code{align-self:flex-start;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:16px;letter-spacing:.08em;background:var(--ink);color:#fff;border-radius:8px;padding:6px 12px;user-select:all}
+.tdc-perk .tdc-btn{margin-top:auto;padding:12px 18px;font-size:15px;text-align:center}
+.tdc-affil{font-size:13px;opacity:.75;margin-top:16px!important}
+@media (max-width:980px){.tdc-support-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.tdc-support-grid{grid-template-columns:1fr}}
+/* ---------- Contact ---------- */
+.tdc-contact{position:relative;background:var(--rose);color:var(--ink);margin-top:40px;margin-bottom:24px}
+.tdc-contact-in{padding-right:44%;min-height:300px}
+.tdc-contact h2{color:#fff;margin-bottom:14px;-webkit-text-stroke:0}
+.tdc-mail{font-weight:800;margin-top:8px!important;font-size:18px}
+.tdc-contact-img{position:absolute;right:2%;bottom:-40px;width:420px;height:420px;max-width:42%;object-fit:cover;object-position:50% 50%;pointer-events:none;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
+.tdc-socials{display:flex;flex-wrap:wrap;gap:0 20px;margin-top:14px;font-weight:800}
+.tdc-socials a{color:var(--ink)!important;display:inline-block;padding:10px 0}
+.tdc-peace{margin-top:14px!important;font-weight:600}
+/* ---------- Animations (CSS uniquement) ---------- */
+@keyframes tdc-marquee{to{translate:-50% 0}}
+@keyframes tdc-up{from{opacity:0;translate:0 60px}to{opacity:1;translate:0 0}}
+@keyframes tdc-left{from{opacity:0;translate:-70px 0;rotate:-3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-right{from{opacity:0;translate:70px 0;rotate:3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-zoom{from{opacity:0;scale:.6;rotate:-6deg}to{opacity:1;scale:1;rotate:0deg}}
+@keyframes tdc-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes tdc-pop{0%{opacity:0;scale:.3;rotate:-20deg}60%{opacity:1;scale:1.15;rotate:6deg}100%{opacity:1;scale:1;rotate:-3deg}}
+@keyframes tdc-grow{from{scale:0 1}to{scale:1 1}}
+@keyframes tdc-float{50%{translate:0 -12px;rotate:1deg}}
+@keyframes tdc-spin{to{rotate:360deg}}
+@keyframes tdc-wiggle{0%,100%{rotate:0deg}25%{rotate:-6deg}75%{rotate:6deg}}
+@keyframes tdc-pulse{0%{box-shadow:0 0 0 0 rgba(14,18,48,.45)}100%{box-shadow:0 0 0 22px rgba(14,18,48,0)}}
+@keyframes tdc-shine{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes tdc-rise{from{opacity:0;translate:0 120px;scale:.85}to{opacity:1;translate:0 0;scale:1}}
+@keyframes tdc-parallax{to{translate:0 -60px}}
+@media (prefers-reduced-motion:no-preference){
+  .tdc-ticker>div{animation:tdc-marquee 24s linear infinite}
+  /* Ouverture de page */
+  .tdc-hero>div:first-child>*{animation:tdc-up .9s var(--ease) both}
+  .tdc-hero h1{animation-delay:.08s}
+  .tdc-tag{animation-delay:.2s!important}
+  .tdc-hero h1 span{display:inline-block;animation:tdc-pop 1s .5s var(--ease) both}
+  .tdc-pills span,.tdc-net-btns a,.tdc-cta-btn{animation:tdc-zoom .5s var(--ease) both}
+  .tdc-cta-btn.c2{animation-delay:.3s}.tdc-cta-btn.c1{animation-delay:.38s}
+  .tdc-ctas{animation:none!important}
+  .tdc-pills span:nth-child(1){animation-delay:.45s}.tdc-pills span:nth-child(2){animation-delay:.5s}
+  .tdc-pills span:nth-child(3),.tdc-pills span:nth-child(4){animation-delay:.55s}
+  .tdc-pills span:nth-child(5){animation-delay:.6s}.tdc-pills span:nth-child(6){animation-delay:.65s}
+  .tdc-net-btns a:nth-child(1){animation-delay:.7s}.tdc-net-btns a:nth-child(2){animation-delay:.78s}
+  .tdc-net-btns a:nth-child(3){animation-delay:.86s}.tdc-net-btns a:nth-child(4){animation-delay:.94s}
+  .tdc-photo{animation:tdc-zoom 1s .15s var(--ease) both}
+  .tdc-photo img{animation:tdc-float 5s 1.2s ease-in-out infinite}
+    .tdc-lang div{animation:tdc-zoom .6s .9s var(--ease) both}
+  /* En continu */
+  .tdc-contact .tdc-btn{animation:tdc-pulse 1.8s ease-out infinite}
+  .tdc-big{background:linear-gradient(100deg,var(--rose-deep) 40%,var(--rose) 50%,var(--rose-deep) 60%) 0 0/250% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:tdc-shine 4s linear infinite}
+  /* Au scroll : Chrome, Edge, Safari récents. Ailleurs, tout s'affiche sans animation. */
+  @supports (animation-timeline:view()){
+    .tdc-hero{animation:tdc-parallax linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+    .tdc h2{animation:tdc-reveal linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+    .tdc-kicker{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+    .tdc-stat{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    .tdc-stat:nth-child(2){animation-range:entry 8% entry 68%}
+    .tdc-stat:nth-child(3){animation-range:entry 16% entry 76%}
+    .tdc-stat:nth-child(4){animation-range:entry 24% entry 84%}
+    .tdc-audience>span{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-card:nth-child(odd){animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-card:nth-child(even){animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-case>div:first-child{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-case>div:last-child{animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-brands span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-bar i{transform-origin:left;animation:tdc-grow linear both;animation-timeline:view();animation-range:entry 30% cover 40%}
+    .tdc-pod-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-pod-series span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-kpis>div{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+    .tdc-perk{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-shot{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-brm{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-contact-img{animation:tdc-rise linear both;animation-timeline:view();animation-range:entry 10% entry 70%}
+    .tdc-contact h2{animation:tdc-pop linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+  }
+  /* Survol : uniquement souris/trackpad, pas sur téléphone */
+  @media (hover:hover){
+    .tdc-card,.tdc-stat{transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
+    .tdc-card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:10px 10px 0 var(--rose)}
+    .tdc-card.rose:hover{box-shadow:10px 10px 0 var(--bleu)}
+    .tdc-stat:hover{transform:translateY(-6px) rotate(1deg);background-color:rgba(255,79,154,.18)}
+    .tdc-btn,.tdc-net-btns a,.tdc-pills span,.tdc-brands span,.tdc-shot{transition:transform .2s var(--ease)}
+    .tdc-btn:hover,.tdc-net-btns a:hover{transform:scale(1.07) rotate(-3deg)}
+    .tdc-cta-btn:hover{transform:translate(-2px,-2px) rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+    .tdc-pills span:hover,.tdc-brands span:hover{transform:rotate(-6deg) scale(1.12)}
+    .tdc-shot:hover{transform:scale(1.02) rotate(.5deg)}
+    .tdc-thumb:hover img{scale:1.08}
+    .tdc-card a.tdc-btn:hover{animation:tdc-wiggle .3s ease-in-out 3}
+    .tdc-ticker:hover>div{animation-play-state:paused}
+    .tdc-socials a:hover{color:#fff!important}
+  }
+}
+/* ---------- Petits ordis et tablettes : 2 cartes par ligne (les reels Instagram ont besoin de 326 px minimum) ---------- */
+@media (max-width:1180px){
+  .tdc-grid3{grid-template-columns:1fr 1fr}
+  .tdc-grid3>.tdc-card:last-child{grid-column:1/-1}
+  .tdc-grid3>.tdc-card:last-child :is(.tdc-video,.tdc-thumbs){width:100%;max-width:640px;margin-inline:auto}
+}
+@media (max-width:900px){.tdc-grid3{grid-template-columns:1fr}}
+/* ---------- Tablette ---------- */
+@media (max-width:980px){
+  .tdc-grid4{grid-template-columns:repeat(2,1fr)}
+}
+/* ---------- Mobile ---------- */
+@media (max-width:720px){
+  .tdc section{padding:52px 20px}
+  .tdc-block{margin:0 8px}
+  .tdc-block+.tdc-block{margin-top:16px}
+  .tdc-hero,.tdc-case{grid-template-columns:1fr}
+  .tdc-lang{top:calc(10px + env(safe-area-inset-top,0px));right:10px}
+  .tdc-lang a{font-size:12px;padding:9px 12px}
+  .tdc-lang div{padding:3px}
+  .tdc-hero{gap:28px}
+  .tdc-ctas{flex-direction:column}
+  .tdc-cta-btn{width:100%}
+  .tdc-photo{max-width:440px;margin:0 auto}
+  .tdc-grid3{grid-template-columns:1fr}
+  .tdc-card .tdc-ig{max-width:none;width:calc(100% + 48px);margin:0 -24px;border-left:0;border-right:0;border-radius:0}
+  .tdc-grid4{gap:10px}
+  .tdc-stat{padding:16px}
+  .tdc-ticker{font-size:16px;margin-bottom:48px}
+  .tdc-bar{grid-template-columns:96px 1fr 64px;font-size:13px}
+  .tdc-brm{grid-template-columns:1fr;padding:32px 24px;gap:14px}
+  .tdc-brm b{font-size:38px}
+  .tdc-kpis{gap:8px}
+  .tdc-kpis>div{padding:14px 10px}
+  .tdc-kpis b{font-size:22px;white-space:nowrap}
+  .tdc-kpis small{font-size:12px}
+  .tdc-contact{display:flex;flex-direction:column;padding-bottom:0!important;margin-top:48px;text-align:center}
+  .tdc-contact-in{padding-right:0;min-height:0}
+  .tdc-socials{justify-content:center}
+  .tdc-contact-btns{justify-content:center}
+  .tdc-contact-img{position:relative;right:auto;bottom:auto;order:2;display:block;width:300px;height:300px;max-width:85%;margin:24px auto -29px}
+}
+/* ---------- Accueil : L'atelier ---------- */
+.tdc-atelier .tdc-at-lead{max-width:60ch;margin-bottom:24px}
+.tdc-at-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-at-card{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:16px;color:var(--ink)!important;text-decoration:none!important;box-shadow:8px 8px 0 var(--rose);transition:translate .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.tdc-at-card:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--rose)}}
+.tdc-at-card:active{translate:4px 4px;box-shadow:4px 4px 0 var(--rose)}
+.tdc-at-ic{flex:none;width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.tdc-at-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tdc-at-tx{display:grid;gap:4px;flex:1;min-width:0}
+.tdc-at-tx b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:18px;line-height:1.1}
+.tdc-at-tx small{font-size:13px;font-weight:600;opacity:.8;line-height:1.35}
+.tdc-at-go{font-family:"Archivo Black",Impact,sans-serif;font-size:22px}
+@media (max-width:980px){.tdc-at-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.tdc-at-grid{grid-template-columns:1fr}.tdc-at-card{box-shadow:6px 6px 0 var(--rose)}}
+/* ---------- Menu flottant (bord droit) ---------- */
+.tdc-menu{position:fixed;right:14px;top:50%;translate:0 -50%;z-index:9998;display:flex;flex-direction:column;gap:6px;background:var(--ink);padding:6px;border-radius:99px;box-shadow:0 8px 24px rgba(14,18,48,.3)}
+.tdc-menu a,.tdc-mnav a,.tdc-mnav summary{-webkit-tap-highlight-color:transparent}
+.tdc-menu a{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff!important;text-decoration:none!important;transition:background-color .2s}
+.tdc-menu svg,.tdc-mnav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tdc-menu a.is-active{background:var(--rose-deep)}
+.tdc-sub{position:relative}
+.tdc-sub-b{all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff;cursor:pointer;transition:background-color .2s;-webkit-tap-highlight-color:transparent}
+.tdc-sub.is-active .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub.open .tdc-sub-b{background:rgba(255,255,255,.18)}.tdc-sub.is-active.open .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub-b:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.tdc-sub-panel{position:absolute;right:calc(100% + 14px);top:50%;translate:0 -50%;min-width:260px;display:none;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+.tdc-sub-panel::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:16px}
+.tdc-sub.open .tdc-sub-panel{display:grid}
+.tdc-sub-t,.tdc-mnav-t{margin:0!important;padding:8px 12px 4px;color:var(--rose)!important;font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.tdc-sub-panel a{width:auto;height:auto;border-radius:14px;justify-content:flex-start;gap:12px;padding:11px 14px;font-weight:800;font-size:14px;line-height:1.2;white-space:nowrap}
+.tdc-sub.open .tdc-menu-label{opacity:0!important}
+@media (hover:hover){.tdc-sub:hover .tdc-sub-panel{display:grid}.tdc-sub:hover .tdc-menu-label{opacity:0!important}.tdc-sub-b:hover{background:rgba(255,255,255,.14)}.tdc-sub.is-active .tdc-sub-b:hover{background:var(--rose-deep)}}
+@media (prefers-reduced-motion:no-preference){.tdc-sub.open .tdc-sub-panel,.tdc-sub:hover .tdc-sub-panel{animation:tdc-zoom .25s var(--ease) both}}
+.tdc-menu-label{position:absolute;right:calc(100% + 12px);top:50%;translate:0 -50%;white-space:nowrap;background:var(--ink);color:#fff;font-weight:800;font-size:13px;line-height:1;padding:9px 13px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s;box-shadow:0 6px 16px rgba(14,18,48,.25)}
+@media (hover:hover){.tdc-menu a:hover{background:rgba(255,255,255,.14)}.tdc-menu a.is-active:hover{background:var(--rose-deep)}.tdc-menu>a:hover .tdc-menu-label,.tdc-sub-b:hover .tdc-menu-label{opacity:1;translate:-4px -50%}}
+.tdc-menu>a:focus-visible .tdc-menu-label{opacity:1}
+@media (prefers-reduced-motion:no-preference){.tdc-menu{animation:tdc-zoom .6s 1s var(--ease) both}}
+@media (min-width:1025px){.tdc{max-width:min(1240px,calc(100vw - 172px))!important}}
+/* Menu mobile : un bouton qui ouvre la liste des pages avec leur nom */
+.tdc-mnav{display:none}
+@media (max-width:1024px){
+  .tdc-menu{display:none}
+  .tdc-mnav{display:block;position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9998}
+  .tdc-mnav summary{list-style:none;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(14,18,48,.35);transition:background-color .2s}
+  .tdc-mnav summary::-webkit-details-marker{display:none}
+  .tdc-mnav summary::marker{content:""}
+  .tdc-mnav .i-close{display:none}
+  .tdc-mnav[open] summary{background:var(--rose-deep)}
+  .tdc-mnav[open] .i-open{display:none}
+  .tdc-mnav[open] .i-close{display:block}
+  .tdc-mnav-panel{position:absolute;right:0;bottom:calc(100% + 10px);min-width:236px;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;transform-origin:100% 100%;display:grid;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+  .tdc-mnav-panel a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;color:#fff!important;text-decoration:none!important;font-weight:800;font-size:15px;line-height:1.2;white-space:nowrap}
+  .tdc-mnav-panel a{transition:background-color .15s,scale .15s}
+  .tdc-mnav-panel a.is-active{background:var(--rose-deep)}
+  .tdc-mnav-t{border-top:1px solid rgba(255,255,255,.15);margin-top:4px!important;padding-top:12px}
+  .tdc-mnav-panel a.sub{padding:10px 14px 10px 22px;font-size:14px}
+  .tdc-mnav-lang{display:flex;gap:4px;padding:4px;margin-bottom:4px;background:rgba(255,255,255,.08);border-radius:16px}
+  .tdc-mnav-panel .tdc-mnav-lang a{flex:1;justify-content:center;padding:10px 6px;font-size:14px;border-radius:12px}
+  .tdc:not(:target) .tdc-mnav-lang .b-fr,.tdc:target .tdc-mnav-lang .b-en,.tdc-zw:target .tdc-mnav-lang .b-zh{background:var(--rose-deep)}
+  .tdc-zw:target .tdc .tdc-mnav-lang .b-fr{background:transparent}
+  .tdc-lang{position:absolute!important}
+  .tdc-mnav-panel a:active,.tdc-mnav-panel a:focus{background:var(--rose)!important;color:var(--ink)!important;scale:.96;outline:none}
+  @media (prefers-reduced-motion:no-preference){.tdc-mnav[open] .tdc-mnav-panel{animation:tdc-zoom .25s var(--ease) both}.tdc-mnav{animation:tdc-zoom .6s 1s var(--ease) both}}
+}
+.tdc-swipe{display:none;margin:0 0 8px!important;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rose-deep)}
+.tdc-swipe b{display:inline-block;animation:tdc-swipe 1.6s ease-in-out infinite}
+@keyframes tdc-swipe{0%,100%{translate:-3px 0}50%{translate:3px 0}}
+@media (max-width:900px){.tdc-swipe{display:block}}
+@media (max-width:720px){.tdc-page-hero h1{font-size:min(52px,calc((100vw - 48px)/7.9))!important}.tdc-hero>*{min-width:0}}
+.tdc h1>span.t1{color:inherit!important;animation:none!important;display:inline}
+.tdc h1>span.t1.en,.tdc h1>span.t1.zh{display:none}
+/* ---------- Pages Podcast & Cabinet ---------- */
+.tdc-page-hero{padding-top:56px!important}
+.tdc-lead{font-size:clamp(18px,2vw,21px);font-weight:600;margin:20px 0 24px!important;max-width:36ch}
+.tdc-lead-wide{max-width:60ch;font-weight:400}
+.tdc-player{border:3px solid var(--ink);border-radius:var(--r-m);overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--rose)}
+.tdc-player iframe{display:block}
+.tdc-actions{display:flex;flex-wrap:wrap;gap:10px}
+.tdc-actions .tdc-btn{margin-top:0}
+.tdc-cover{display:block;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;box-shadow:12px 12px 0 var(--rose);max-width:460px;width:100%;justify-self:center}
+.tdc-cover img{display:block;width:100%;height:auto}
+.tdc-series{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tdc-series .tdc-card h3{font-size:20px}
+.tdc-tag-new{align-self:flex-start;background:var(--bleu);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:5px 10px}
+.tdc-eps{display:grid;gap:12px}
+.tdc-ep{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;border:3px solid var(--ink);border-radius:var(--r-m);padding:18px 22px;background:#fff}
+.tdc-ep-n{font-family:"Archivo Black",Impact,sans-serif;font-size:34px;line-height:1;color:var(--rose-deep)}
+.tdc-ep h3{font-size:20px}
+.tdc-ep p{font-size:15px;opacity:.85}
+.tdc-ep.soon{background:var(--bleu-soft);border-style:dashed}
+.tdc-ep .tdc-btn{margin-top:0;padding:12px 18px;font-size:15px}
+.tdc-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+.tdc-step{border:3px solid var(--ink);border-radius:var(--r-m);padding:22px;background:#fff;counter-increment:st}
+.tdc-step::before{content:counter(st,decimal-leading-zero);display:block;font-family:"Archivo Black",Impact,sans-serif;font-size:40px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink);margin-bottom:10px}
+.tdc-step h3{font-size:20px;margin-bottom:6px}
+.tdc-step p{font-size:15px}
+.tdc-scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:8px}
+.tdc-scale>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:16px 10px;text-align:center}
+.tdc-teeth{display:flex;justify-content:center;gap:2px;min-height:26px;flex-wrap:wrap}
+.tdc-teeth svg{width:22px;height:22px;fill:var(--rose);stroke:none}
+.tdc-scale b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:26px;margin-top:8px}
+.tdc-scale small{display:block;font-size:13px;opacity:.85;min-height:2.6em;margin-top:4px}
+.tdc-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-rules .tdc-card p{font-size:15px}
+.tdc-final{text-align:center}
+.tdc-final p{max-width:46ch;margin:0 auto!important}
+.tdc-final .tdc-actions{justify-content:center;margin-top:22px}
+.tdc-final .tdc-peace{margin-top:22px!important}
+@media (max-width:980px){.tdc-series{grid-template-columns:repeat(2,minmax(0,1fr))}.tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr))}.tdc-scale small{font-size:12px}}
+@media (max-width:720px){
+  .tdc-steps,.tdc-rules,.tdc-series{grid-template-columns:1fr}
+  .tdc-ep{grid-template-columns:auto 1fr;padding:16px}
+  .tdc-ep .tdc-btn{grid-column:1/-1;text-align:center}
+  .tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .tdc-scale>div{padding:12px 4px}
+  .tdc-teeth svg{width:14px;height:14px}
+  .tdc-scale b{font-size:20px}
+  .tdc-scale small{font-size:11px}
+  .tdc-cover{max-width:340px;box-shadow:8px 8px 0 var(--rose)}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-step,.tdc-ep,.tdc-scale>div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  .tdc-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Calculateur de ratio ---------- */
+.tdc-hero.tdc-solo{grid-template-columns:1fr;padding-bottom:36px!important}
+.tdc-hero.tdc-solo .tdc-lead{max-width:52ch}
+.tdc-calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:stretch}
+.tdc-ctrl{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:24px;display:grid;gap:18px;align-content:start;box-shadow:10px 10px 0 var(--ink)}
+.tdc-fl{display:block;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.tdc-fl small{font-weight:600;letter-spacing:0;text-transform:none;opacity:.7}
+.tdc-num{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;border:3px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.tdc-num:focus-within{box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-num button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;line-height:1;background:var(--rose-soft);color:var(--ink);transition:background-color .15s,scale .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.tdc-num button:active{background:var(--rose)}
+.tdc-num button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+@media (hover:hover){.tdc-num button:hover{background:var(--rose)}}
+.tdc-num input{all:unset;box-sizing:border-box;width:100%;min-width:0;text-align:center;font-family:"Archivo Black",Impact,sans-serif;font-size:30px;line-height:1;padding:10px 0;color:var(--ink);-moz-appearance:textfield;appearance:textfield}
+.tdc-num input::-webkit-inner-spin-button,.tdc-num input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-sel{box-sizing:border-box;width:100%;-webkit-appearance:none;appearance:none;border:3px solid var(--ink);border-radius:16px;padding:14px 46px 14px 16px;font:800 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e1230' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/20px;cursor:pointer}
+.tdc-sel:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-switch{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800;cursor:pointer;border-top:2px dashed rgba(14,18,48,.2);padding-top:16px}
+.tdc-switch small{display:block;font-weight:600;font-size:13px;opacity:.7}
+.tdc-switch input{-webkit-appearance:none;appearance:none;flex:none;width:56px;height:32px;margin:0;border:3px solid var(--ink);border-radius:99px;background:#fff;position:relative;cursor:pointer;transition:background-color .2s}
+.tdc-switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:translate .2s var(--ease)}
+.tdc-switch input:checked{background:var(--rose)}
+.tdc-switch input:checked::after{translate:24px 0}
+.tdc-switch input:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-bp{position:relative;border:3px solid var(--ink);border-radius:var(--r-l);overflow:clip;color:#fff;background-color:var(--bleu);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px);background-size:16px 16px,16px 16px,80px 80px,80px 80px;box-shadow:10px 10px 0 var(--rose);display:flex;align-items:center}
+.tdc-bp svg{display:block;width:100%;height:auto}
+.tdc-bp .ln{fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tdc-bp .lf{fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:1}
+.tdc-bp .tire{fill:none;stroke:#fff;stroke-opacity:.14}
+.tdc-bp .sk{fill:none;stroke:var(--rose);stroke-width:6;stroke-linecap:round}
+.tdc-bp .ch{fill:none;stroke:var(--rose);stroke-width:3.5;stroke-dasharray:5 3.5;stroke-linejoin:round}
+.tdc-bp text{fill:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
+.tdc-bp .t-big{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;letter-spacing:0}
+.tdc-bp .t-rose{fill:var(--rose)}
+.tdc-bp-play{all:unset;position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+.tdc-bp-play:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media (hover:hover){.tdc-bp-play:hover{background:var(--rose-deep)}}
+.tdc-bp-play svg{width:16px;height:16px;fill:currentColor}
+.tdc-bp-play .i-play{display:none}
+.tdc-bp.paused .tdc-bp-play .i-play{display:block}
+.tdc-bp.paused .tdc-bp-play .i-pause{display:none}
+.tdc-res{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px}
+.tdc-res>div{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tdc-res>div.hot{background:var(--ink);color:#fff}
+.tdc-res>div.pk{background:var(--rose)}
+.tdc-res .tdc-rl{font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.tdc-res b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(26px,2.8vw,36px);line-height:1;font-variant-numeric:tabular-nums}
+.tdc-res b i{font-style:normal;font-size:.5em;margin-left:3px}
+.tdc-res small{font-size:13px;line-height:1.35;opacity:.85}
+.tdc-verdict{margin-top:16px;border:3px dashed var(--ink);border-radius:var(--r-m);padding:16px 20px;background:var(--rose-soft);font-weight:600;display:flex;gap:14px;align-items:flex-start}
+.tdc-verdict>b{flex:none;font-size:26px;line-height:1}
+.tdc-verdict p{margin:0!important}
+.tdc-eqt{width:100%;border-collapse:separate;border-spacing:0 8px;font-variant-numeric:tabular-nums;margin-top:-8px}
+.tdc-eqt th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:0 14px;font-weight:800;opacity:.75}
+.tdc-eqt th:last-child,.tdc-eqt td:last-child{text-align:right}
+.tdc-eqt td{background:#fff;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:12px 14px;font-weight:700;transition:background-color .15s}
+.tdc-eqt td:first-child{border-left:3px solid var(--ink);border-radius:14px 0 0 14px;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;white-space:nowrap}
+.tdc-eqt td:last-child{border-right:3px solid var(--ink);border-radius:0 14px 14px 0}
+.tdc-eqt tr.go{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tdc-eqt tr.go:active td{background:var(--rose)}
+@media (hover:hover){.tdc-eqt tr.go:hover td{background:var(--rose-soft)}}
+.tdc-eqt .d0{color:var(--rose-deep)}
+.tdc-eqt button{all:unset;cursor:pointer;background:var(--ink);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.tdc-eqt button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-cad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tdc-cad div{border:3px solid var(--ink);border-radius:var(--r-m);padding:12px 16px;background:#fff;transition:background-color .2s}
+.tdc-cad div.on{background:var(--rose)}
+.tdc-cad b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tdc-cad span{font-size:13px;font-weight:700;opacity:.8}
+.tdc-note{font-size:14px;opacity:.75;margin-top:16px!important}
+.tdc-cmp{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center}
+.tdc-cmp-c{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:12px;box-shadow:8px 8px 0 var(--ink)}
+.tdc-cmp-c.b{box-shadow:8px 8px 0 var(--rose)}
+.tdc-cmp-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cmp-h b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px}
+.tdc-cmp-h button{all:unset;cursor:pointer;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:99px;padding:5px 10px;-webkit-tap-highlight-color:transparent}
+.tdc-cmp-h button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cmp-h button:hover{background:var(--rose-soft)}}
+.tdc-cmp-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-cmp .tdc-fl{font-size:11px;margin-bottom:6px}
+.tdc-cmp .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cmp .tdc-num input{font-size:22px;padding:7px 0}
+.tdc-cmp .tdc-num button{font-size:20px}
+.tdc-cmp .tdc-sel{padding:11px 40px 11px 12px;font-size:16px;border-radius:14px}
+.tdc-cmp-o{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:2px dashed rgba(14,18,48,.2);padding-top:12px}
+.tdc-cmp-o div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tdc-cmp-o span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tdc-cmp-o b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdc-cmp-o b span{font-size:inherit;letter-spacing:0;text-transform:none;opacity:1;font-weight:400}
+.tdc-cmp-o b i{font-style:normal;font-size:.5em;margin-left:2px}
+.tdc-cmp-bar{height:10px;border-radius:99px;background:var(--bleu-soft);overflow:hidden}
+.tdc-cmp-bar i{display:block;height:100%;border-radius:99px;background:var(--ink);transition:width .4s var(--ease)}
+.tdc-cmp-c.b .tdc-cmp-bar i{background:var(--rose)}
+.tdc-vs{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-cmp-sum{margin-top:22px}
+@media (max-width:980px){
+  .tdc-cmp{grid-template-columns:1fr}
+  .tdc-vs{justify-self:center;width:48px;height:48px;margin:-4px 0}
+  .tdc-calc{grid-template-columns:1fr}
+  .tdc-bp{order:-1}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-res>div.hot{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .tdc-ctrl{padding:14px;box-shadow:6px 6px 0 var(--ink)}
+  /* vue compacte mobile : tout l'essentiel sur un écran */
+  .tdc-calc{gap:16px}
+  .tdc-ctrl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 10px}
+  .tdc-ctrl>div:nth-child(3){grid-column:1/-1}
+  .tdc-ctrl .tdc-fl{font-size:11px;margin-bottom:5px;letter-spacing:.06em}
+  .tdc-ctrl .tdc-fl small{display:none}
+  .tdc-ctrl .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+  .tdc-ctrl .tdc-num input{font-size:22px;padding:7px 0}
+  .tdc-ctrl .tdc-num button{font-size:20px}
+  .tdc-ctrl .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-switch{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;border:0;padding:0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .tdc-switch small{display:none}
+  .tdc-switch input{height:30px;width:54px}
+  .tdc-switch input:checked::after{translate:22px 0}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+  .tdc-res>div{padding:10px 12px;gap:2px;border-radius:14px}
+  .tdc-res>div.hot{grid-column:auto}
+  .tdc-res>div:nth-child(5){display:none}
+  .tdc-res small{display:none}
+  .tdc-res .tdc-rl{font-size:10px;letter-spacing:.06em}
+  .tdc-res b{font-size:26px}
+  .tdc-verdict{margin-top:10px;font-size:14px;line-height:1.4}
+  .tdc-verdict>b{font-size:20px}
+  .tdc-bp{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-num{grid-template-columns:50px minmax(0,1fr) 50px}
+  .tdc-eqt th{padding:0 8px;font-size:11px;letter-spacing:.04em}
+  .tdc-eqt td{padding:10px 8px;font-size:14px}
+  .tdc-eqt td:first-child{font-size:16px}
+  .tdc-eqt .c-dev{display:none}
+  .tdc-eqt button{padding:6px 10px;font-size:12px}
+  .tdc-cad{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-verdict{padding:14px 16px}
+  .tdc-bp text{font-size:18px}
+  .tdc-bp .t-big,#rt-l2{display:none}
+  .tdc-bp-play{width:36px;height:36px;right:10px;bottom:10px}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-res>div,.tdc-cad div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Comparateur de transmissions ---------- */
+.tdc-x{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
+.tdc-xc{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px;display:grid;gap:14px;align-content:start;box-shadow:10px 10px 0 var(--bleu)}
+.tdc-xc.b{box-shadow:10px 10px 0 var(--rose)}
+.tdc-xh{display:flex;align-items:center;gap:12px}
+.tdc-xh i{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:"Archivo Black",Impact,sans-serif;font-size:20px;color:#fff;background:var(--bleu)}
+.tdc-xc.b .tdc-xh i{background:var(--rose-deep)}
+.tdc-xh b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;line-height:1.1}
+.tdc-xh small{display:block;font-weight:700;font-size:13px;opacity:.7;margin-top:2px}
+.tdc-x2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-xin{box-sizing:border-box;width:100%;border:3px solid var(--ink);border-radius:16px;padding:12px 14px;font:700 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff}
+.tdc-xin:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-mode{display:flex;width:max-content;max-width:100%;margin:0 auto 10px;border:3px solid var(--ink);border-radius:99px;padding:4px;background:#fff;gap:4px}
+.tdc-mode button{all:unset;cursor:pointer;padding:10px 18px;border-radius:99px;font-weight:800;font-size:15px;line-height:1.2;text-align:center;-webkit-tap-highlight-color:transparent;transition:background-color .2s,color .2s}
+.tdc-mode button.on{background:var(--ink);color:#fff}
+.tdc-mode button[data-mode="pro"].on{background:var(--rose-deep)}
+.tdc-mode button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-mode button:not(.on):hover{background:var(--rose-soft)}}
+.tdc-mode-t{text-align:center;font-size:14px;font-weight:600;opacity:.8;margin:0 auto 22px!important;max-width:60ch}
+#tdc-cmpx .tdc-mode-t.p,#tdc-cmpx.is-pro .tdc-mode-t.s{display:none}
+#tdc-cmpx.is-pro .tdc-mode-t.p{display:block}
+.tdc-cats{display:flex;flex-wrap:wrap;gap:6px}
+.tdc-cat{all:unset;cursor:pointer;border:2px solid var(--ink);border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;line-height:1.2;background:#fff;-webkit-tap-highlight-color:transparent;transition:background-color .15s,color .15s}
+.tdc-cat.on{background:var(--ink);color:#fff}
+.tdc-xc.b .tdc-cat.on{background:var(--rose-deep);border-color:var(--rose-deep)}
+.tdc-xc.a .tdc-cat.on{background:var(--bleu);border-color:var(--bleu)}
+.tdc-cat:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-cat:not(.on):hover{background:var(--rose-soft)}}
+.tdc-cat:active{scale:.96}
+#tdc-cmpx:not(.is-pro) .tdc-cat.pro,#tdc-cmpx:not(.is-pro) .tdc-cls,#tdc-cmpx:not(.is-pro) .tdc-sch{display:none!important}
+.tdc-xc.is-custom .tdc-gw{display:none}
+.tdc-xcus{display:none;gap:12px}
+.tdc-cls{padding-top:12px!important;font-size:14px}
+.tdc-cls input{width:52px!important;height:30px!important}
+.tdc-cls input:checked::after{translate:22px 0!important}
+.tdc-xc.has-hub .tdc-cls,.tdc-xc.is-custom .tdc-cls{display:none}
+.tdc-xnote{display:none;margin:0!important;border-radius:12px;background:var(--rose-soft);padding:10px 12px;font-size:13px;font-weight:700;line-height:1.4}
+.tdc-xnote.on{display:block}
+.tdc-xc.is-custom .tdc-xnote{display:none}
+.tdc-cnt{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;border:3px solid var(--ink);border-radius:99px;overflow:hidden}
+.tdc-cnt button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;background:var(--rose-soft);-webkit-tap-highlight-color:transparent;transition:background-color .15s}
+.tdc-cnt button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cnt button:hover{background:var(--rose)}}
+.tdc-cnt button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+.tdc-cnt b{display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;padding:6px 0}
+.tdc-teeth{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px}
+.tdc-teeth label{display:grid;gap:3px;text-align:center;font-size:11px;font-weight:800;opacity:.9}
+.tdc-teeth input{box-sizing:border-box;width:100%;min-width:0;border:2px solid var(--ink);border-radius:12px;padding:9px 2px;text-align:center;font:400 18px/1 "Archivo Black",Impact,sans-serif;color:var(--ink);background:#fff;-moz-appearance:textfield;appearance:textfield}
+.tdc-teeth input::-webkit-inner-spin-button,.tdc-teeth input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-teeth input:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 3px var(--bleu-soft)}
+.tdc-teeth input.bad{border-color:var(--rose-deep);background:var(--rose-soft)}
+.tdc-xc.is-custom .tdc-xcus,.tdc-xc.cr .tdc-xcus,.tdc-xc.cc .tdc-xcus{display:grid}
+.tdc-xcus .cu-r,.tdc-xcus .cu-c{display:none;gap:8px}
+.tdc-xc.is-custom .cu-r,.tdc-xc.cr .cu-r,.tdc-xc.is-custom .cu-c,.tdc-xc.cc .cu-c{display:grid}
+.tdc-cuh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cuh .tdc-fl{margin:0!important}
+.tdc-cuh .tdc-cnt{width:132px;grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cuh .tdc-cnt b{font-size:18px;padding:4px 0}
+.tdc-cuh .tdc-cnt button{font-size:18px}
+.tdc-xfun{margin:0!important;border-radius:12px;background:var(--ink);color:#fff;padding:10px 12px;font-size:13px;font-weight:800;line-height:1.4}
+.tdc-xc.is-custom .tdc-xstd{display:none}
+.tdc-xvs{align-self:center;width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-chart{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px 22px 16px;box-shadow:10px 10px 0 var(--ink)}
+.tdc-chart-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin-bottom:10px}
+.tdc-chart-h h3{margin:0!important;font-size:20px}
+.tdc-leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;font-weight:700}
+.tdc-leg span{display:inline-flex;align-items:center;gap:6px}
+.tdc-leg i{display:inline-block;width:14px;height:14px;border-radius:50%}
+.tdc-leg .la{background:var(--bleu)}
+.tdc-leg .lb{background:var(--rose)}
+.tdc-leg .lc{background:#fff;border:3px solid var(--ink)}
+.tdc-leg .lz{width:22px;border-radius:4px;background:repeating-linear-gradient(45deg,rgba(14,18,48,.14) 0 4px,transparent 4px 8px)}
+#cx-svg{width:100%;overflow:hidden}
+#cx-svg svg{display:block;width:100%;height:auto;touch-action:manipulation}
+#cx-svg text{font-family:Inter,system-ui,sans-serif;font-size:12px;fill:var(--ink)}
+#cx-svg .rl{font-weight:800;font-size:13px}
+#cx-svg .tk{stroke:rgba(14,18,48,.12);stroke-width:1}
+#cx-svg .tt{fill:rgba(14,18,48,.6);font-size:11px}
+#cx-svg .zz{fill:url(#cx-hatch)}
+#cx-svg .ln{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3;opacity:.55}
+#cx-svg .row{stroke:rgba(14,18,48,.18);stroke-width:2}
+#cx-svg circle{cursor:pointer;transition:r .15s}
+#cx-svg circle.a{fill:var(--bleu)}
+#cx-svg circle.b{fill:var(--rose)}
+#cx-svg circle.cm{stroke:var(--ink);stroke-width:3}
+#cx-svg circle.on{stroke:var(--ink);stroke-width:4}
+.tdc-read{margin-top:10px;min-height:44px;border-radius:14px;background:var(--bleu-soft);padding:11px 14px;font-weight:700;font-size:14px;line-height:1.4}
+.tdc-read b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400}
+.tdc-xt{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff}
+.tdc-xt-r{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);align-items:center;border-top:2px solid rgba(14,18,48,.1)}
+.tdc-xt-r:first-child{border-top:0;background:var(--ink);color:#fff}
+.tdc-xt-r>*{padding:13px 16px;min-width:0}
+.tdc-xt-r>span:first-child{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tdc-xt-r>b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tdc-xt-r>b.w{background:var(--rose-soft);position:relative;padding-right:34px}
+.tdc-xt-r>b.w::after{content:"✓";position:absolute;right:12px;top:50%;translate:0 -50%;font-family:Inter,system-ui,sans-serif;font-weight:900;font-size:14px;color:var(--rose-deep)}
+.tdc-xt-r:first-child>b{font-size:16px}
+.tdc-xt-r:first-child .ha{color:#9fb0ff}
+.tdc-xt-r:first-child .hb{color:var(--rose)}
+.tdc-xt-r>b i{font-style:normal;font-size:.6em;white-space:nowrap}
+.tdc-xt-r>b{white-space:nowrap}
+.tdc-xt-r>b small{white-space:normal}
+.tdc-xt-r small{display:block;font-family:Inter,system-ui,sans-serif;font-size:12px;font-weight:700;opacity:.65}
+.tdc-mxs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.tdc-mxs details{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff}
+.tdc-mxs summary{cursor:pointer;padding:14px 16px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.tdc-mxs summary::-webkit-details-marker{display:none}
+.tdc-mxs summary::after{content:"+";font-size:22px;line-height:1}
+.tdc-mxs details[open] summary::after{content:"−"}
+.tdc-mx{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.tdc-mx th,.tdc-mx td{padding:7px 10px;text-align:right;border-top:1px solid rgba(14,18,48,.1)}
+.tdc-mx th:first-child,.tdc-mx td:first-child{text-align:left;font-weight:800}
+.tdc-mx thead th{background:var(--ink);color:#fff}
+.tdc-mx td.cm{background:var(--rose-soft);font-weight:800}
+@media (max-width:980px){
+  .tdc-x{grid-template-columns:1fr;gap:12px}
+  .tdc-xvs{justify-self:center;width:46px;height:46px;font-size:15px}
+  .tdc-mxs{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .tdc-mode button{padding:9px 12px;font-size:13px}
+  .tdc-cat{padding:6px 10px;font-size:12px}
+  .tdc-xc{padding:16px;gap:10px;box-shadow:6px 6px 0 var(--bleu)}
+  .tdc-xc.b{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-xc .tdc-fl{font-size:11px;margin-bottom:5px}
+  .tdc-xc .tdc-cls{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;gap:12px!important}
+  .tdc-xc .tdc-cls small{display:block!important}
+  .tdc-xc .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-chart{padding:14px 12px 12px;box-shadow:6px 6px 0 var(--ink)}
+  .tdc-xt-r>*{padding:10px 10px}
+  .tdc-xt-r>span:first-child{font-size:11px;letter-spacing:.02em}
+  .tdc-xt-r>b{font-size:17px}
+  .tdc-xt-r>b.w{padding-right:26px}
+  .tdc-xt-r>b.w::after{right:8px}
+}
+.tdc-fb{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;border:3px dashed var(--ink);border-radius:var(--r-l);background:var(--bleu-soft);padding:24px 26px}
+.tdc-fb h3{margin:0 0 6px!important}
+.tdc-fb p{margin:0!important;max-width:46ch}
+.tdc-fb .tdc-actions{margin:0!important}
+@media (max-width:720px){.tdc-fb{padding:18px}.tdc-fb .tdc-actions{width:100%}.tdc-fb .tdc-btn{flex:1 1 100%;justify-content:center;text-align:center}}
+/* ---------- Page Compatibilité ---------- */
+#tdc-cpt .tdc-mode{margin-bottom:18px}
+.cp-pick{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:end}
+.cp-arrow{font-family:"Archivo Black",Impact,sans-serif;font-size:30px;padding-bottom:10px}
+.cp-ver{margin-top:22px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;padding:22px;box-shadow:10px 10px 0 var(--ink);transition:background-color .2s}
+.cp-ver.s2{background:#d9f7e6}.cp-ver.s1{background:#fff3cc}.cp-ver.s0{background:var(--rose-soft)}
+.cp-ver .big{grid-row:span 2;font-size:58px;line-height:1}
+.cp-ver h3{margin:0!important;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:28px;line-height:1.1}
+.cp-ver p{margin:0!important;font-weight:600}
+.cp-cards{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.cp-card{border:2px solid var(--ink);border-radius:var(--r-m);background:rgba(255,255,255,.7);padding:12px 14px;font-size:13px;display:grid;gap:4px}
+.cp-card b{font-size:15px}
+.cp-card span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.cp-filt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:34px 0 14px}
+.cp-filt .sep{width:2px;height:24px;background:rgba(14,18,48,.15);margin:0 4px}
+.cp-mxw{overflow:auto;max-height:78vh;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;box-shadow:10px 10px 0 var(--rose)}
+.cp-mx{border-collapse:separate;border-spacing:0;font-size:13px}
+.cp-mx th,.cp-mx td{border-right:1px solid rgba(14,18,48,.08);border-bottom:1px solid rgba(14,18,48,.08);padding:0}
+.cp-mx thead th{position:sticky;top:0;z-index:2;background:#fff;vertical-align:bottom;padding:10px 4px}
+.cp-mx thead th:first-child{left:0;z-index:3;text-align:left;padding:12px;font-size:12px;font-weight:800;vertical-align:bottom;min-width:190px}
+.cp-mx thead th div{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font-weight:800;font-size:12px;margin:0 auto;max-height:210px;overflow:hidden;text-overflow:ellipsis}
+.cp-mx tbody th{position:sticky;left:0;z-index:1;background:#fff;text-align:left;padding:8px 12px;font-weight:800;white-space:nowrap;font-size:13px}
+.cp-mx td{width:38px;min-width:38px;height:38px;text-align:center;cursor:pointer;font-weight:900;font-size:15px;transition:transform .1s}
+.cp-mx td.s2{background:#bfeed3;color:#0b6b3a}.cp-mx td.s1{background:#ffe79a;color:#7a5600}.cp-mx td.s0{background:#fff;color:rgba(14,18,48,.18)}
+.cp-mx td.on{outline:3px solid var(--ink);outline-offset:-3px}
+.cp-mx td.hl,.cp-mx th.hl{box-shadow:inset 0 0 0 999px rgba(43,59,255,.08)}
+.cp-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:0}
+.cp-mx thead .cp-dot{margin:0 0 6px}
+.b-sh{background:var(--bleu)}.b-sr{background:var(--rose)}.b-ca{background:#19a974}.b-ni,.b-rt{background:#8b5cf6}
+.cp-tag{display:inline-block;font-size:10px;font-weight:800;border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:1px;background:var(--ink);color:#fff}
+.cp-tag.m{background:#e7e9f6;color:var(--ink)}
+.cp-leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;font-weight:700;margin-top:14px}
+.cp-leg i{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-3px;margin-right:5px;text-align:center;font-style:normal;font-weight:900;font-size:11px;line-height:16px}
+.cp-empty{padding:28px;text-align:center;font-weight:700}
+.cp-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.cp-rule{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:10px;align-content:start}
+.cp-rule h3{margin:0!important;display:flex;align-items:center;gap:8px}
+.cp-rule ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.cp-rule.sh{border-top:12px solid var(--bleu)}.cp-rule.sr{border-top:12px solid var(--rose)}.cp-rule.ca{border-top:12px solid #19a974}.cp-rule.ni{border-top:12px solid #8b5cf6}
+.tdc-disc{display:flex;gap:14px;align-items:flex-start;max-width:900px;margin:0 auto 28px;border:3px solid var(--ink);border-radius:var(--r-m);background:#fff3cc;padding:16px 20px}
+.tdc-disc>b{flex:none;font-size:24px;line-height:1}
+.tdc-disc p{margin:0!important;font-size:14px;line-height:1.5;font-weight:600}
+.cp-geek{margin-top:14px;border:3px solid var(--ink);border-radius:var(--r-m);background:#fff}
+.cp-geek>summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cp-geek>summary::-webkit-details-marker{display:none}.cp-geek>summary::marker{content:""}
+.cp-geek>summary::after{content:"+";font-family:"Archivo Black",Impact,sans-serif;font-size:22px;line-height:1}
+.cp-geek[open]>summary::after{content:"−"}
+.cp-geek>div,.cp-geek>p,.cp-geek>.cp-tw{margin:0 18px 16px!important}
+.cp-gk-p{font-size:14px;line-height:1.5;margin:0 0 10px!important}
+.cp-gk-n{font-size:12px;font-weight:600;opacity:.75;line-height:1.45;margin:10px 0 0!important}
+.cp-gk-svg{display:block;width:100%;height:auto;border-radius:14px;background:var(--bleu-soft)}
+.cp-gk-svg text{font:700 17px Inter,system-ui,sans-serif;fill:var(--ink)}
+.cp-ref{margin-top:18px}
+.cp-tw{overflow-x:auto}
+.cp-tab{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.cp-tab th,.cp-tab td{padding:8px 10px;border-bottom:1px solid rgba(14,18,48,.1);text-align:right;white-space:nowrap}
+.cp-tab th:first-child,.cp-tab td:first-child{text-align:left;white-space:normal}
+.cp-tab thead th{background:var(--ink);color:#fff}
+@media (max-width:720px){.cp-tab{font-size:12px}.cp-tab th,.cp-tab td{padding:7px 6px}.cp-geek>div,.cp-geek>p,.cp-geek>.cp-tw{margin:0 12px 14px!important}.cp-ref .cp-gk-p{margin:0 12px 12px!important}}
+@media (max-width:980px){.cp-rules{grid-template-columns:1fr}}
+@media (max-width:720px){.cp-pick{grid-template-columns:1fr}.cp-arrow{display:none}.cp-ver{padding:16px;box-shadow:6px 6px 0 var(--ink)}.cp-ver .big{font-size:44px}.cp-ver h3{font-size:22px}.cp-cards{grid-template-columns:1fr}.cp-mxw{box-shadow:6px 6px 0 var(--rose)}.cp-mx thead th:first-child{min-width:130px}.cp-mx tbody th{font-size:12px;padding:6px 8px;white-space:normal;min-width:130px}.cp-mx td{width:32px;min-width:32px;height:34px}}
+/* ---------- Boîtier de pédalier ---------- */
+.bb-step{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px;margin-top:22px;box-shadow:10px 10px 0 var(--ink)}
+.bb-step:first-child{margin-top:0}
+.bb-step h2{margin:0 0 6px!important;font-size:clamp(24px,3.4vw,34px)!important;display:flex;gap:12px;align-items:center}
+.bb-step h2 i{font-style:normal;flex:none;width:44px;height:44px;border-radius:50%;background:var(--rose);color:var(--ink);display:grid;place-items:center;font-size:22px}
+.bb-sub{margin:0 0 14px!important;font-weight:600;opacity:.8}
+.bb-info{margin-top:10px!important;font-size:14px;font-weight:600;background:var(--bleu-soft);border-radius:14px;padding:10px 14px}
+.bb-find{display:none;margin-top:14px;border:2px dashed var(--ink);border-radius:var(--r-m);padding:16px;gap:12px}
+.bb-find.on{display:grid}
+.bb-g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.bb-chips{display:flex;flex-wrap:wrap;gap:6px}
+.bb-res{display:grid;gap:8px}
+.bb-res button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center;border:2px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:700;background:#fff}
+.bb-res button.top{background:#d9f7e6}
+.bb-res button span{font-size:12px;font-weight:800;opacity:.75;white-space:nowrap}
+.bb-res p{margin:0!important;font-size:14px;font-weight:600;opacity:.8}
+.bb-how{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.bb-how>div{border-radius:var(--r-m);background:#f4f5fb;padding:14px;display:grid;gap:8px;align-content:start}
+.bb-how h4{margin:0!important;font-size:16px;font-weight:800}
+.bb-how ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.bb-how svg{width:100%;height:auto;display:block;border-radius:12px;background:#fff}
+.bb-ver{margin-top:14px;border:3px solid var(--ink);border-radius:var(--r-m);padding:18px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px}
+.bb-ver.s2{background:#d9f7e6}.bb-ver.s1{background:#fff3cc}.bb-ver.s0{background:var(--rose-soft)}.bb-ver.sn{background:#f4f5fb}
+.bb-ver .big{grid-row:span 3;font-size:48px;line-height:1}
+.bb-ver h3{margin:0!important;font-size:24px}
+.bb-ver p{margin:0!important;font-weight:600}
+.bb-ver small{font-size:13px;font-weight:600;opacity:.8}
+.bb-tw{overflow-x:auto;margin-top:14px}
+.bb-tab{width:100%;border-collapse:collapse;font-size:13px}
+.bb-tab th,.bb-tab td{padding:8px 10px;border-bottom:1px solid rgba(14,18,48,.1);text-align:left;white-space:nowrap}
+.bb-tab thead th{background:var(--ink);color:#fff}
+@media (max-width:980px){.bb-g3,.bb-how{grid-template-columns:1fr}}
+@media (max-width:720px){.bb-step{padding:16px;box-shadow:6px 6px 0 var(--ink)}.bb-ver .big{font-size:38px}}
+.bb-hv{border:3px solid var(--ink);border-radius:var(--r-l);overflow:clip;background:var(--bleu);box-shadow:10px 10px 0 var(--rose)}
+.bb-hv svg{display:block;width:100%;height:auto}
+.bb-hv text{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700}
+.bb-hv .t{fill:#fff;font-size:14px;letter-spacing:.06em}
+.bb-hv .m{fill:#ff4f9a;font-size:14px}
+.bb-hv .l{fill:#0e1230;font-size:15px;text-anchor:middle;font-family:"Archivo Black",Impact,sans-serif;font-weight:400}
+.bb-hv .s{fill:#0e1230;fill-opacity:.65;font-size:11px;text-anchor:middle}
+@media (prefers-reduced-motion:no-preference){
+ .bb-hv .p{animation:bb-in .8s var(--ease) both}.bb-hv .p2{animation-delay:.15s}.bb-hv .p3{animation-delay:.3s}
+ .bb-hv .cup{animation:bb-cup 3.2s var(--ease) infinite alternate}.bb-hv .c2{animation-name:bb-cup2}
+ .bb-hv .sp{animation:bb-sp 3.2s var(--ease) infinite alternate}
+}
+@keyframes bb-in{from{opacity:0;translate:0 24px}to{opacity:1;translate:0 0}}
+@keyframes bb-cup{0%,30%{translate:-34px 0}70%,100%{translate:0 0}}
+@keyframes bb-cup2{0%,30%{translate:34px 0}70%,100%{translate:0 0}}
+@keyframes bb-sp{0%,40%{translate:-60px 0;opacity:.4}80%,100%{translate:0 0;opacity:1}}
+@media (max-width:720px){.bb-hv{box-shadow:6px 6px 0 var(--rose)}}
+.tdc-disc{display:flex;gap:14px;align-items:flex-start;max-width:900px;margin:0 auto 28px;border:3px solid var(--ink);border-radius:var(--r-m);background:#fff3cc;padding:16px 20px}.tdc-disc>b{flex:none;font-size:24px;line-height:1}.tdc-disc p{margin:0!important;font-size:14px;line-height:1.5;font-weight:600}</style>
+<span id="tdc-fr"></span>
+<div class="tdc-zw" id="tdc-zh"><div class="tdc" id="tdc-en">
+  <nav class="tdc-lang" aria-label="Langue / Language"><div>
+    <a class="b-fr" href="#tdc-fr" hreflang="fr">FR</a>
+    <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
+    <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
+  </div></nav>
+  <section class="tdc-hero tdc-page-hero">
+    <div>
+      <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
+      <h1><span class="fr t1">Le guide du <span>boîtier de pédalier</span></span><span class="en t1" lang="en">The <span>bottom bracket</span> guide</span><span class="zh t1" lang="zh-Hans"><span>中轴</span>指南</span></h1>
+      <p class="fr tdc-lead">BSA, T47, BB86, PF30, BB386EVO… Il y a plus de standards que de jours dans le mois. Trois étapes : ta boîte de pédalier, ton axe de pédalier, et le boîtier qui marie les deux.</p><p class="en tdc-lead" lang="en">BSA, T47, BB86, PF30, BB386EVO… There are more standards than days in a month. Three steps: your shell, your crank spindle, and the bottom bracket that marries the two.</p><p class="zh tdc-lead" lang="zh-Hans">BSA、T47、BB86、PF30、BB386EVO……标准比一个月的天数还多。三步走：中轴壳、曲柄轴，以及匹配两者的中轴。</p>
+    </div>
+    <div class="bb-hv" aria-hidden="true"><svg viewBox="0 0 520 430">
+<defs><pattern id="bbg" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#fff" stroke-opacity=".08"/></pattern></defs>
+<rect width="520" height="430" fill="url(#bbg)"/>
+<text x="24" y="34" class="t"><tspan class="fr">BOÎTE DE PÉDALIER · VUE EN COUPE</tspan><tspan class="en">BB SHELL · CROSS-SECTION</tspan><tspan class="zh">中轴壳 · 剖面</tspan></text>
+<g class="frame"><path d="M150 70 L230 112 M370 70 L290 112 M260 112 V60" stroke="#fff" stroke-opacity=".35" stroke-width="10" stroke-linecap="round"/></g>
+<rect x="170" y="112" width="180" height="96" rx="10" fill="#e4e9ff" fill-opacity=".14" stroke="#fff" stroke-width="4"/>
+<rect class="sp" x="70" y="150" width="380" height="20" rx="10" fill="#fff"/>
+<rect x="56" y="84" width="22" height="96" rx="11" fill="#fff"/>
+<rect x="442" y="140" width="22" height="96" rx="11" fill="#fff"/>
+<rect x="426" y="78" width="8" height="160" rx="4" fill="#ff4f9a"/>
+<g class="cup c1"><rect x="150" y="128" width="26" height="64" rx="5" fill="#ff4f9a"/></g>
+<g class="cup c2"><rect x="344" y="128" width="26" height="64" rx="5" fill="#ff4f9a"/></g>
+<line x1="170" y1="226" x2="350" y2="226" stroke="#ff4f9a" stroke-width="3"/><path d="M170 220v12M350 220v12" stroke="#ff4f9a" stroke-width="3"/>
+<text x="232" y="246" class="m">68 mm</text>
+<line x1="364" y1="112" x2="364" y2="208" stroke="#fff" stroke-opacity=".6" stroke-width="2" stroke-dasharray="4 4"/>
+<g class="p p1" transform="translate(28 286)"><rect width="140" height="120" rx="18" fill="#fff"/><rect x="40" y="18" width="60" height="52" rx="6" fill="#0e1230"/><path d="M48 18v52M58 18v52M68 18v52M78 18v52M88 18v52" stroke="#ff4f9a" stroke-width="3"/><rect x="30" y="18" width="10" height="52" rx="3" fill="#ff4f9a"/><text x="70" y="96" class="l"><tspan class="fr">VISSÉ</tspan><tspan class="en">THREADED</tspan><tspan class="zh">螺纹</tspan></text><text x="70" y="112" class="s">BSA · ITA · T47</text></g>
+<g class="p p2" transform="translate(190 286)"><rect width="140" height="120" rx="18" fill="#fff"/><rect x="40" y="18" width="60" height="52" rx="6" fill="#0e1230"/><rect x="30" y="18" width="10" height="52" rx="3" fill="#ff4f9a"/><rect x="50" y="30" width="40" height="28" rx="14" fill="#2346ff"/><text x="70" y="96" class="l">PRESSFIT</text><text x="70" y="112" class="s">BB86 · PF30 · 386</text></g>
+<g class="p p3" transform="translate(352 286)"><rect width="140" height="120" rx="18" fill="#fff"/><circle cx="70" cy="44" r="30" fill="#0e1230"/><circle cx="70" cy="44" r="15" fill="#fff"/><g fill="#ff4f9a"><circle cx="70" cy="22" r="5"/><circle cx="91" cy="38" r="5"/><circle cx="83" cy="63" r="5"/><circle cx="57" cy="63" r="5"/><circle cx="49" cy="38" r="5"/></g><text x="70" y="96" class="l"><tspan class="fr">ROULEMENT</tspan><tspan class="en">BEARING</tspan><tspan class="zh">轴承</tspan></text><text x="70" y="112" class="s">BB30 · BB90</text></g>
+</svg></div>
+  </section>
+  <section id="tdc-bb" style="padding-top:0">
+    <div class="bb-step">
+      <h2><i>1</i><span class="fr">La boîte de pédalier de ton cadre</span><span class="en" lang="en">Your frame’s bottom bracket shell</span><span class="zh" lang="zh-Hans">车架中轴壳</span></h2>
+      <p class="bb-sub"><span class="fr">Le trou dans le bas du cadre, là où va le boîtier.</span><span class="en" lang="en">The hole at the bottom of the frame where the bottom bracket goes.</span><span class="zh" lang="zh-Hans">车架底部安装中轴的孔。</span></p>
+      <select class="tdc-sel" id="bb-s"></select>
+      <p class="bb-info" id="bb-s-i"></p>
+      <div class="bb-find" id="bb-sf">
+        <div class="bb-how">
+          <div><h4>🔩 <span class="fr">Vissé ou pressfit ?</span><span class="en" lang="en">Threaded or press-fit?</span><span class="zh" lang="zh-Hans">螺纹还是压入？</span></h4><ul><li><span class="fr"><b>Vissé</b> : des filets à l’intérieur de la boîte, les cuvettes ont des encoches pour une clé.</span><span class="en" lang="en"><b>Threaded</b>: threads inside the shell, cups have notches for a tool.</span><span class="zh" lang="zh-Hans"><b>螺纹</b>：中轴壳内有螺纹，碗上有工具槽。</span></li><li><span class="fr"><b>Pressfit</b> : alésage lisse, cuvettes ou roulements enfoncés sans encoches.</span><span class="en" lang="en"><b>Press-fit</b>: smooth bore, cups or bearings pressed in without notches.</span><span class="zh" lang="zh-Hans"><b>压入</b>：光滑孔，碗或轴承压入，无工具槽。</span></li><li><span class="fr"><b>BB30</b> : roulements nus et gorges de circlips visibles dans la boîte.</span><span class="en" lang="en"><b>BB30</b>: bare bearings and visible circlip grooves inside the shell.</span><span class="zh" lang="zh-Hans"><b>BB30</b>：裸轴承，中轴壳内可见卡簧槽。</span></li></ul></div>
+          <div><h4>📏 <span class="fr">Comment mesurer</span><span class="en" lang="en">How to measure</span><span class="zh" lang="zh-Hans">如何测量</span></h4><svg viewBox="0 0 300 130" aria-hidden="true"><rect x="70" y="25" width="160" height="80" rx="8" fill="#e4e9ff" stroke="#0e1230" stroke-width="3"/><line x1="70" y1="118" x2="230" y2="118" stroke="#ff4f9a" stroke-width="3"/><text x="118" y="128" font-size="11" font-family="monospace">largeur</text><line x1="245" y1="25" x2="245" y2="105" stroke="#ff4f9a" stroke-width="3"/><text x="250" y="70" font-size="11" font-family="monospace">Ø int.</text><path d="M78 35v60M90 35v60M102 35v60M198 35v60M210 35v60M222 35v60" stroke="#0e1230" stroke-opacity=".35" stroke-width="2"/><text x="96" y="18" font-size="11" font-family="monospace">filets = vissé</text></svg><ul><li><span class="fr">Démonte pédalier et boîtier.</span><span class="en" lang="en">Remove the crank and bottom bracket.</span><span class="zh" lang="zh-Hans">拆下曲柄和中轴。</span></li><li><span class="fr">Largeur : d’une face de la boîte à l’autre, au pied à coulisse.</span><span class="en" lang="en">Width: from one face of the shell to the other, with calipers.</span><span class="zh" lang="zh-Hans">宽度：用卡尺量中轴壳两端面距离。</span></li><li><span class="fr">Diamètre intérieur : au fond des filets ou de l’alésage.</span><span class="en" lang="en">Inner diameter: at the bottom of the threads or the bore.</span><span class="zh" lang="zh-Hans">内径：量螺纹底部或孔径。</span></li></ul></div>
+        </div>
+        <div class="bb-g3">
+          <div><span class="tdc-fl"><span class="fr">Type</span><span class="en" lang="en">Type</span><span class="zh" lang="zh-Hans">类型</span></span><div class="bb-chips"><button type="button" class="tdc-cat on" data-bt="x"><span class="fr">Je ne sais pas</span><span class="en" lang="en">Not sure</span><span class="zh" lang="zh-Hans">不确定</span></button><button type="button" class="tdc-cat" data-bt="v"><span class="fr">Vissé</span><span class="en" lang="en">Threaded</span><span class="zh" lang="zh-Hans">螺纹</span></button><button type="button" class="tdc-cat" data-bt="p">Pressfit</button></div></div>
+          <div><label class="tdc-fl" for="bb-w"><span class="fr">Largeur</span><span class="en" lang="en">Width</span><span class="zh" lang="zh-Hans">宽度</span> <small>mm</small></label><input class="tdc-xin" type="number" inputmode="decimal" step="0.5" id="bb-w" placeholder="68"></div>
+          <div><label class="tdc-fl" for="bb-d"><span class="fr">Diamètre intérieur</span><span class="en" lang="en">Inner diameter</span><span class="zh" lang="zh-Hans">内径</span> <small>mm</small></label><input class="tdc-xin" type="number" inputmode="decimal" step="0.5" id="bb-d" placeholder="34"></div>
+        </div>
+        <div class="bb-chips"><button type="button" class="tdc-cat" id="bb-cl">⭕ <span class="fr">Gorges de circlips dans la boîte</span><span class="en" lang="en">Circlip grooves in the shell</span><span class="zh" lang="zh-Hans">中轴壳内有卡簧槽</span></button></div>
+        <div class="bb-res" id="bb-sr"></div>
+      </div>
+    </div>
+    <div class="bb-step">
+      <h2><i>2</i><span class="fr">L’axe de ton pédalier</span><span class="en" lang="en">Your crank spindle</span><span class="zh" lang="zh-Hans">曲柄轴</span></h2>
+      <p class="bb-sub"><span class="fr">L’axe qui relie les deux manivelles. Il n’y en a pas 50, promis.</span><span class="en" lang="en">The spindle joining the two crank arms. There aren’t 50 of them, promise.</span><span class="zh" lang="zh-Hans">连接两根曲柄的轴。没有 50 种，放心。</span></p>
+      <select class="tdc-sel" id="bb-a"></select>
+      <p class="bb-info" id="bb-a-i"></p>
+      <div class="bb-find" id="bb-af">
+        <div class="bb-how">
+          <div><h4>👀 <span class="fr">Regarde la forme</span><span class="en" lang="en">Look at the shape</span><span class="zh" lang="zh-Hans">看形状</span></h4><ul><li><span class="fr"><b>Carré</b> : le boîtier a son propre axe, les manivelles s’emmanchent sur un carré conique.</span><span class="en" lang="en"><b>Square</b>: the BB has its own spindle, cranks slide onto a tapered square.</span><span class="zh" lang="zh-Hans"><b>方孔</b>：中轴自带轴，曲柄套在锥形方轴上。</span></li><li><span class="fr"><b>Cannelures</b> : 8 grosses (Octalink) ou 10 fines (ISIS) au bout de l’axe du boîtier.</span><span class="en" lang="en"><b>Splines</b>: 8 big (Octalink) or 10 fine (ISIS) at the end of the BB spindle.</span><span class="zh" lang="zh-Hans"><b>花键</b>：中轴轴端 8 条粗（Octalink）或 10 条细（ISIS）。</span></li><li><span class="fr"><b>Axe rond fixé à la manivelle droite</b> : mesure son diamètre.</span><span class="en" lang="en"><b>Round spindle attached to the drive arm</b>: measure its diameter.</span><span class="zh" lang="zh-Hans"><b>固定在右曲柄的圆轴</b>：测量直径。</span></li><li><span class="fr"><b>Deux demi-axes avec une denture au milieu</b> : Campagnolo.</span><span class="en" lang="en"><b>Two half-spindles with teeth in the middle</b>: Campagnolo.</span><span class="zh" lang="zh-Hans"><b>两段半轴、中间有齿</b>：Campagnolo。</span></li></ul></div>
+          <div><h4>📏 <span class="fr">Comment mesurer</span><span class="en" lang="en">How to measure</span><span class="zh" lang="zh-Hans">如何测量</span></h4><svg viewBox="0 0 300 130" aria-hidden="true"><rect x="20" y="52" width="210" height="26" rx="5" fill="#e4e9ff" stroke="#0e1230" stroke-width="3"/><rect x="230" y="20" width="18" height="90" rx="6" fill="#0e1230"/><line x1="20" y1="94" x2="20" y2="36" stroke="#ff4f9a" stroke-width="3"/><text x="28" y="34" font-size="11" font-family="monospace">Ø de l’axe au pied à coulisse</text><text x="60" y="110" font-size="11" font-family="monospace">côté opposé à la transmission</text></svg><ul><li><span class="fr">Mesure le diamètre au pied à coulisse, côté gauche.</span><span class="en" lang="en">Measure the diameter with calipers, on the left side.</span><span class="zh" lang="zh-Hans">用卡尺量左侧直径。</span></li><li><span class="fr">24 mm des deux côtés : Shimano 24. 24 côté droit et 22 au bout gauche : GXP.</span><span class="en" lang="en">24 mm both sides: Shimano 24. 24 drive side and 22 at the left end: GXP.</span><span class="zh" lang="zh-Hans">两侧 24 毫米：Shimano 24。右侧 24、左端 22：GXP。</span></li><li><span class="fr">Axe de 30 : court s’il est vendu pour BB30 / PF30, long pour BB386EVO.</span><span class="en" lang="en">30 mm spindle: short if sold for BB30 / PF30, long for BB386EVO.</span><span class="zh" lang="zh-Hans">30 毫米轴：标注 BB30 / PF30 为短轴，BB386EVO 为长轴。</span></li></ul></div>
+        </div>
+        <div class="bb-g3">
+          <div style="grid-column:span 2"><span class="tdc-fl"><span class="fr">Forme</span><span class="en" lang="en">Shape</span><span class="zh" lang="zh-Hans">形状</span></span><div class="bb-chips"><button type="button" class="tdc-cat" data-ak="sq"><span class="fr">Carré</span><span class="en" lang="en">Square</span><span class="zh" lang="zh-Hans">方孔</span></button><button type="button" class="tdc-cat" data-ak="oct"><span class="fr">8 cannelures</span><span class="en" lang="en">8 splines</span><span class="zh" lang="zh-Hans">8 花键</span></button><button type="button" class="tdc-cat" data-ak="isis"><span class="fr">10 cannelures</span><span class="en" lang="en">10 splines</span><span class="zh" lang="zh-Hans">10 花键</span></button><button type="button" class="tdc-cat on" data-ak="r"><span class="fr">Rond sur la manivelle</span><span class="en" lang="en">Round on the arm</span><span class="zh" lang="zh-Hans">曲柄圆轴</span></button><button type="button" class="tdc-cat" data-ak="ut">Campagnolo</button></div></div>
+          <div><label class="tdc-fl" for="bb-ad"><span class="fr">Diamètre</span><span class="en" lang="en">Diameter</span><span class="zh" lang="zh-Hans">直径</span> <small>mm</small></label><input class="tdc-xin" type="number" inputmode="decimal" step="0.1" id="bb-ad" placeholder="24"></div>
+        </div>
+        <div class="bb-chips"><button type="button" class="tdc-cat" id="bb-22"><span class="fr">Le bout gauche fait 22 mm</span><span class="en" lang="en">The left end is 22 mm</span><span class="zh" lang="zh-Hans">左端为 22 毫米</span></button><button type="button" class="tdc-cat" id="bb-lg"><span class="fr">Axe de 30 vendu pour BB386EVO</span><span class="en" lang="en">30 mm spindle sold for BB386EVO</span><span class="zh" lang="zh-Hans">标注 BB386EVO 的 30 毫米轴</span></button></div>
+        <div class="bb-res" id="bb-ar"></div>
+      </div>
+    </div>
+    <div class="bb-step">
+      <h2><i>3</i><span class="fr">Le boîtier qu’il te faut</span><span class="en" lang="en">The bottom bracket you need</span><span class="zh" lang="zh-Hans">你需要的中轴</span></h2>
+      <div class="bb-ver" id="bb-v" aria-live="polite"></div>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <details class="cp-geek"><summary>📚 <span class="fr">Tous les standards de boîte</span><span class="en" lang="en">All shell standards</span><span class="zh" lang="zh-Hans">全部中轴壳标准</span></summary><div class="bb-tw"><table class="bb-tab"><thead><tr><th>Standard</th><th><span class="fr">Type</span><span class="en" lang="en">Type</span><span class="zh" lang="zh-Hans">类型</span></th><th><span class="fr">Largeur</span><span class="en" lang="en">Width</span><span class="zh" lang="zh-Hans">宽度</span></th><th><span class="fr">Ø intérieur</span><span class="en" lang="en">Inner Ø</span><span class="zh" lang="zh-Hans">内径</span></th></tr></thead><tbody><tr><td><b>BSA (anglais) 68 mm</b></td><td>Vissé</td><td>68 mm</td><td>34 mm</td></tr><tr><td><b>BSA (anglais) 73 mm</b></td><td>Vissé</td><td>73 mm</td><td>34 mm</td></tr><tr><td><b>BSA 83 mm (DH)</b></td><td>Vissé</td><td>83 mm</td><td>34 mm</td></tr><tr><td><b>BSA 100 / 120 mm (fat)</b></td><td>Vissé</td><td>100 / 120 mm</td><td>34 mm</td></tr><tr><td><b>ITA (italien) 70 mm</b></td><td>Vissé</td><td>70 mm</td><td>36 mm</td></tr><tr><td><b>Français 35 × 1 (vintage)</b></td><td>Vissé</td><td>68 mm</td><td>35 mm</td></tr><tr><td><b>T47 68 / 73 mm (roulements extérieurs)</b></td><td>Vissé</td><td>68 / 73 mm</td><td>46 mm</td></tr><tr><td><b>T47 86,5 mm (roulements intérieurs)</b></td><td>Vissé</td><td>86,5 / 85,5 mm</td><td>46 mm</td></tr><tr><td><b>BB86 (Pressfit Shimano route)</b></td><td>Pressfit</td><td>86,5 mm</td><td>41 mm</td></tr><tr><td><b>BB92 / BB89,5 (Pressfit VTT)</b></td><td>Pressfit</td><td>91,5 / 89,5 mm</td><td>41 mm</td></tr><tr><td><b>BB90 (Trek route)</b></td><td>Pressfit</td><td>90,5 mm</td><td>37 mm</td></tr><tr><td><b>BB95 (Trek VTT)</b></td><td>Pressfit</td><td>95,5 mm</td><td>37 mm</td></tr><tr><td><b>BB30 68 / 73 mm</b></td><td>Pressfit</td><td>68 / 73 mm</td><td>42 mm</td></tr><tr><td><b>BB30A / BB30Ai (Cannondale)</b></td><td>Pressfit</td><td>73 / 83 mm</td><td>42 mm</td></tr><tr><td><b>PF30 68 / 73 mm</b></td><td>Pressfit</td><td>68 / 73 mm</td><td>46 mm</td></tr><tr><td><b>PF30A / PF30Ai</b></td><td>Pressfit</td><td>73 / 83 mm</td><td>46 mm</td></tr><tr><td><b>BB386EVO</b></td><td>Pressfit</td><td>86,5 mm</td><td>46 mm</td></tr><tr><td><b>BBright (Cervélo)</b></td><td>Pressfit</td><td>79 mm</td><td>46 mm</td></tr></tbody></table></div></details>
+    <p class="fr tdc-note">Le nom du standard parle parfois du diamètre de la boîte, parfois de celui de l’axe, parfois de la largeur. C’est le bazar, pas toi. Vérifie toujours la fiche du boîtier avant d’acheter : longueur d’axe, entretoises et compatibilité route ou VTT. Sources : Park Tool, Wheels Mfg, bike-components, BikeRadar.</p><p class="en tdc-note" lang="en">The standard’s name sometimes refers to the shell diameter, sometimes the spindle, sometimes the width. It’s a mess, not you. Always check the BB sheet before buying: spindle length, spacers and road or MTB compatibility. Sources: Park Tool, Wheels Mfg, bike-components, BikeRadar.</p><p class="zh tdc-note" lang="zh-Hans">标准名称有时指中轴壳直径，有时指轴径，有时指宽度。乱的是标准，不是你。购买前请查看中轴资料：轴长、垫片、公路或山地兼容。来源：Park Tool、Wheels Mfg、bike-components、BikeRadar。</p>
+  </section>
+  <section style="padding-top:0;padding-bottom:0"><aside class="tdc-disc" role="note"><b>⚠️</b><p><span class="fr">Infos indicatives : les marques ont leurs variantes (asymétriques, versions route ou VTT, longueurs d’axe). Tension de chaine ne garantit pas l’exactitude à 100&nbsp;% et ne pourra être tenu responsable d’un achat ou d’un montage. Le pressfit se pose à la presse, pas au marteau : dans le doute, passe par ton vélociste.</span><span class="en" lang="en">For guidance only: brands have their variants (asymmetric, road or MTB versions, spindle lengths). Tension de chaine does not guarantee 100% accuracy and cannot be held liable for any purchase or fitting. Press-fit goes in with a press, not a hammer: if in doubt, see your bike shop.</span><span class="zh" lang="zh-Hans">仅供参考：各品牌有不同变体（非对称、公路或山地版本、轴长）。Tension de chaine 不保证百分之百准确，对任何购买或安装不承担责任。压入式要用压具，不能用锤子：如有疑问请找车店。</span></p></aside></section>
+    <section style="padding-top:0">
+    <div class="tdc-fb">
+      <div><h3 class="fr">Une idée&nbsp;? Un bug&nbsp;?</h3><h3 class="en" lang="en">An idea? A bug?</h3><h3 class="zh" lang="zh-Hans">有想法？发现 bug？</h3><p class="fr">Il manque un standard, un boîtier, une fonction&nbsp;? Un truc s’affiche de travers&nbsp;? Écris-moi, je lis tout.</p><p class="en" lang="en">Missing a standard, a bottom bracket, a feature? Something looks off? Drop me a line, I read everything.</p><p class="zh" lang="zh-Hans">缺少某个标准或中轴或功能？显示有问题？给我写信，我都会看。</p></div>
+      <div class="tdc-actions"><a class="tdc-btn " href="mailto:tensiondechaine@gmail.com?subject=Guide%20bo%C3%AEtier%20de%20p%C3%A9dalier%20%3A%20id%C3%A9e%20de%20fonction"><span class="fr">💡 Proposer une idée</span><span class="en" lang="en">💡 Suggest a feature</span><span class="zh" lang="zh-Hans">💡 提建议</span></a><a class="tdc-btn rose" href="mailto:tensiondechaine@gmail.com?subject=Guide%20bo%C3%AEtier%20de%20p%C3%A9dalier%20%3A%20bug"><span class="fr">🐞 Signaler un bug</span><span class="en" lang="en">🐞 Report a bug</span><span class="zh" lang="zh-Hans">🐞 报告 bug</span></a></div>
+    </div>
+  </section>
+  <section class="tdc-contact tdc-block tdc-final" style="margin-top:0">
+    <h2 class="fr">Pédalier monté&nbsp;?</h2><h2 class="en" lang="en">Crank fitted?</h2><h2 class="zh" lang="zh-Hans">曲柄装好了？</h2>
+    <p class="fr">Vérifie ta ligne de chaîne, puis calcule ton braquet.</p><p class="en" lang="en">Check your chainline, then work out your gearing.</p><p class="zh" lang="zh-Hans">检查链线，再算齿比。</p>
+    <div class="tdc-actions"><a class="tdc-btn " href="ligne-de-chaine.html"><span class="fr">📏 Ligne de chaîne</span><span class="en" lang="en">📏 Chainline</span><span class="zh" lang="zh-Hans">📏 链线</span></a><a class="tdc-btn rose" href="ratio.html"><span class="fr">⚙️ Calculateur de ratio</span><span class="en" lang="en">⚙️ Ratio calculator</span><span class="zh" lang="zh-Hans">⚙️ 齿比计算器</span></a></div>
+    <p class="tdc-peace">Peace ✌️</p>
+  </section>
+</div></div>
+<script>
+(function(){
+var R=document.getElementById('tdc-bb');if(!R)return;
+var D={"sh": [{"id": "bsa68", "f": "thr", "n": "BSA (anglais) 68 mm", "t": "v", "w": [68], "d": 34.0, "h": ["Filetage 1,37\" × 24 TPI. Côté transmission, ça se dévisse dans le sens des aiguilles d’une montre (pas à gauche).", "1.37\" × 24 TPI thread. Drive side unscrews clockwise (left-hand thread).", "1.37\" × 24 TPI 螺纹。传动侧顺时针拧松（反牙）。"]}, {"id": "bsa73", "f": "thr", "n": "BSA (anglais) 73 mm", "t": "v", "w": [73], "d": 34.0, "h": ["Le BSA des VTT et de beaucoup de gravels.", "The BSA used on MTBs and many gravel bikes.", "山地车和许多砾石车使用的 BSA。"]}, {"id": "bsa83", "f": "thr", "n": "BSA 83 mm (DH)", "t": "v", "w": [83], "d": 34.0, "h": ["Descente et freeride.", "Downhill and freeride.", "速降与自由骑。"]}, {"id": "bsa100", "f": "thr", "n": "BSA 100 / 120 mm (fat)", "t": "v", "w": [100, 120], "d": 34.0, "h": ["Fatbikes.", "Fat bikes.", "胖胎车。"]}, {"id": "ita70", "f": "thr", "n": "ITA (italien) 70 mm", "t": "v", "w": [70], "d": 36.0, "h": ["Filetage 36 × 24 TPI, les deux côtés se dévissent dans le sens inverse des aiguilles d’une montre. Largeur 70 mm.", "36 × 24 TPI thread, both sides unscrew anticlockwise. 70 mm wide.", "36 × 24 TPI 螺纹，两侧均逆时针拧松。宽 70 毫米。"]}, {"id": "fr35", "f": "thr", "n": "Français 35 × 1 (vintage)", "t": "v", "w": [68], "d": 35.0, "h": ["Vieux vélos français (Peugeot, Motobécane…) : filetage métrique au pas de 1 mm, deux côtés normaux.", "Old French bikes (Peugeot, Motobécane…): metric 1 mm pitch thread, both sides standard.", "老式法国车（Peugeot、Motobécane 等）：1 毫米公制螺纹，两侧正牙。"]}, {"id": "t47o", "f": "t47", "n": "T47 68 / 73 mm (roulements extérieurs)", "t": "v", "w": [68, 73], "d": 46.0, "h": ["Gros filetage M47 × 1 : la boîte est visiblement plus large qu’un BSA. Roulements à l’extérieur.", "Big M47 × 1 thread: the shell is visibly bigger than BSA. External bearings.", "大号 M47 × 1 螺纹：中轴壳明显比 BSA 大。外置轴承。"]}, {"id": "t47i", "f": "t47", "n": "T47 86,5 mm (roulements intérieurs)", "t": "v", "w": [86.5, 85.5], "d": 46.0, "h": ["T47 large, roulements logés dans le cadre (Trek, beaucoup de gravels récents).", "Wide T47, bearings inside the frame (Trek, many recent gravel bikes).", "宽 T47，轴承置于车架内（Trek 与许多新款砾石车）。"]}, {"id": "bb86", "f": "pf41", "n": "BB86 (Pressfit Shimano route)", "t": "p", "w": [86.5], "d": 41.0, "h": ["Alésage lisse de 41 mm, cuvettes en plastique ou alu enfoncées.", "Smooth 41 mm bore, plastic or alloy cups pressed in.", "41 毫米光滑孔，压入塑料或铝碗。"]}, {"id": "bb92", "f": "pf41", "n": "BB92 / BB89,5 (Pressfit VTT)", "t": "p", "w": [91.5, 89.5], "d": 41.0, "h": ["La version VTT du BB86.", "The MTB version of BB86.", "BB86 的山地版本。"]}, {"id": "bb90", "f": "bb90", "n": "BB90 (Trek route)", "t": "p", "w": [90.5], "d": 37.0, "h": ["Roulements enfoncés directement dans le carbone, alésage de 37 mm.", "Bearings pressed straight into the carbon, 37 mm bore.", "轴承直接压入碳纤维，37 毫米孔。"]}, {"id": "bb95", "f": "bb90", "n": "BB95 (Trek VTT)", "t": "p", "w": [95.5], "d": 37.0, "h": ["La version VTT du BB90.", "The MTB version of BB90.", "BB90 的山地版本。"]}, {"id": "bb30", "f": "pf42", "n": "BB30 68 / 73 mm", "t": "p", "w": [68, 73], "d": 42.0, "h": ["Roulements directement dans le cadre, avec des gorges pour circlips à l’intérieur.", "Bearings directly in the frame, with circlip grooves inside.", "轴承直接装入车架，内有卡簧槽。"]}, {"id": "bb30a", "f": "pf42", "n": "BB30A / BB30Ai (Cannondale)", "t": "p", "w": [73, 83], "d": 42.0, "h": ["BB30 asymétrique Cannondale, avec circlips.", "Cannondale’s asymmetric BB30, with circlips.", "Cannondale 非对称 BB30，带卡簧。"]}, {"id": "pf30", "f": "pf46", "n": "PF30 68 / 73 mm", "t": "p", "w": [68, 73], "d": 46.0, "h": ["Alésage lisse de 46 mm, cuvettes enfoncées, pas de circlips.", "Smooth 46 mm bore, pressed cups, no circlips.", "46 毫米光滑孔，压入碗，无卡簧。"]}, {"id": "pf30a", "f": "pf46", "n": "PF30A / PF30Ai", "t": "p", "w": [73, 83], "d": 46.0, "h": ["PF30 asymétrique (Cannondale, Open…).", "Asymmetric PF30 (Cannondale, Open…).", "非对称 PF30（Cannondale、Open 等）。"]}, {"id": "bb386", "f": "pf46", "n": "BB386EVO", "t": "p", "w": [86.5], "d": 46.0, "h": ["Même alésage que le PF30 mais boîte de 86,5 mm.", "Same bore as PF30 but an 86.5 mm shell.", "与 PF30 同孔径，但中轴壳宽 86.5 毫米。"]}, {"id": "bbr", "f": "pf46", "n": "BBright (Cervélo)", "t": "p", "w": [79], "d": 46.0, "h": ["Boîte de 79 mm décalée côté opposé à la transmission. Version pressfit 46 ou directe 42.", "79 mm shell offset to the non-drive side. Press-fit 46 or direct 42 version.", "79 毫米中轴壳向非传动侧偏移。压入式 46 或直装 42。"]}], "sp": [{"id": "sq", "n": "Axe carré (JIS / ISO) — pédaliers piste et vintage", "d": null, "k": "sq"}, {"id": "oct", "n": "Shimano Octalink (V1 / V2)", "d": null, "k": "oct"}, {"id": "isis", "n": "ISIS Drive", "d": null, "k": "isis"}, {"id": "ht24", "n": "Shimano Hollowtech II, FSA, Race Face 24 mm", "d": 24, "k": "r"}, {"id": "gxp", "n": "SRAM GXP (24 / 22 mm)", "d": 24, "k": "r"}, {"id": "dub", "n": "SRAM DUB (28,99 mm)", "d": 29, "k": "r"}, {"id": "s30", "n": "Axe 30 mm court (BB30 / PF30 : Cannondale, Rotor, SRAM BB30, Praxis)", "d": 30, "k": "r"}, {"id": "s30l", "n": "Axe 30 mm long (BB386EVO : FSA, Rotor, Praxis…)", "d": 30, "k": "r"}, {"id": "ut", "n": "Campagnolo Ultra-Torque / Power-Torque (25 mm)", "d": 25, "k": "r"}], "r": {"thr>sq": [2, "Boîtier à cartouche BSA ou ITA (selon ta boîte), à la longueur d’axe de ton pédalier.", "BSA or ITA cartridge BB (per your shell), with your crank’s spindle length.", "BSA 或 ITA 卡式中轴（按中轴壳），轴长匹配曲柄。"], "t47>sq": [1, "Adaptateur T47 vers filetage BSA, puis cartouche BSA. Rare : vérifie la dispo.", "T47 to BSA thread adapter, then a BSA cartridge. Rare: check availability.", "T47 转 BSA 螺纹转换座，再装 BSA 卡式中轴。较少见，请确认有货。"], "pf41>sq": [1, "Adaptateur pressfit 41 vers filetage BSA (type Wheels Mfg), puis cartouche BSA.", "Press-fit 41 to BSA thread adapter (Wheels Mfg type), then a BSA cartridge.", "压入式 41 转 BSA 螺纹转换（如 Wheels Mfg），再装 BSA 卡式中轴。"], "bb90>sq": [0, "Pas de solution : l’alésage de 37 mm est trop petit.", "No solution: the 37 mm bore is too small.", "无解：37 毫米孔太小。"], "pf42>sq": [1, "Adaptateur BB30 vers filetage BSA, puis cartouche BSA.", "BB30 to BSA thread adapter, then a BSA cartridge.", "BB30 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "pf46>sq": [1, "Adaptateur PF30 / PF46 vers filetage BSA, puis cartouche BSA.", "PF30 / PF46 to BSA thread adapter, then a BSA cartridge.", "PF30 / PF46 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "thr>oct": [2, "Boîtier à cartouche BSA ou ITA (selon ta boîte), à la longueur d’axe de ton pédalier.", "BSA or ITA cartridge BB (per your shell), with your crank’s spindle length.", "BSA 或 ITA 卡式中轴（按中轴壳），轴长匹配曲柄。"], "t47>oct": [1, "Adaptateur T47 vers filetage BSA, puis cartouche BSA. Rare : vérifie la dispo.", "T47 to BSA thread adapter, then a BSA cartridge. Rare: check availability.", "T47 转 BSA 螺纹转换座，再装 BSA 卡式中轴。较少见，请确认有货。"], "pf41>oct": [1, "Adaptateur pressfit 41 vers filetage BSA (type Wheels Mfg), puis cartouche BSA.", "Press-fit 41 to BSA thread adapter (Wheels Mfg type), then a BSA cartridge.", "压入式 41 转 BSA 螺纹转换（如 Wheels Mfg），再装 BSA 卡式中轴。"], "bb90>oct": [0, "Pas de solution : l’alésage de 37 mm est trop petit.", "No solution: the 37 mm bore is too small.", "无解：37 毫米孔太小。"], "pf42>oct": [1, "Adaptateur BB30 vers filetage BSA, puis cartouche BSA.", "BB30 to BSA thread adapter, then a BSA cartridge.", "BB30 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "pf46>oct": [1, "Adaptateur PF30 / PF46 vers filetage BSA, puis cartouche BSA.", "PF30 / PF46 to BSA thread adapter, then a BSA cartridge.", "PF30 / PF46 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "thr>isis": [2, "Boîtier à cartouche BSA ou ITA (selon ta boîte), à la longueur d’axe de ton pédalier.", "BSA or ITA cartridge BB (per your shell), with your crank’s spindle length.", "BSA 或 ITA 卡式中轴（按中轴壳），轴长匹配曲柄。"], "t47>isis": [1, "Adaptateur T47 vers filetage BSA, puis cartouche BSA. Rare : vérifie la dispo.", "T47 to BSA thread adapter, then a BSA cartridge. Rare: check availability.", "T47 转 BSA 螺纹转换座，再装 BSA 卡式中轴。较少见，请确认有货。"], "pf41>isis": [1, "Adaptateur pressfit 41 vers filetage BSA (type Wheels Mfg), puis cartouche BSA.", "Press-fit 41 to BSA thread adapter (Wheels Mfg type), then a BSA cartridge.", "压入式 41 转 BSA 螺纹转换（如 Wheels Mfg），再装 BSA 卡式中轴。"], "bb90>isis": [0, "Pas de solution : l’alésage de 37 mm est trop petit.", "No solution: the 37 mm bore is too small.", "无解：37 毫米孔太小。"], "pf42>isis": [1, "Adaptateur BB30 vers filetage BSA, puis cartouche BSA.", "BB30 to BSA thread adapter, then a BSA cartridge.", "BB30 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "pf46>isis": [1, "Adaptateur PF30 / PF46 vers filetage BSA, puis cartouche BSA.", "PF30 / PF46 to BSA thread adapter, then a BSA cartridge.", "PF30 / PF46 转 BSA 螺纹转换，再装 BSA 卡式中轴。"], "thr>ht24": [2, "Boîtier vissé BSA ou ITA pour 24 mm (roulements extérieurs).", "BSA or ITA threaded BB for 24 mm (external bearings).", "适用 24 mm 的 BSA 或 ITA 螺纹中轴（外置轴承）。"], "t47>ht24": [2, "Boîtier T47 pour 24 mm.", "T47 BB for 24 mm.", "适用 24 mm 的 T47 中轴。"], "pf41>ht24": [2, "Boîtier pressfit BB86 / BB92 pour 24 mm.", "BB86 / BB92 press-fit BB for 24 mm.", "适用 24 mm 的 BB86 / BB92 压入式中轴。"], "bb90>ht24": [2, "Roulements BB90 / BB95 pour 24 mm, posés directement dans le cadre.", "BB90 / BB95 bearings for 24 mm, fitted straight into the frame.", "适用 24 mm 的 BB90 / BB95 轴承，直接装入车架。"], "pf42>ht24": [2, "Boîtier BB30 avec réduction pour 24 mm (Wheels Mfg, C-Bear, Kogel, SRAM…).", "BB30 bottom bracket reduced to 24 mm (Wheels Mfg, C-Bear, Kogel, SRAM…).", "带 24 mm 缩径的 BB30 中轴（Wheels Mfg、C-Bear、Kogel、SRAM 等）。"], "pf46>ht24": [2, "Boîtier PF30 / BB386 / BBright avec réduction pour 24 mm.", "PF30 / BB386 / BBright bottom bracket reduced to 24 mm.", "带 24 mm 缩径的 PF30 / BB386 / BBright 中轴。"], "thr>gxp": [2, "Boîtier vissé BSA ou ITA pour GXP (roulements extérieurs).", "BSA or ITA threaded BB for GXP (external bearings).", "适用 GXP 的 BSA 或 ITA 螺纹中轴（外置轴承）。"], "t47>gxp": [2, "Boîtier T47 pour GXP.", "T47 BB for GXP.", "适用 GXP 的 T47 中轴。"], "pf41>gxp": [2, "Boîtier pressfit BB86 / BB92 pour GXP.", "BB86 / BB92 press-fit BB for GXP.", "适用 GXP 的 BB86 / BB92 压入式中轴。"], "bb90>gxp": [2, "Roulements BB90 / BB95 pour GXP, posés directement dans le cadre.", "BB90 / BB95 bearings for GXP, fitted straight into the frame.", "适用 GXP 的 BB90 / BB95 轴承，直接装入车架。"], "pf42>gxp": [2, "Boîtier BB30 avec réduction pour GXP (Wheels Mfg, C-Bear, Kogel, SRAM…).", "BB30 bottom bracket reduced to GXP (Wheels Mfg, C-Bear, Kogel, SRAM…).", "带 GXP 缩径的 BB30 中轴（Wheels Mfg、C-Bear、Kogel、SRAM 等）。"], "pf46>gxp": [2, "Boîtier PF30 / BB386 / BBright avec réduction pour GXP.", "PF30 / BB386 / BBright bottom bracket reduced to GXP.", "带 GXP 缩径的 PF30 / BB386 / BBright 中轴。"], "thr>dub": [2, "Boîtier vissé BSA ou ITA pour DUB (roulements extérieurs).", "BSA or ITA threaded BB for DUB (external bearings).", "适用 DUB 的 BSA 或 ITA 螺纹中轴（外置轴承）。"], "t47>dub": [2, "Boîtier T47 pour DUB.", "T47 BB for DUB.", "适用 DUB 的 T47 中轴。"], "pf41>dub": [2, "Boîtier pressfit BB86 / BB92 pour DUB.", "BB86 / BB92 press-fit BB for DUB.", "适用 DUB 的 BB86 / BB92 压入式中轴。"], "bb90>dub": [2, "Roulements BB90 / BB95 pour DUB, posés directement dans le cadre.", "BB90 / BB95 bearings for DUB, fitted straight into the frame.", "适用 DUB 的 BB90 / BB95 轴承，直接装入车架。"], "pf42>dub": [2, "Boîtier BB30 avec réduction pour DUB (Wheels Mfg, C-Bear, Kogel, SRAM…).", "BB30 bottom bracket reduced to DUB (Wheels Mfg, C-Bear, Kogel, SRAM…).", "带 DUB 缩径的 BB30 中轴（Wheels Mfg、C-Bear、Kogel、SRAM 等）。"], "pf46>dub": [2, "Boîtier PF30 / BB386 / BBright avec réduction pour DUB.", "PF30 / BB386 / BBright bottom bracket reduced to DUB.", "带 DUB 缩径的 PF30 / BB386 / BBright 中轴。"], "thr>s30": [1, "Boîtier vissé spécial axe 30 (« BSA30 » à roulements extérieurs : Rotor, Praxis M30, Wheels Mfg). Vérifie que l’axe est assez long.", "Special threaded BB for 30 mm spindles (external-bearing “BSA30”: Rotor, Praxis M30, Wheels Mfg). Check the spindle is long enough.", "30 毫米轴专用螺纹中轴（外置轴承“BSA30”：Rotor、Praxis M30、Wheels Mfg）。请确认轴够长。"], "thr>s30l": [2, "Boîtier vissé pour axe 30 (Rotor, Praxis, Wheels Mfg) avec les entretoises fournies.", "Threaded BB for 30 mm spindles (Rotor, Praxis, Wheels Mfg) with the supplied spacers.", "30 毫米轴螺纹中轴（Rotor、Praxis、Wheels Mfg），配附带垫片。"], "t47>s30": [2, "Boîtier T47 pour axe 30 : c’est pour ça que le T47 existe.", "T47 BB for 30 mm spindles: that’s what T47 was made for.", "30 毫米轴 T47 中轴：T47 正是为此而生。"], "t47>s30l": [2, "Boîtier T47 pour axe 30, avec entretoises.", "T47 BB for 30 mm spindles, with spacers.", "30 毫米轴 T47 中轴，配垫片。"], "pf41>s30": [1, "Boîtier BB86 / BB92 spécial axe 30 (roulements plus petits : Praxis, Rotor). Ça existe, mais c’est un compromis.", "Special BB86 / BB92 for 30 mm spindles (smaller bearings: Praxis, Rotor). It exists, but it’s a compromise.", "30 毫米轴专用 BB86 / BB92 中轴（轴承更小：Praxis、Rotor）。存在，但有妥协。"], "pf41>s30l": [1, "Boîtier BB86 spécial axe 30 (Praxis, Rotor). Compromis, mais l’axe long tombe bien sur 86,5 mm.", "Special BB86 for 30 mm spindles (Praxis, Rotor). A compromise, but the long spindle suits 86.5 mm.", "30 毫米轴专用 BB86 中轴（Praxis、Rotor）。有妥协，但长轴正好配 86.5 毫米。"], "bb90>s30": [0, "Pas de solution : l’alésage de 37 mm est trop petit pour un axe de 30.", "No solution: the 37 mm bore is too small for a 30 mm spindle.", "无解：37 毫米孔对 30 毫米轴太小。"], "bb90>s30l": [0, "Pas de solution : l’alésage de 37 mm est trop petit pour un axe de 30.", "No solution: the 37 mm bore is too small for a 30 mm spindle.", "无解：37 毫米孔对 30 毫米轴太小。"], "pf42>s30": [2, "Roulements BB30 posés directement dans le cadre, avec les circlips. Le montage d’origine.", "BB30 bearings fitted straight into the frame, with circlips. The original setup.", "BB30 轴承直接装入车架，配卡簧。原厂方案。"], "pf42>s30l": [2, "Roulements BB30 + entretoises pour compenser l’axe long.", "BB30 bearings + spacers to make up for the long spindle.", "BB30 轴承 + 垫片补偿长轴。"], "pf46>s30": [2, "Boîtier PF30 (cuvettes enfoncées) pour axe 30.", "PF30 bottom bracket (pressed cups) for 30 mm spindles.", "30 毫米轴 PF30 中轴（压入碗）。"], "pf46>s30l": [2, "Boîtier BB386EVO / PF30 pour axe 30, avec entretoises si la boîte est plus étroite.", "BB386EVO / PF30 BB for 30 mm spindles, with spacers if the shell is narrower.", "30 毫米轴 BB386EVO / PF30 中轴，中轴壳较窄时加垫片。"], "thr>ut": [2, "Cuvettes Campagnolo Ultra-Torque / Power-Torque BSA ou ITA.", "Campagnolo Ultra-Torque / Power-Torque BSA or ITA cups.", "Campagnolo Ultra-Torque / Power-Torque BSA 或 ITA 碗组。"], "t47>ut": [1, "Adaptateur T47 pour Campagnolo (Chris King, Wheels Mfg…).", "T47 adapter for Campagnolo (Chris King, Wheels Mfg…).", "Campagnolo 用 T47 转换（Chris King、Wheels Mfg 等）。"], "pf41>ut": [2, "Cuvettes Campagnolo BB86 / BB92.", "Campagnolo BB86 / BB92 cups.", "Campagnolo BB86 / BB92 碗组。"], "bb90>ut": [1, "Adaptateurs BB90 pour Campagnolo : quelques marques en font, c’est pointu.", "BB90 adapters for Campagnolo: a few brands make them, it’s niche.", "Campagnolo 用 BB90 转换：少数品牌生产，较小众。"], "pf42>ut": [2, "Adaptateurs BB30 pour Campagnolo (Campa, Wheels Mfg…).", "BB30 adapters for Campagnolo (Campagnolo, Wheels Mfg…).", "Campagnolo 用 BB30 转换（Campagnolo、Wheels Mfg 等）。"], "pf46>ut": [2, "Cuvettes PF30 / BB386 pour Campagnolo.", "PF30 / BB386 cups for Campagnolo.", "Campagnolo 用 PF30 / BB386 碗组。"]}},bt='x',clip=false,ak='r',a22=false,alg=false;
+function q(i){return document.getElementById(i)}
+function lang(){var h=location.hash;return h==='#tdc-en'?1:(h==='#tdc-zh'?2:0)}
+function L3(fr,en,zh){return '<span class="fr">'+fr+'</span><span class="en" lang="en">'+en+'</span><span class="zh" lang="zh-Hans">'+zh+'</span>'}
+function by(l,id){for(var i=0;i<l.length;i++){if(l[i].id===id)return l[i]}return null}
+function num(id){var v=parseFloat(String(q(id).value).replace(',','.'));return isNaN(v)?0:v}
+function dec(x){var s=String(x);return lang()===0?s.replace('.',','):s}
+var UNK=['🔍 Je ne sais pas, je mesure','🔍 Not sure, I’ll measure','🔍 不确定，我来测量'],PICK=['— Choisis —','— Pick one —','— 请选择 —'];
+function fill(){
+ var s=q('bb-s'),cs=s.value,h='<option value="">'+PICK[lang()]+'</option><optgroup label="'+['Vissé','Threaded','螺纹'][lang()]+'">';
+ D.sh.forEach(function(x){if(x.t==='v')h+='<option value="'+x.id+'">'+x.n+'</option>'});h+='</optgroup><optgroup label="Pressfit">';
+ D.sh.forEach(function(x){if(x.t==='p')h+='<option value="'+x.id+'">'+x.n+'</option>'});h+='</optgroup><option value="?">'+UNK[lang()]+'</option>';s.innerHTML=h;s.value=cs;
+ var a=q('bb-a'),ca=a.value,g='<option value="">'+PICK[lang()]+'</option>';D.sp.forEach(function(x){g+='<option value="'+x.id+'">'+x.n+'</option>'});g+='<option value="?">'+UNK[lang()]+'</option>';a.innerHTML=g;a.value=ca;
+}
+function findShell(){
+ var w=num('bb-w'),d=num('bb-d'),out=[];
+ D.sh.forEach(function(x){
+  if(bt!=='x'){if(x.t!==bt)return}
+  var sc=0,ok=true;
+  if(d){var dd=Math.abs(d-x.d);if(x.t==='v'){if(x.f==='thr'){dd=d<33?33-d:(d>36.8?d-36.8:0);if(x.id==='ita70'){dd=d<35.2?35.2-d:(d>36.8?d-36.8:0)}}}if(x.id==='bbr'){dd=Math.min(Math.abs(d-46),Math.abs(d-42))}if(dd>1.5)ok=false;sc+=dd}
+  if(w){var wd=99;x.w.forEach(function(v){wd=Math.min(wd,Math.abs(w-v))});if(wd>2.5)ok=false;sc+=wd/2}
+  if(clip){if(x.f!=='pf42')sc+=3}else{if(x.f==='pf42')sc+=1}
+  if(ok)out.push([sc,x]);
+ });
+ out.sort(function(a,b){return a[0]-b[0]});
+ var h='';if(!w){if(!d){q('bb-sr').innerHTML='<p>'+L3('Rentre au moins la largeur ou le diamètre.','Enter at least the width or the diameter.','请至少输入宽度或直径。')+'</p>';return}}
+ if(!out.length){h='<p>'+L3('Aucun standard ne colle : revérifie tes mesures (sans les cuvettes !).','No standard matches: recheck your measurements (without the cups!).','没有匹配的标准：请重新测量（拆掉碗组！）。')+'</p>'}
+ out.slice(0,4).forEach(function(o,i){h+='<button type="button" class="'+(i===0?'top':'')+'" data-pick-s="'+o[1].id+'">'+o[1].n+'<span>'+o[1].w.map(dec).join(' / ')+' × Ø'+dec(o[1].d)+' · '+L3('choisir','pick','选择')+'</span></button>'});
+ if(out.length>1){if(out[0][1].f==='thr'){if(out[1][1].id==='ita70'||out[0][1].id==='ita70')h+='<p>'+L3('BSA ou ITA ? Regarde le côté transmission : si ça se dévisse dans le sens des aiguilles d’une montre, c’est du BSA.','BSA or ITA? Check the drive side: if it unscrews clockwise, it’s BSA.','BSA 还是 ITA？看传动侧：顺时针拧松就是 BSA。')+'</p>'}}
+ q('bb-sr').innerHTML=h;
+}
+function findAxle(){
+ var d=num('bb-ad'),id='';
+ if(ak==='sq')id='sq';if(ak==='oct')id='oct';if(ak==='isis')id='isis';if(ak==='ut')id='ut';
+ if(ak==='r'){if(!d){q('bb-ar').innerHTML='<p>'+L3('Rentre le diamètre mesuré.','Enter the measured diameter.','请输入测得的直径。')+'</p>';return}
+  if(d<23)id='';else{if(d<=25)id=a22?'gxp':'ht24';else{if(d<26)id='ut';else{if(d<=29.5)id='dub';else{if(d<=30.5)id=alg?'s30l':'s30'}}}}}
+ var x=by(D.sp,id);
+ q('bb-ar').innerHTML=x?'<button type="button" class="top" data-pick-a="'+x.id+'">'+x.n+'<span>'+L3('choisir','pick','选择')+'</span></button>':'<p>'+L3('Diamètre inhabituel : revérifie la mesure (22, 24, 25, 29 ou 30 mm en général).','Unusual diameter: recheck (usually 22, 24, 25, 29 or 30 mm).','直径不常见：请复测（通常为 22、24、25、29 或 30 毫米）。')+'</p>';
+}
+function verdict(){
+ var s=by(D.sh,q('bb-s').value),a=by(D.sp,q('bb-a').value),v=q('bb-v');
+ var si=q('bb-s-i'),ai=q('bb-a-i');
+ si.innerHTML=s?L3(s.h[0],s.h[1],s.h[2])+' · '+(s.t==='v'?L3('vissé','threaded','螺纹'):'pressfit')+' · '+s.w.map(dec).join(' / ')+' mm · Ø '+dec(s.d)+' mm':L3('Choisis ton standard, ou mesure-le.','Pick your standard, or measure it.','选择标准，或进行测量。');
+ ai.innerHTML=a?(a.d?'Ø '+dec(a.d)+' mm':L3('Le boîtier fournit l’axe','The BB provides the spindle','中轴自带轴')):L3('Choisis ton axe, ou mesure-le.','Pick your spindle, or measure it.','选择轴型，或进行测量。');
+ q('bb-sf').classList.toggle('on',q('bb-s').value==='?');q('bb-af').classList.toggle('on',q('bb-a').value==='?');
+ if(!s){v.className='bb-ver sn';v.innerHTML='<div class="big">⏳</div><h3>'+L3('Étape 1 d’abord','Step 1 first','先完成第 1 步')+'</h3><p>'+L3('Dis-moi quelle boîte tu as.','Tell me which shell you have.','告诉我你的中轴壳。')+'</p>';return}
+ if(!a){v.className='bb-ver sn';v.innerHTML='<div class="big">⏳</div><h3>'+L3('Plus que l’étape 2','Just step 2 left','只剩第 2 步')+'</h3><p>'+L3('Choisis l’axe de ton pédalier.','Pick your crank spindle.','选择曲柄轴。')+'</p>';return}
+ var r=(D.r[s.f+'>'+a.id]||[0,'Combinaison inconnue.','Unknown combination.','未知组合。']).slice(),st=r[0];if(s.f==='thr'){var tn=s.id==='ita70'?'ITA':'BSA';r[1]=r[1].replace('BSA ou ITA',tn).replace(' (selon ta boîte)','');r[2]=r[2].replace('BSA or ITA',tn).replace(' (per your shell)','');r[3]=r[3].replace('BSA 或 ITA',tn).replace('（按中轴壳）','')}
+ if(s.id==='fr35'){st=a.k==='sq'?1:0;r=st?[1,'Boîtier à cartouche en filetage français 35 × 1 : ça existe encore (Velo Orange, Phil Wood…), mais c’est rare.','French 35 × 1 threaded cartridge BB: still made (Velo Orange, Phil Wood…), but rare.','法式 35 × 1 螺纹卡式中轴：仍有生产（Velo Orange、Phil Wood 等），但少见。']:[0,'Pas de boîtier pour cet axe en filetage français. Seule issue : faire retarauder la boîte en BSA ou ITA chez un pro.','No BB for this spindle in French thread. Only way out: have a pro re-tap the shell to BSA or ITA.','法式螺纹没有适配此轴的中轴。唯一办法：请专业人士把中轴壳重新攻丝成 BSA 或 ITA。']}
+ if(a.id==='s30'){if(s.id==='bb386'){st=0;r=[0,'Axe trop court : un pédalier BB30 ne traverse pas une boîte de 86,5 mm.','Spindle too short: a BB30 crank won’t span an 86.5 mm shell.','轴太短：BB30 曲柄无法穿过 86.5 毫米中轴壳。']}if(s.id==='bbr'){st=1;r=[1,'Boîtier BBright spécial « axe 30 standard » (C-Bear, Kogel, Wheels Mfg) qui recentre les roulements.','Special BBright BB for “standard 30 mm” cranks (C-Bear, Kogel, Wheels Mfg) that recentres the bearings.','适配“标准 30 毫米”曲柄的特殊 BBright 中轴（C-Bear、Kogel、Wheels Mfg），可重新定位轴承。']}if(s.id==='t47i'){st=0;r=[0,'Axe trop court pour une T47 de 86,5 mm : il faut un axe long.','Spindle too short for an 86.5 mm T47: you need a long spindle.','对 86.5 毫米 T47 来说轴太短：需要长轴。']}}
+ var wn='';if(s.f==='thr'){if(s.w[0]>=83){if(a.k==='r')wn=L3(' Boîte large : prends un pédalier prévu pour cette largeur (DH, fat, ou version « wide »).',' Wide shell: get a crank designed for that width (DH, fat, or “wide” version).',' 宽中轴壳：选择对应宽度的曲柄（速降、胖胎或宽版）。')}}
+ if(s.w[0]===73){if(a.k==='r'){wn=L3(' Vérifie que ton pédalier est en version VTT (73 mm) ou qu’il accepte une entretoise.',' Check your crank is the MTB version (73 mm) or takes a spacer.',' 确认曲柄为山地版（73 毫米）或可加垫片。')}}
+ v.className='bb-ver s'+st;
+ v.innerHTML='<div class="big">'+(st===2?'✅':(st===1?'⚠️':'❌'))+'</div><h3>'+(st===2?L3('Ça se monte !','It fits!','可以装！'):(st===1?L3('Ça se monte, avec une pièce spéciale','It fits, with a special part','需特殊零件才能装'):L3('Ça ne se monte pas','It won’t fit','装不了')))+'</h3><p>'+L3(r[1],r[2],r[3])+wn+'</p><small>'+s.n+' + '+a.n+'</small>';
+}
+function update(){fill();findShell();findAxle();verdict()}
+R.addEventListener('click',function(e){
+ var t=e.target.closest('[data-bt]');if(t){bt=t.getAttribute('data-bt');var b=R.querySelectorAll('[data-bt]');for(var i=0;i<b.length;i++)b[i].classList.toggle('on',b[i]===t);findShell();return}
+ t=e.target.closest('[data-ak]');if(t){ak=t.getAttribute('data-ak');var c=R.querySelectorAll('[data-ak]');for(var j=0;j<c.length;j++)c[j].classList.toggle('on',c[j]===t);findAxle();return}
+ if(e.target.closest('#bb-cl')){clip=!clip;q('bb-cl').classList.toggle('on',clip);findShell();return}
+ if(e.target.closest('#bb-22')){a22=!a22;q('bb-22').classList.toggle('on',a22);findAxle();return}
+ if(e.target.closest('#bb-lg')){alg=!alg;q('bb-lg').classList.toggle('on',alg);findAxle();return}
+ t=e.target.closest('[data-pick-s]');if(t){q('bb-s').value=t.getAttribute('data-pick-s');verdict();q('bb-s').scrollIntoView({behavior:'smooth',block:'center'});return}
+ t=e.target.closest('[data-pick-a]');if(t){q('bb-a').value=t.getAttribute('data-pick-a');verdict();q('bb-a').scrollIntoView({behavior:'smooth',block:'center'})}
+});
+R.addEventListener('input',function(){findShell();findAxle()});R.addEventListener('change',verdict);
+window.addEventListener('hashchange',update);
+update();
+})();
+</script>
+
+<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="ligne-de-chaine.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a><a data-app href="boitier.html" class=on><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
+<script>
+(function(){
+function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
+try{var s=localStorage.getItem('tdc-lang');if(s){if(!location.hash){history.replaceState(null,'',s)}}}catch(e){}
+sync();window.addEventListener('hashchange',sync);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-app]');if(a){if(location.hash){a.setAttribute('href',a.getAttribute('href').split('#')[0]+location.hash)}}});
+function net(){document.documentElement.classList.toggle('offline',!navigator.onLine)}net();window.addEventListener('online',net);window.addEventListener('offline',net);
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')})}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "appId": "com.tensiondechaine.atelier",
+  "appName": "L’atelier",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#0e1230"
+  }
+}

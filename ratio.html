@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Calculateur de ratio fixie – L’atelier Tension de chaine</title>
+<meta name="description" content="Développement, vitesse, skid patches, combos équivalents.">
+<meta name="theme-color" content="#0e1230">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+.tdc-menu,.tdc-mnav{display:none!important}
+.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-template-columns:repeat(7,1fr);background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
+.app-bar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 1px;border-radius:12px;color:#fff;text-decoration:none;font-weight:800;font-size:10px;line-height:1.1;-webkit-tap-highlight-color:transparent}
+.app-bar a.on{background:#d81b6a}
+.app-bar a:active{background:#ff4f9a;color:#0e1230}
+.app-bar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-bar .en,.app-bar .zh{display:none}
+html.l-en .app-bar .fr,html.l-zh .app-bar .fr{display:none}
+html.l-en .app-bar .en{display:inline}html.l-zh .app-bar .zh{display:inline}
+.app-off{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));translate:-50% 0;z-index:9999;background:#0e1230;color:#fff;font:800 12px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:99px;display:none}
+html.offline .app-off{display:block}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Base ---------- */
+.tdc{--rose:#ff4f9a;--rose-deep:#d81b6a;--rose-soft:#ffe3ef;--bleu:#2346ff;--bleu-soft:#e4e9ff;--ink:#0e1230;--blanc:#fff;
+  --r-s:14px;--r-m:22px;--r-l:32px;--ease:cubic-bezier(.2,.9,.2,1);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--blanc);line-height:1.5;font-size:16px;
+  width:100%;max-width:1240px;margin:0 auto;overflow:clip;-webkit-font-smoothing:antialiased}
+.tdc *,.tdc *::before,.tdc *::after{box-sizing:border-box}
+.tdc h1,.tdc h2,.tdc h3{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;line-height:1.05;margin:0;letter-spacing:-.01em;color:inherit}
+.tdc p,.tdc ul{margin:0}
+.tdc img{max-width:100%}
+.tdc a{transition:color .2s}
+.tdc a:focus-visible{outline:3px solid var(--bleu);outline-offset:3px;border-radius:99px}
+.tdc section{padding:72px 28px}
+.tdc .tdc-kicker{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:12px}
+.tdc h2{font-size:clamp(32px,5vw,52px);margin-bottom:32px}
+.tdc-block{margin:0 12px;border-radius:var(--r-l)}
+.tdc-block+.tdc-block{margin-top:24px}
+/* ---------- Thème WordPress : fond blanc, sans en-tête ni titre (uniquement sur cette page) ---------- */
+html,body,.wp-site-blocks,.site,.site-content,.entry-content,main{background:#fff!important}
+body>.wp-site-blocks>header,header.wp-block-template-part,.site-header,
+.wp-block-site-title,.wp-block-post-title,.entry-title,.page-title{display:none!important}
+.wp-site-blocks,.entry-content,main{padding-top:0!important;margin-top:0!important}
+/* Ton thème coupe l'écran en 2 colonnes (contenu à gauche, en-tête à droite) : on passe en une seule colonne pleine largeur */
+.wp-block-columns:has(.tdc){display:block!important;gap:0!important}
+.wp-block-columns:has(.tdc)>.wp-block-column:not(:has(.tdc)){display:none!important}
+.wp-block-column:has(.tdc){width:100%!important;max-width:none!important;flex-basis:auto!important}
+body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{display:none!important}
+:where(.wp-block-group,.entry-content,.wp-block-post-content,main):has(.tdc){max-width:none!important;width:100%!important;min-width:0!important;align-self:stretch!important;
+  padding-left:0!important;padding-right:0!important;padding-top:0!important;margin-left:0!important;margin-right:0!important;margin-top:0!important;gap:0!important}
+.wp-block-columns:has(.tdc) .wp-block-group:not(:has(.tdc)):has(.wp-block-navigation),footer.wp-block-template-part{display:none!important}
+/* ---------- Langue (sans script) ---------- */
+.tdc .en{display:none!important}
+.tdc:target .fr{display:none!important}
+.tdc:target .en{display:revert!important}
+.tdc:target .tdc-kicker.en{display:inline-block!important}
+.tdc:target small.en,.tdc:target .tdc-brm strong.en{display:block!important}
+.tdc:target .tdc-cta-btn .en{display:inline!important}
+.tdc .zh{display:none!important}
+.tdc-zw{display:block;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+.tdc-zw:target .tdc .fr,.tdc-zw:target .tdc .en{display:none!important}
+.tdc-zw:target .tdc .zh{display:revert!important}
+.tdc-zw:target .tdc .tdc-kicker.zh{display:inline-block!important}
+.tdc-zw:target .tdc small.zh,.tdc-zw:target .tdc .tdc-brm strong.zh{display:block!important}
+.tdc-zw:target .tdc .tdc-cta-btn .zh{display:inline!important}
+.tdc-zw:target .tdc .tdc-lang .b-fr{background:transparent}
+.tdc-zw:target .tdc-lang .b-zh{background:var(--rose-deep)}
+.tdc .zh{line-height:1.7}
+.tdc h1.zh,.tdc h2.zh,.tdc h3.zh,.tdc .tdc-big.zh,.tdc .tdc-tag.zh,.tdc .tdc-stat b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900;letter-spacing:0;line-height:1.25}
+.tdc .tdc-tag.zh{font-weight:600;line-height:1.7}
+/* Toujours visible en haut à droite */
+.tdc-lang{position:fixed;top:calc(16px + var(--wp-admin--admin-bar--height,0px));right:16px;z-index:9999;display:flex;pointer-events:none}
+.tdc-lang div{pointer-events:auto;background:var(--ink);border-radius:99px;padding:4px;display:flex;gap:2px;box-shadow:0 6px 20px rgba(14,18,48,.25)}
+.tdc-lang a{color:#fff!important;text-decoration:none!important;font-weight:800;font-size:13px;padding:9px 15px;border-radius:99px;line-height:1}
+.tdc:not(:target) .tdc-lang .b-fr,.tdc:target .tdc-lang .b-en{background:var(--rose-deep)}
+/* ---------- Hero ---------- */
+.tdc-hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;padding-top:56px!important;padding-bottom:56px!important}
+.tdc-hero h1{font-size:clamp(52px,6vw,84px)}
+.tdc-hero h1 span{color:var(--rose)}
+.tdc-tag{font-size:clamp(18px,2vw,21px);font-weight:600;margin:22px 0 24px!important;max-width:32ch}
+.tdc-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.tdc-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 22px;border-radius:99px;font-weight:800;font-size:16px;
+  color:#fff!important;text-decoration:none!important;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  transition:background-color .2s,transform .2s var(--ease),box-shadow .2s}
+.tdc-cta-btn.c1{background:var(--rose-deep)}
+.tdc-cta-btn.c2{background:var(--bleu)}
+.tdc-cta-btn.c1:hover,.tdc-cta-btn.c1:focus-visible,.tdc-cta-btn.c1:active{background:var(--bleu)}
+.tdc-cta-btn.c2:hover,.tdc-cta-btn.c2:focus-visible,.tdc-cta-btn.c2:active{background:var(--rose-deep)}
+.tdc-cta-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tdc-pills{display:flex;flex-wrap:wrap;gap:8px}
+.tdc-pills span{background:var(--bleu-soft);color:var(--bleu);font-weight:800;font-size:13px;padding:6px 12px;border-radius:99px}
+.tdc-net-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;max-width:330px}
+.tdc-net-btns a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;font-size:14px;padding:11px 15px;border-radius:99px}
+.tdc-net-btns a:nth-child(odd){background:var(--rose-deep)}
+.tdc-net-btns svg{width:18px;height:18px;fill:currentColor;flex:none}
+.tdc-photo{position:relative;display:flex;justify-content:center;align-items:center}
+.tdc-photo img{display:block;width:100%;height:auto;border-radius:var(--r-l)}
+/* ---------- Bandeau ---------- */
+.tdc-ticker{background:var(--rose);color:var(--ink);rotate:-2deg;margin:8px -24px 64px;padding:14px 0;overflow:hidden;
+  font-family:"Archivo Black",Impact,sans-serif;font-size:20px;white-space:nowrap;border-block:3px solid var(--ink)}
+.tdc-ticker>div{display:inline-flex}
+/* ---------- Chiffres ---------- */
+.tdc-stats{background:var(--ink);color:#fff}
+.tdc-stats .tdc-kicker{color:var(--rose)}
+.tdc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tdc-stat{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:22px}
+.tdc-stat b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.1;color:var(--rose)}
+.tdc-stat small{display:block;opacity:.8;font-size:13px;margin-top:6px}
+.tdc-net{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+.tdc-audience{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:32px;font-size:15px}
+.tdc-audience strong{color:var(--rose)}
+.tdc-foot{font-size:13px;opacity:.75;margin-top:18px!important}
+/* ---------- Cartes ---------- */
+.tdc-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.tdc-card{position:relative;border:3px solid var(--ink);border-radius:var(--r-m);padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.tdc-card h3{font-size:22px}
+.tdc-num{font-weight:800;color:var(--bleu);font-size:15px}
+.tdc-card.rose{background:var(--rose-soft)}
+.tdc-card.bleu{background:var(--bleu-soft)}
+.tdc-video{position:relative;aspect-ratio:16/9;width:100%;border-radius:var(--r-s);background:var(--ink);overflow:hidden}
+.tdc-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tdc-ig{aspect-ratio:auto;height:560px;max-width:340px;margin:0 auto;background:#fff;border:1px solid #e6e6e6}
+.tdc-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r-s);overflow:hidden;background:var(--ink)}
+.tdc-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:scale .4s var(--ease)}
+.tdc-thumb::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:28px;translate:-50% -50%;border-radius:8px;
+  background:var(--rose-deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9 7v10l8-5z'/%3E%3C/svg%3E") center/18px no-repeat;
+  box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.tdc-card .tdc-btn{margin-top:4px;text-align:center;font-size:15px}
+/* ---------- Ils m'ont fait confiance (masqué tant qu'il n'y a pas de logo) ---------- */
+.tdc-logos:not(:has(img)){display:none!important}
+.tdc-logos{padding-bottom:0!important}
+/* Deux rangées de logos qui glissent en sens inverse quand on fait défiler la page */
+.tdc-marquee{display:grid;gap:14px;margin:0 -28px;padding:6px 0 10px;overflow:clip;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tdc-row{display:flex;gap:14px;width:max-content}
+.tdc-logo{flex:0 0 auto;width:210px;display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;padding:20px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-m);transition:box-shadow .25s,border-color .25s}
+.tdc-logo img{display:block;max-width:88%;max-height:52px;width:auto;height:auto;object-fit:contain}
+.tdc-logo.carre img{max-height:84px}
+.tdc-row-b .tdc-logo{background:var(--bleu-soft)}
+@media (hover:hover){.tdc-logo:hover{box-shadow:6px 6px 0 var(--rose)}}
+@keyframes tdc-row-ltr{from{translate:-45% 0}to{translate:0 0}}
+@keyframes tdc-row-rtl{from{translate:0 0}to{translate:-45% 0}}
+@media (prefers-reduced-motion:no-preference){
+  /* Navigateurs récents : le mouvement suit le scroll */
+  @supports (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+    .tdc-row-b{animation:tdc-row-rtl linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+  /* Autres navigateurs : léger va-et-vient automatique */
+  @supports not (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr 40s ease-in-out infinite alternate}
+    .tdc-row-b{animation:tdc-row-rtl 40s ease-in-out infinite alternate}
+  }
+}
+/* Animations réduites : rangées défilables au doigt */
+@media (prefers-reduced-motion:reduce){.tdc-marquee{overflow-x:auto}}
+@media (max-width:980px){.tdc-logo{width:170px;padding:14px}.tdc-logo img{max-height:42px}.tdc-logo.carre img{max-height:66px}}
+@media (max-width:720px){.tdc-marquee{gap:10px;margin:0 -20px}.tdc-row{gap:10px}.tdc-logo{width:140px;padding:12px}.tdc-logo img{max-height:36px}.tdc-logo.carre img{max-height:58px}}
+/* ---------- Étude de cas ---------- */
+.tdc-rosa{background:var(--rose-soft)}
+.tdc-rosa .tdc-kicker{color:#b8155a}
+.tdc-case{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tdc-brands{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}
+.tdc-brands span{border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px;background:#fff}
+.tdc-big{font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(34px,4vw,44px);line-height:1.1;color:var(--rose-deep);margin-bottom:6px!important}
+.tdc-sub{font-weight:800;margin-bottom:16px!important}
+.tdc-bars{display:flex;flex-direction:column;gap:12px}
+.tdc-bar{display:grid;grid-template-columns:118px 1fr 76px;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.tdc-bar i{display:block;height:14px;border-radius:99px;background:var(--rose)}
+.tdc-bar:nth-child(even) i{background:var(--bleu)}
+.tdc-bar em{font-style:normal;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.tdc-bar small{opacity:.6;font-size:12px}
+.tdc-shot{display:block;width:100%;height:auto;border-radius:var(--r-m);margin-top:26px;border:3px solid var(--ink)}
+/* ---------- Podcast La Selle ---------- */
+.tdc-pod{background:var(--bleu-soft)}
+.tdc-pod-in{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.tdc-pod .tdc-kicker{color:var(--bleu)}
+.tdc-pod p{max-width:52ch}
+.tdc-pod-series{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
+.tdc-pod-series span{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px}
+.tdc-pod-note{font-size:14px;opacity:.8;margin-top:14px!important}
+.tdc-pod-cover{display:block;aspect-ratio:1;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff;box-shadow:10px 10px 0 var(--rose);transition:transform .25s var(--ease),box-shadow .25s}
+.tdc-pod-cover img{display:block;width:100%;height:100%;object-fit:cover}
+@media (hover:hover){.tdc-pod-cover:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:14px 14px 0 var(--rose)}}
+@media (max-width:720px){.tdc-pod-in{grid-template-columns:1fr;gap:28px}.tdc-pod-cover{max-width:300px;width:100%;margin:0 auto;box-shadow:8px 8px 0 var(--rose)}}
+/* ---------- Étude de cas 2 : Superséxu (fond bleu nuit) ---------- */
+.tdc-sexu{background:var(--ink);color:#fff}
+.tdc-sexu .tdc-kicker{color:var(--rose)}
+.tdc-sexu .tdc-brands span{background:#fff;color:var(--ink);border-color:#fff}
+.tdc-sexu .tdc-big{color:var(--rose)}
+.tdc-sexu .tdc-bar em{color:#fff}
+.tdc-sexu .tdc-thumbs{margin-top:10px}
+.tdc-sexu .tdc-video{border:2px solid rgba(255,255,255,.15)}
+.tdc-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.tdc-kpis>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:18px 16px}
+.tdc-kpis b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;color:var(--rose)}
+.tdc-kpis b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900}
+.tdc-kpis small{display:block;font-size:13px;opacity:.85;margin-top:4px}
+.tdc-kpi-note{font-size:15px;margin-top:16px!important;opacity:.9}
+/* ---------- Offres ---------- */
+.tdc-offers .tdc-card{padding-top:20px}
+.tdc-idx{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink)}
+.tdc-card ul{padding-left:18px;font-size:15px;display:grid;gap:4px}
+.tdc-cta{margin-top:32px;text-align:center}
+.tdc-cta>p:first-child,.tdc-cta>p.en:nth-child(2){font-weight:800;font-size:18px}
+.tdc-note{font-size:13px;opacity:.75;margin-top:18px!important;text-align:center}
+.tdc-btn{display:inline-block;margin-top:20px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;padding:16px 28px;border-radius:99px;font-size:17px}
+.tdc-btn.rose{background:var(--rose-deep)}
+.tdc-contact-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.tdc-contact-btns .tdc-btn{margin-top:0}
+.tdc-btn.tdc-btn-ghost{background:transparent;color:var(--ink)!important;border:3px solid var(--ink);padding:13px 25px}
+.tdc-brm{position:relative;margin-top:64px;color:#fff;border-radius:var(--r-l);padding:44px 36px;min-height:240px;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+  background:linear-gradient(100deg,rgba(14,18,48,.92) 0%,rgba(35,70,255,.75) 60%,rgba(35,70,255,.3) 100%),
+  url("https://tensiondechaine.com/wp-content/uploads/2026/11/PXL_20260719_1609079542.jpg") center/cover var(--ink)}
+.tdc-brm b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:44px;line-height:1}
+.tdc-brm strong{display:block;font-size:19px;margin-bottom:6px}
+.tdc-brm p{max-width:46ch}
+/* ---------- Me soutenir (liens affiliés) ---------- */
+.tdc-support{padding-top:24px!important}
+.tdc-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-perk{border:3px solid var(--ink);border-radius:var(--r-m);padding:20px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.tdc-perk:nth-child(odd){background:var(--rose-soft)}
+.tdc-perk h3{font-size:20px;min-height:34px;display:flex;align-items:center}
+.tdc-perk-logo img{display:block;height:34px;width:auto;max-width:100%}
+.tdc-perk p{font-size:15px}
+.tdc-code{align-self:flex-start;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:16px;letter-spacing:.08em;background:var(--ink);color:#fff;border-radius:8px;padding:6px 12px;user-select:all}
+.tdc-perk .tdc-btn{margin-top:auto;padding:12px 18px;font-size:15px;text-align:center}
+.tdc-affil{font-size:13px;opacity:.75;margin-top:16px!important}
+@media (max-width:980px){.tdc-support-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.tdc-support-grid{grid-template-columns:1fr}}
+/* ---------- Contact ---------- */
+.tdc-contact{position:relative;background:var(--rose);color:var(--ink);margin-top:40px;margin-bottom:24px}
+.tdc-contact-in{padding-right:44%;min-height:300px}
+.tdc-contact h2{color:#fff;margin-bottom:14px;-webkit-text-stroke:0}
+.tdc-mail{font-weight:800;margin-top:8px!important;font-size:18px}
+.tdc-contact-img{position:absolute;right:2%;bottom:-40px;width:420px;height:420px;max-width:42%;object-fit:cover;object-position:50% 50%;pointer-events:none;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
+.tdc-socials{display:flex;flex-wrap:wrap;gap:0 20px;margin-top:14px;font-weight:800}
+.tdc-socials a{color:var(--ink)!important;display:inline-block;padding:10px 0}
+.tdc-peace{margin-top:14px!important;font-weight:600}
+/* ---------- Animations (CSS uniquement) ---------- */
+@keyframes tdc-marquee{to{translate:-50% 0}}
+@keyframes tdc-up{from{opacity:0;translate:0 60px}to{opacity:1;translate:0 0}}
+@keyframes tdc-left{from{opacity:0;translate:-70px 0;rotate:-3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-right{from{opacity:0;translate:70px 0;rotate:3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-zoom{from{opacity:0;scale:.6;rotate:-6deg}to{opacity:1;scale:1;rotate:0deg}}
+@keyframes tdc-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes tdc-pop{0%{opacity:0;scale:.3;rotate:-20deg}60%{opacity:1;scale:1.15;rotate:6deg}100%{opacity:1;scale:1;rotate:-3deg}}
+@keyframes tdc-grow{from{scale:0 1}to{scale:1 1}}
+@keyframes tdc-float{50%{translate:0 -12px;rotate:1deg}}
+@keyframes tdc-spin{to{rotate:360deg}}
+@keyframes tdc-wiggle{0%,100%{rotate:0deg}25%{rotate:-6deg}75%{rotate:6deg}}
+@keyframes tdc-pulse{0%{box-shadow:0 0 0 0 rgba(14,18,48,.45)}100%{box-shadow:0 0 0 22px rgba(14,18,48,0)}}
+@keyframes tdc-shine{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes tdc-rise{from{opacity:0;translate:0 120px;scale:.85}to{opacity:1;translate:0 0;scale:1}}
+@keyframes tdc-parallax{to{translate:0 -60px}}
+@media (prefers-reduced-motion:no-preference){
+  .tdc-ticker>div{animation:tdc-marquee 24s linear infinite}
+  /* Ouverture de page */
+  .tdc-hero>div:first-child>*{animation:tdc-up .9s var(--ease) both}
+  .tdc-hero h1{animation-delay:.08s}
+  .tdc-tag{animation-delay:.2s!important}
+  .tdc-hero h1 span{display:inline-block;animation:tdc-pop 1s .5s var(--ease) both}
+  .tdc-pills span,.tdc-net-btns a,.tdc-cta-btn{animation:tdc-zoom .5s var(--ease) both}
+  .tdc-cta-btn.c2{animation-delay:.3s}.tdc-cta-btn.c1{animation-delay:.38s}
+  .tdc-ctas{animation:none!important}
+  .tdc-pills span:nth-child(1){animation-delay:.45s}.tdc-pills span:nth-child(2){animation-delay:.5s}
+  .tdc-pills span:nth-child(3),.tdc-pills span:nth-child(4){animation-delay:.55s}
+  .tdc-pills span:nth-child(5){animation-delay:.6s}.tdc-pills span:nth-child(6){animation-delay:.65s}
+  .tdc-net-btns a:nth-child(1){animation-delay:.7s}.tdc-net-btns a:nth-child(2){animation-delay:.78s}
+  .tdc-net-btns a:nth-child(3){animation-delay:.86s}.tdc-net-btns a:nth-child(4){animation-delay:.94s}
+  .tdc-photo{animation:tdc-zoom 1s .15s var(--ease) both}
+  .tdc-photo img{animation:tdc-float 5s 1.2s ease-in-out infinite}
+    .tdc-lang div{animation:tdc-zoom .6s .9s var(--ease) both}
+  /* En continu */
+  .tdc-contact .tdc-btn{animation:tdc-pulse 1.8s ease-out infinite}
+  .tdc-big{background:linear-gradient(100deg,var(--rose-deep) 40%,var(--rose) 50%,var(--rose-deep) 60%) 0 0/250% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:tdc-shine 4s linear infinite}
+  /* Au scroll : Chrome, Edge, Safari récents. Ailleurs, tout s'affiche sans animation. */
+  @supports (animation-timeline:view()){
+    .tdc-hero{animation:tdc-parallax linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+    .tdc h2{animation:tdc-reveal linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+    .tdc-kicker{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+    .tdc-stat{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    .tdc-stat:nth-child(2){animation-range:entry 8% entry 68%}
+    .tdc-stat:nth-child(3){animation-range:entry 16% entry 76%}
+    .tdc-stat:nth-child(4){animation-range:entry 24% entry 84%}
+    .tdc-audience>span{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-card:nth-child(odd){animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-card:nth-child(even){animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-case>div:first-child{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-case>div:last-child{animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-brands span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-bar i{transform-origin:left;animation:tdc-grow linear both;animation-timeline:view();animation-range:entry 30% cover 40%}
+    .tdc-pod-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-pod-series span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-kpis>div{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+    .tdc-perk{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-shot{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-brm{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-contact-img{animation:tdc-rise linear both;animation-timeline:view();animation-range:entry 10% entry 70%}
+    .tdc-contact h2{animation:tdc-pop linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+  }
+  /* Survol : uniquement souris/trackpad, pas sur téléphone */
+  @media (hover:hover){
+    .tdc-card,.tdc-stat{transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
+    .tdc-card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:10px 10px 0 var(--rose)}
+    .tdc-card.rose:hover{box-shadow:10px 10px 0 var(--bleu)}
+    .tdc-stat:hover{transform:translateY(-6px) rotate(1deg);background-color:rgba(255,79,154,.18)}
+    .tdc-btn,.tdc-net-btns a,.tdc-pills span,.tdc-brands span,.tdc-shot{transition:transform .2s var(--ease)}
+    .tdc-btn:hover,.tdc-net-btns a:hover{transform:scale(1.07) rotate(-3deg)}
+    .tdc-cta-btn:hover{transform:translate(-2px,-2px) rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+    .tdc-pills span:hover,.tdc-brands span:hover{transform:rotate(-6deg) scale(1.12)}
+    .tdc-shot:hover{transform:scale(1.02) rotate(.5deg)}
+    .tdc-thumb:hover img{scale:1.08}
+    .tdc-card a.tdc-btn:hover{animation:tdc-wiggle .3s ease-in-out 3}
+    .tdc-ticker:hover>div{animation-play-state:paused}
+    .tdc-socials a:hover{color:#fff!important}
+  }
+}
+/* ---------- Petits ordis et tablettes : 2 cartes par ligne (les reels Instagram ont besoin de 326 px minimum) ---------- */
+@media (max-width:1180px){
+  .tdc-grid3{grid-template-columns:1fr 1fr}
+  .tdc-grid3>.tdc-card:last-child{grid-column:1/-1}
+  .tdc-grid3>.tdc-card:last-child :is(.tdc-video,.tdc-thumbs){width:100%;max-width:640px;margin-inline:auto}
+}
+@media (max-width:900px){.tdc-grid3{grid-template-columns:1fr}}
+/* ---------- Tablette ---------- */
+@media (max-width:980px){
+  .tdc-grid4{grid-template-columns:repeat(2,1fr)}
+}
+/* ---------- Mobile ---------- */
+@media (max-width:720px){
+  .tdc section{padding:52px 20px}
+  .tdc-block{margin:0 8px}
+  .tdc-block+.tdc-block{margin-top:16px}
+  .tdc-hero,.tdc-case{grid-template-columns:1fr}
+  .tdc-lang{top:calc(10px + env(safe-area-inset-top,0px));right:10px}
+  .tdc-lang a{font-size:12px;padding:9px 12px}
+  .tdc-lang div{padding:3px}
+  .tdc-hero{gap:28px}
+  .tdc-ctas{flex-direction:column}
+  .tdc-cta-btn{width:100%}
+  .tdc-photo{max-width:440px;margin:0 auto}
+  .tdc-grid3{grid-template-columns:1fr}
+  .tdc-card .tdc-ig{max-width:none;width:calc(100% + 48px);margin:0 -24px;border-left:0;border-right:0;border-radius:0}
+  .tdc-grid4{gap:10px}
+  .tdc-stat{padding:16px}
+  .tdc-ticker{font-size:16px;margin-bottom:48px}
+  .tdc-bar{grid-template-columns:96px 1fr 64px;font-size:13px}
+  .tdc-brm{grid-template-columns:1fr;padding:32px 24px;gap:14px}
+  .tdc-brm b{font-size:38px}
+  .tdc-kpis{gap:8px}
+  .tdc-kpis>div{padding:14px 10px}
+  .tdc-kpis b{font-size:22px;white-space:nowrap}
+  .tdc-kpis small{font-size:12px}
+  .tdc-contact{display:flex;flex-direction:column;padding-bottom:0!important;margin-top:48px;text-align:center}
+  .tdc-contact-in{padding-right:0;min-height:0}
+  .tdc-socials{justify-content:center}
+  .tdc-contact-btns{justify-content:center}
+  .tdc-contact-img{position:relative;right:auto;bottom:auto;order:2;display:block;width:300px;height:300px;max-width:85%;margin:24px auto -29px}
+}
+/* ---------- Accueil : L'atelier ---------- */
+.tdc-atelier .tdc-at-lead{max-width:60ch;margin-bottom:24px}
+.tdc-at-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-at-card{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:16px;color:var(--ink)!important;text-decoration:none!important;box-shadow:8px 8px 0 var(--rose);transition:translate .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.tdc-at-card:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--rose)}}
+.tdc-at-card:active{translate:4px 4px;box-shadow:4px 4px 0 var(--rose)}
+.tdc-at-ic{flex:none;width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.tdc-at-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tdc-at-tx{display:grid;gap:4px;flex:1;min-width:0}
+.tdc-at-tx b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:18px;line-height:1.1}
+.tdc-at-tx small{font-size:13px;font-weight:600;opacity:.8;line-height:1.35}
+.tdc-at-go{font-family:"Archivo Black",Impact,sans-serif;font-size:22px}
+@media (max-width:980px){.tdc-at-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.tdc-at-grid{grid-template-columns:1fr}.tdc-at-card{box-shadow:6px 6px 0 var(--rose)}}
+/* ---------- Menu flottant (bord droit) ---------- */
+.tdc-menu{position:fixed;right:14px;top:50%;translate:0 -50%;z-index:9998;display:flex;flex-direction:column;gap:6px;background:var(--ink);padding:6px;border-radius:99px;box-shadow:0 8px 24px rgba(14,18,48,.3)}
+.tdc-menu a,.tdc-mnav a,.tdc-mnav summary{-webkit-tap-highlight-color:transparent}
+.tdc-menu a{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff!important;text-decoration:none!important;transition:background-color .2s}
+.tdc-menu svg,.tdc-mnav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tdc-menu a.is-active{background:var(--rose-deep)}
+.tdc-sub{position:relative}
+.tdc-sub-b{all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff;cursor:pointer;transition:background-color .2s;-webkit-tap-highlight-color:transparent}
+.tdc-sub.is-active .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub.open .tdc-sub-b{background:rgba(255,255,255,.18)}.tdc-sub.is-active.open .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub-b:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.tdc-sub-panel{position:absolute;right:calc(100% + 14px);top:50%;translate:0 -50%;min-width:260px;display:none;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+.tdc-sub-panel::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:16px}
+.tdc-sub.open .tdc-sub-panel{display:grid}
+.tdc-sub-t,.tdc-mnav-t{margin:0!important;padding:8px 12px 4px;color:var(--rose)!important;font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.tdc-sub-panel a{width:auto;height:auto;border-radius:14px;justify-content:flex-start;gap:12px;padding:11px 14px;font-weight:800;font-size:14px;line-height:1.2;white-space:nowrap}
+.tdc-sub.open .tdc-menu-label{opacity:0!important}
+@media (hover:hover){.tdc-sub:hover .tdc-sub-panel{display:grid}.tdc-sub:hover .tdc-menu-label{opacity:0!important}.tdc-sub-b:hover{background:rgba(255,255,255,.14)}.tdc-sub.is-active .tdc-sub-b:hover{background:var(--rose-deep)}}
+@media (prefers-reduced-motion:no-preference){.tdc-sub.open .tdc-sub-panel,.tdc-sub:hover .tdc-sub-panel{animation:tdc-zoom .25s var(--ease) both}}
+.tdc-menu-label{position:absolute;right:calc(100% + 12px);top:50%;translate:0 -50%;white-space:nowrap;background:var(--ink);color:#fff;font-weight:800;font-size:13px;line-height:1;padding:9px 13px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s;box-shadow:0 6px 16px rgba(14,18,48,.25)}
+@media (hover:hover){.tdc-menu a:hover{background:rgba(255,255,255,.14)}.tdc-menu a.is-active:hover{background:var(--rose-deep)}.tdc-menu>a:hover .tdc-menu-label,.tdc-sub-b:hover .tdc-menu-label{opacity:1;translate:-4px -50%}}
+.tdc-menu>a:focus-visible .tdc-menu-label{opacity:1}
+@media (prefers-reduced-motion:no-preference){.tdc-menu{animation:tdc-zoom .6s 1s var(--ease) both}}
+@media (min-width:1025px){.tdc{max-width:min(1240px,calc(100vw - 172px))!important}}
+/* Menu mobile : un bouton qui ouvre la liste des pages avec leur nom */
+.tdc-mnav{display:none}
+@media (max-width:1024px){
+  .tdc-menu{display:none}
+  .tdc-mnav{display:block;position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9998}
+  .tdc-mnav summary{list-style:none;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(14,18,48,.35);transition:background-color .2s}
+  .tdc-mnav summary::-webkit-details-marker{display:none}
+  .tdc-mnav summary::marker{content:""}
+  .tdc-mnav .i-close{display:none}
+  .tdc-mnav[open] summary{background:var(--rose-deep)}
+  .tdc-mnav[open] .i-open{display:none}
+  .tdc-mnav[open] .i-close{display:block}
+  .tdc-mnav-panel{position:absolute;right:0;bottom:calc(100% + 10px);min-width:236px;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;transform-origin:100% 100%;display:grid;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+  .tdc-mnav-panel a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;color:#fff!important;text-decoration:none!important;font-weight:800;font-size:15px;line-height:1.2;white-space:nowrap}
+  .tdc-mnav-panel a{transition:background-color .15s,scale .15s}
+  .tdc-mnav-panel a.is-active{background:var(--rose-deep)}
+  .tdc-mnav-t{border-top:1px solid rgba(255,255,255,.15);margin-top:4px!important;padding-top:12px}
+  .tdc-mnav-panel a.sub{padding:10px 14px 10px 22px;font-size:14px}
+  .tdc-mnav-lang{display:flex;gap:4px;padding:4px;margin-bottom:4px;background:rgba(255,255,255,.08);border-radius:16px}
+  .tdc-mnav-panel .tdc-mnav-lang a{flex:1;justify-content:center;padding:10px 6px;font-size:14px;border-radius:12px}
+  .tdc:not(:target) .tdc-mnav-lang .b-fr,.tdc:target .tdc-mnav-lang .b-en,.tdc-zw:target .tdc-mnav-lang .b-zh{background:var(--rose-deep)}
+  .tdc-zw:target .tdc .tdc-mnav-lang .b-fr{background:transparent}
+  .tdc-lang{position:absolute!important}
+  .tdc-mnav-panel a:active,.tdc-mnav-panel a:focus{background:var(--rose)!important;color:var(--ink)!important;scale:.96;outline:none}
+  @media (prefers-reduced-motion:no-preference){.tdc-mnav[open] .tdc-mnav-panel{animation:tdc-zoom .25s var(--ease) both}.tdc-mnav{animation:tdc-zoom .6s 1s var(--ease) both}}
+}
+.tdc-swipe{display:none;margin:0 0 8px!important;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rose-deep)}
+.tdc-swipe b{display:inline-block;animation:tdc-swipe 1.6s ease-in-out infinite}
+@keyframes tdc-swipe{0%,100%{translate:-3px 0}50%{translate:3px 0}}
+@media (max-width:900px){.tdc-swipe{display:block}}
+@media (max-width:720px){.tdc-page-hero h1{font-size:min(52px,calc((100vw - 48px)/7.9))!important}.tdc-hero>*{min-width:0}}
+.tdc h1>span.t1{color:inherit!important;animation:none!important;display:inline}
+.tdc h1>span.t1.en,.tdc h1>span.t1.zh{display:none}
+/* ---------- Pages Podcast & Cabinet ---------- */
+.tdc-page-hero{padding-top:56px!important}
+.tdc-lead{font-size:clamp(18px,2vw,21px);font-weight:600;margin:20px 0 24px!important;max-width:36ch}
+.tdc-lead-wide{max-width:60ch;font-weight:400}
+.tdc-player{border:3px solid var(--ink);border-radius:var(--r-m);overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--rose)}
+.tdc-player iframe{display:block}
+.tdc-actions{display:flex;flex-wrap:wrap;gap:10px}
+.tdc-actions .tdc-btn{margin-top:0}
+.tdc-cover{display:block;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;box-shadow:12px 12px 0 var(--rose);max-width:460px;width:100%;justify-self:center}
+.tdc-cover img{display:block;width:100%;height:auto}
+.tdc-series{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tdc-series .tdc-card h3{font-size:20px}
+.tdc-tag-new{align-self:flex-start;background:var(--bleu);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:5px 10px}
+.tdc-eps{display:grid;gap:12px}
+.tdc-ep{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;border:3px solid var(--ink);border-radius:var(--r-m);padding:18px 22px;background:#fff}
+.tdc-ep-n{font-family:"Archivo Black",Impact,sans-serif;font-size:34px;line-height:1;color:var(--rose-deep)}
+.tdc-ep h3{font-size:20px}
+.tdc-ep p{font-size:15px;opacity:.85}
+.tdc-ep.soon{background:var(--bleu-soft);border-style:dashed}
+.tdc-ep .tdc-btn{margin-top:0;padding:12px 18px;font-size:15px}
+.tdc-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+.tdc-step{border:3px solid var(--ink);border-radius:var(--r-m);padding:22px;background:#fff;counter-increment:st}
+.tdc-step::before{content:counter(st,decimal-leading-zero);display:block;font-family:"Archivo Black",Impact,sans-serif;font-size:40px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink);margin-bottom:10px}
+.tdc-step h3{font-size:20px;margin-bottom:6px}
+.tdc-step p{font-size:15px}
+.tdc-scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:8px}
+.tdc-scale>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:16px 10px;text-align:center}
+.tdc-teeth{display:flex;justify-content:center;gap:2px;min-height:26px;flex-wrap:wrap}
+.tdc-teeth svg{width:22px;height:22px;fill:var(--rose);stroke:none}
+.tdc-scale b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:26px;margin-top:8px}
+.tdc-scale small{display:block;font-size:13px;opacity:.85;min-height:2.6em;margin-top:4px}
+.tdc-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-rules .tdc-card p{font-size:15px}
+.tdc-final{text-align:center}
+.tdc-final p{max-width:46ch;margin:0 auto!important}
+.tdc-final .tdc-actions{justify-content:center;margin-top:22px}
+.tdc-final .tdc-peace{margin-top:22px!important}
+@media (max-width:980px){.tdc-series{grid-template-columns:repeat(2,minmax(0,1fr))}.tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr))}.tdc-scale small{font-size:12px}}
+@media (max-width:720px){
+  .tdc-steps,.tdc-rules,.tdc-series{grid-template-columns:1fr}
+  .tdc-ep{grid-template-columns:auto 1fr;padding:16px}
+  .tdc-ep .tdc-btn{grid-column:1/-1;text-align:center}
+  .tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .tdc-scale>div{padding:12px 4px}
+  .tdc-teeth svg{width:14px;height:14px}
+  .tdc-scale b{font-size:20px}
+  .tdc-scale small{font-size:11px}
+  .tdc-cover{max-width:340px;box-shadow:8px 8px 0 var(--rose)}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-step,.tdc-ep,.tdc-scale>div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  .tdc-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Calculateur de ratio ---------- */
+.tdc-hero.tdc-solo{grid-template-columns:1fr;padding-bottom:36px!important}
+.tdc-hero.tdc-solo .tdc-lead{max-width:52ch}
+.tdc-calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:stretch}
+.tdc-ctrl{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:24px;display:grid;gap:18px;align-content:start;box-shadow:10px 10px 0 var(--ink)}
+.tdc-fl{display:block;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.tdc-fl small{font-weight:600;letter-spacing:0;text-transform:none;opacity:.7}
+.tdc-num{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;border:3px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.tdc-num:focus-within{box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-num button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;line-height:1;background:var(--rose-soft);color:var(--ink);transition:background-color .15s,scale .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.tdc-num button:active{background:var(--rose)}
+.tdc-num button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+@media (hover:hover){.tdc-num button:hover{background:var(--rose)}}
+.tdc-num input{all:unset;box-sizing:border-box;width:100%;min-width:0;text-align:center;font-family:"Archivo Black",Impact,sans-serif;font-size:30px;line-height:1;padding:10px 0;color:var(--ink);-moz-appearance:textfield;appearance:textfield}
+.tdc-num input::-webkit-inner-spin-button,.tdc-num input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-sel{box-sizing:border-box;width:100%;-webkit-appearance:none;appearance:none;border:3px solid var(--ink);border-radius:16px;padding:14px 46px 14px 16px;font:800 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e1230' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/20px;cursor:pointer}
+.tdc-sel:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-switch{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800;cursor:pointer;border-top:2px dashed rgba(14,18,48,.2);padding-top:16px}
+.tdc-switch small{display:block;font-weight:600;font-size:13px;opacity:.7}
+.tdc-switch input{-webkit-appearance:none;appearance:none;flex:none;width:56px;height:32px;margin:0;border:3px solid var(--ink);border-radius:99px;background:#fff;position:relative;cursor:pointer;transition:background-color .2s}
+.tdc-switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:translate .2s var(--ease)}
+.tdc-switch input:checked{background:var(--rose)}
+.tdc-switch input:checked::after{translate:24px 0}
+.tdc-switch input:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-bp{position:relative;border:3px solid var(--ink);border-radius:var(--r-l);overflow:clip;color:#fff;background-color:var(--bleu);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px);background-size:16px 16px,16px 16px,80px 80px,80px 80px;box-shadow:10px 10px 0 var(--rose);display:flex;align-items:center}
+.tdc-bp svg{display:block;width:100%;height:auto}
+.tdc-bp .ln{fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tdc-bp .lf{fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:1}
+.tdc-bp .tire{fill:none;stroke:#fff;stroke-opacity:.14}
+.tdc-bp .sk{fill:none;stroke:var(--rose);stroke-width:6;stroke-linecap:round}
+.tdc-bp .ch{fill:none;stroke:var(--rose);stroke-width:3.5;stroke-dasharray:5 3.5;stroke-linejoin:round}
+.tdc-bp text{fill:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
+.tdc-bp .t-big{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;letter-spacing:0}
+.tdc-bp .t-rose{fill:var(--rose)}
+.tdc-bp-play{all:unset;position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+.tdc-bp-play:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media (hover:hover){.tdc-bp-play:hover{background:var(--rose-deep)}}
+.tdc-bp-play svg{width:16px;height:16px;fill:currentColor}
+.tdc-bp-play .i-play{display:none}
+.tdc-bp.paused .tdc-bp-play .i-play{display:block}
+.tdc-bp.paused .tdc-bp-play .i-pause{display:none}
+.tdc-res{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px}
+.tdc-res>div{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tdc-res>div.hot{background:var(--ink);color:#fff}
+.tdc-res>div.pk{background:var(--rose)}
+.tdc-res .tdc-rl{font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.tdc-res b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(26px,2.8vw,36px);line-height:1;font-variant-numeric:tabular-nums}
+.tdc-res b i{font-style:normal;font-size:.5em;margin-left:3px}
+.tdc-res small{font-size:13px;line-height:1.35;opacity:.85}
+.tdc-verdict{margin-top:16px;border:3px dashed var(--ink);border-radius:var(--r-m);padding:16px 20px;background:var(--rose-soft);font-weight:600;display:flex;gap:14px;align-items:flex-start}
+.tdc-verdict>b{flex:none;font-size:26px;line-height:1}
+.tdc-verdict p{margin:0!important}
+.tdc-eqt{width:100%;border-collapse:separate;border-spacing:0 8px;font-variant-numeric:tabular-nums;margin-top:-8px}
+.tdc-eqt th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:0 14px;font-weight:800;opacity:.75}
+.tdc-eqt th:last-child,.tdc-eqt td:last-child{text-align:right}
+.tdc-eqt td{background:#fff;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:12px 14px;font-weight:700;transition:background-color .15s}
+.tdc-eqt td:first-child{border-left:3px solid var(--ink);border-radius:14px 0 0 14px;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;white-space:nowrap}
+.tdc-eqt td:last-child{border-right:3px solid var(--ink);border-radius:0 14px 14px 0}
+.tdc-eqt tr.go{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tdc-eqt tr.go:active td{background:var(--rose)}
+@media (hover:hover){.tdc-eqt tr.go:hover td{background:var(--rose-soft)}}
+.tdc-eqt .d0{color:var(--rose-deep)}
+.tdc-eqt button{all:unset;cursor:pointer;background:var(--ink);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.tdc-eqt button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-cad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tdc-cad div{border:3px solid var(--ink);border-radius:var(--r-m);padding:12px 16px;background:#fff;transition:background-color .2s}
+.tdc-cad div.on{background:var(--rose)}
+.tdc-cad b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tdc-cad span{font-size:13px;font-weight:700;opacity:.8}
+.tdc-note{font-size:14px;opacity:.75;margin-top:16px!important}
+.tdc-cmp{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center}
+.tdc-cmp-c{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:12px;box-shadow:8px 8px 0 var(--ink)}
+.tdc-cmp-c.b{box-shadow:8px 8px 0 var(--rose)}
+.tdc-cmp-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cmp-h b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px}
+.tdc-cmp-h button{all:unset;cursor:pointer;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:99px;padding:5px 10px;-webkit-tap-highlight-color:transparent}
+.tdc-cmp-h button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cmp-h button:hover{background:var(--rose-soft)}}
+.tdc-cmp-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-cmp .tdc-fl{font-size:11px;margin-bottom:6px}
+.tdc-cmp .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cmp .tdc-num input{font-size:22px;padding:7px 0}
+.tdc-cmp .tdc-num button{font-size:20px}
+.tdc-cmp .tdc-sel{padding:11px 40px 11px 12px;font-size:16px;border-radius:14px}
+.tdc-cmp-o{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:2px dashed rgba(14,18,48,.2);padding-top:12px}
+.tdc-cmp-o div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tdc-cmp-o span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tdc-cmp-o b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdc-cmp-o b span{font-size:inherit;letter-spacing:0;text-transform:none;opacity:1;font-weight:400}
+.tdc-cmp-o b i{font-style:normal;font-size:.5em;margin-left:2px}
+.tdc-cmp-bar{height:10px;border-radius:99px;background:var(--bleu-soft);overflow:hidden}
+.tdc-cmp-bar i{display:block;height:100%;border-radius:99px;background:var(--ink);transition:width .4s var(--ease)}
+.tdc-cmp-c.b .tdc-cmp-bar i{background:var(--rose)}
+.tdc-vs{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-cmp-sum{margin-top:22px}
+@media (max-width:980px){
+  .tdc-cmp{grid-template-columns:1fr}
+  .tdc-vs{justify-self:center;width:48px;height:48px;margin:-4px 0}
+  .tdc-calc{grid-template-columns:1fr}
+  .tdc-bp{order:-1}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-res>div.hot{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .tdc-ctrl{padding:14px;box-shadow:6px 6px 0 var(--ink)}
+  /* vue compacte mobile : tout l'essentiel sur un écran */
+  .tdc-calc{gap:16px}
+  .tdc-ctrl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 10px}
+  .tdc-ctrl>div:nth-child(3){grid-column:1/-1}
+  .tdc-ctrl .tdc-fl{font-size:11px;margin-bottom:5px;letter-spacing:.06em}
+  .tdc-ctrl .tdc-fl small{display:none}
+  .tdc-ctrl .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+  .tdc-ctrl .tdc-num input{font-size:22px;padding:7px 0}
+  .tdc-ctrl .tdc-num button{font-size:20px}
+  .tdc-ctrl .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-switch{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;border:0;padding:0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .tdc-switch small{display:none}
+  .tdc-switch input{height:30px;width:54px}
+  .tdc-switch input:checked::after{translate:22px 0}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+  .tdc-res>div{padding:10px 12px;gap:2px;border-radius:14px}
+  .tdc-res>div.hot{grid-column:auto}
+  .tdc-res>div:nth-child(5){display:none}
+  .tdc-res small{display:none}
+  .tdc-res .tdc-rl{font-size:10px;letter-spacing:.06em}
+  .tdc-res b{font-size:26px}
+  .tdc-verdict{margin-top:10px;font-size:14px;line-height:1.4}
+  .tdc-verdict>b{font-size:20px}
+  .tdc-bp{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-num{grid-template-columns:50px minmax(0,1fr) 50px}
+  .tdc-eqt th{padding:0 8px;font-size:11px;letter-spacing:.04em}
+  .tdc-eqt td{padding:10px 8px;font-size:14px}
+  .tdc-eqt td:first-child{font-size:16px}
+  .tdc-eqt .c-dev{display:none}
+  .tdc-eqt button{padding:6px 10px;font-size:12px}
+  .tdc-cad{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-verdict{padding:14px 16px}
+  .tdc-bp text{font-size:18px}
+  .tdc-bp .t-big,#rt-l2{display:none}
+  .tdc-bp-play{width:36px;height:36px;right:10px;bottom:10px}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-res>div,.tdc-cad div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+.tdc-fb{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;border:3px dashed var(--ink);border-radius:var(--r-l);background:var(--bleu-soft);padding:24px 26px}
+.tdc-fb h3{margin:0 0 6px!important}
+.tdc-fb p{margin:0!important;max-width:46ch}
+.tdc-fb .tdc-actions{margin:0!important}
+@media (max-width:720px){.tdc-fb{padding:18px}.tdc-fb .tdc-actions{width:100%}.tdc-fb .tdc-btn{flex:1 1 100%;justify-content:center;text-align:center}}
+</style>
+<span id="tdc-fr"></span>
+<div class="tdc-zw" id="tdc-zh"><div class="tdc" id="tdc-en">
+  <nav class="tdc-lang" aria-label="Langue / Language"><div>
+    <a class="b-fr" href="#tdc-fr" hreflang="fr">FR</a>
+    <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
+    <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
+  </div></nav>
+  <section class="tdc-hero tdc-page-hero tdc-solo">
+    <div>
+      <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
+      <h1><span class="fr t1">Le calculateur de <span>ratio</span> fixie</span><span class="en t1" lang="en">Fixed-gear <span>ratio</span> calculator</span><span class="zh t1" lang="zh-Hans">死飞<span>齿比</span>计算器</span></h1>
+      <p class="fr tdc-lead">Plateau, pignon, roue, cadence. Tu rentres tes chiffres, la machine te sort ton développement, ta vitesse, tes skid patches et les combos qui roulent pareil. Attention à la tension.</p><p class="en tdc-lead" lang="en">Chainring, cog, wheel, cadence. Punch in your numbers and get your rollout, speed, skid patches and every combo that rides the same. Mind the tension.</p><p class="zh tdc-lead" lang="zh-Hans">牙盘、飞轮、车轮、踏频。输入你的数字，即可得到每圈行进距离、速度、刹车皮点（skid patch）数量，以及骑感相同的其他齿比组合。注意张力！</p>
+    </div>
+  </section>
+  <section id="tdc-ratio" style="padding-top:0">
+    <div class="tdc-calc">
+      <form class="tdc-ctrl" onsubmit="return false">
+        <div><label class="tdc-fl" for="rt-p"><span class="fr">Plateau <small>dents</small></span><span class="en" lang="en">Chainring <small>teeth</small></span><span class="zh" lang="zh-Hans">牙盘 <small>齿</small></span></label>
+<div class="tdc-num"><button type="button" data-t="rt-p" data-d="-1" aria-label="−1">−</button><input id="rt-p" type="number" inputmode="numeric" min="20" max="70" step="1" value="48"><button type="button" data-t="rt-p" data-d="1" aria-label="+1">+</button></div></div>
+        <div><label class="tdc-fl" for="rt-c"><span class="fr">Pignon <small>dents</small></span><span class="en" lang="en">Cog <small>teeth</small></span><span class="zh" lang="zh-Hans">飞轮 <small>齿</small></span></label>
+<div class="tdc-num"><button type="button" data-t="rt-c" data-d="-1" aria-label="−1">−</button><input id="rt-c" type="number" inputmode="numeric" min="8" max="40" step="1" value="17"><button type="button" data-t="rt-c" data-d="1" aria-label="+1">+</button></div></div>
+        <div><label class="tdc-fl" for="rt-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span> <small>(ETRTO)</small></label><select class="tdc-sel" id="rt-w"><optgroup label="700c / 28" (622)"><option value="622-18">700 × 18 (18-622)</option><option value="622-20">700 × 20 (20-622)</option><option value="622-23">700 × 23 (23-622)</option><option value="622-25">700 × 25 (25-622)</option><option value="622-26">700 × 26 (26-622)</option><option value="622-28" selected>700 × 28 (28-622)</option><option value="622-30">700 × 30 (30-622)</option><option value="622-32">700 × 32 (32-622)</option><option value="622-35">700 × 35 (35-622)</option><option value="622-38">700 × 38 (38-622)</option><option value="622-40">700 × 40 (40-622)</option><option value="622-42">700 × 42 (42-622)</option><option value="622-45">700 × 45 (45-622)</option><option value="622-47">700 × 47 (47-622)</option><option value="622-50">700 × 50 (50-622)</option></optgroup><optgroup label="29" VTT (622)"><option value="622-54">29 × 2.1 (54-622)</option><option value="622-57">29 × 2.25 (57-622)</option><option value="622-61">29 × 2.4 (61-622)</option><option value="622-66">29 × 2.6 (66-622)</option></optgroup><optgroup label="27" ancien (630)"><option value="630-25">27 × 1 (25-630)</option><option value="630-28">27 × 1 1/8 (28-630)</option><option value="630-32">27 × 1 1/4 (32-630)</option></optgroup><optgroup label="650b / 27.5" (584)"><option value="584-38">650b × 38 (38-584)</option><option value="584-40">650b × 40 (40-584)</option><option value="584-42">650b × 42 (42-584)</option><option value="584-45">650b × 45 (45-584)</option><option value="584-47">650b × 47 (47-584)</option><option value="584-48">650b × 48 (48-584)</option><option value="584-50">650b × 50 (50-584)</option><option value="584-54">27.5 × 2.1 (54-584)</option><option value="584-57">27.5 × 2.25 (57-584)</option><option value="584-61">27.5 × 2.4 (61-584)</option><option value="584-66">27.5 × 2.6 (66-584)</option><option value="584-71">27.5 × 2.8 (71-584)</option></optgroup><optgroup label="650c (571)"><option value="571-20">650c × 20 (20-571)</option><option value="571-23">650c × 23 (23-571)</option><option value="571-25">650c × 25 (25-571)</option><option value="571-28">650c × 28 (28-571)</option></optgroup><optgroup label="26" route ancien (590 / 597)"><option value="590-35">650a × 35 (35-590)</option><option value="597-32">26 × 1 1/4 (32-597)</option></optgroup><optgroup label="26" VTT (559)"><option value="559-25">26 × 1.0 (25-559)</option><option value="559-32">26 × 1.25 (32-559)</option><option value="559-38">26 × 1.5 (38-559)</option><option value="559-44">26 × 1.75 (44-559)</option><option value="559-50">26 × 1.95 (50-559)</option><option value="559-54">26 × 2.1 (54-559)</option><option value="559-57">26 × 2.25 (57-559)</option><option value="559-61">26 × 2.4 (61-559)</option></optgroup><optgroup label="24" (507)"><option value="507-38">24 × 1.5 (38-507)</option><option value="507-44">24 × 1.75 (44-507)</option><option value="507-50">24 × 2.0 (50-507)</option><option value="507-58">24 × 2.3 (58-507)</option></optgroup><optgroup label="20" (451 / 406)"><option value="451-28">20 × 1 1/8 (28-451)</option><option value="406-38">20 × 1.5 (38-406)</option><option value="406-44">20 × 1.75 (44-406)</option><option value="406-50">20 × 2.0 (50-406)</option><option value="406-55">20 × 2.2 (55-406)</option><option value="406-61">20 × 2.4 (61-406)</option></optgroup><optgroup label="16" (349)"><option value="349-35">16 × 1 3/8 (35-349)</option></optgroup></select></div>
+        <div><label class="tdc-fl" for="rt-k"><span class="fr">Cadence <small>tours/min</small></span><span class="en" lang="en">Cadence <small>rpm</small></span><span class="zh" lang="zh-Hans">踏频 <small>转/分</small></span></label>
+<div class="tdc-num"><button type="button" data-t="rt-k" data-d="-1" aria-label="−1">−</button><input id="rt-k" type="number" inputmode="numeric" min="20" max="220" step="1" value="90"><button type="button" data-t="rt-k" data-d="1" aria-label="+1">+</button></div></div>
+        <label class="tdc-switch"><span><span class="fr">Skid ambidextre</span><span class="en" lang="en">Ambidextrous skid</span><span class="zh" lang="zh-Hans">双脚皆可 skid</span><small><span class="fr">Tu skides pied gauche ET pied droit</span><span class="en" lang="en">You skid left foot AND right foot</span><span class="zh" lang="zh-Hans">左脚和右脚都会 skid</span></small></span><input type="checkbox" id="rt-a"></label>
+      </form>
+      <div class="tdc-bp" id="rt-bp"><svg viewBox="0 0 640 420" role="img" aria-label="Schéma filaire de la transmission : roue arrière, pignon, chaîne et plateau">
+<g id="rt-wheel">
+<circle id="rt-tire" class="tire"/>
+<circle id="rt-tout" class="ln"/><circle id="rt-tin" class="lf"/>
+<circle id="rt-rim" class="ln"/><circle id="rt-rim2" class="lf"/>
+<path id="rt-spokes" class="lf"/>
+<path id="rt-skids" class="sk"/>
+<circle id="rt-hub" class="ln"/>
+</g>
+<path id="rt-chain" class="ch"/>
+<g id="rt-cogg"><path id="rt-cog" class="ln"/><circle id="rt-cogc" class="lf"/></g>
+<g id="rt-ringg"><path id="rt-ring" class="ln"/><path id="rt-ringb" class="lf"/><circle id="rt-bb" class="ln"/><path id="rt-crank" class="ln"/><rect id="rt-pedal" class="ln" rx="3"/></g>
+<path id="rt-dim" class="lf"/>
+<text id="rt-dimt" text-anchor="middle"></text>
+<text x="24" y="40" id="rt-l1"></text>
+<text x="24" y="66" id="rt-l2" class="t-rose"></text>
+<text x="616" y="64" id="rt-big" class="t-big" text-anchor="end"></text>
+<text id="rt-ringt" text-anchor="middle"></text>
+</svg><button type="button" class="tdc-bp-play" id="rt-play" aria-label="Pause / lecture"><svg class="i-pause" viewBox="0 0 16 16"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9.5-5.5z"/></svg></button></div>
+    </div>
+    <div class="tdc-res" aria-live="polite">
+      <div class="hot"><span class="tdc-rl"><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></span><b id="rt-o-r">–</b><small id="rt-o-gi"></small></div>
+      <div><span class="tdc-rl"><span class="fr">Développement</span><span class="en" lang="en">Rollout</span><span class="zh" lang="zh-Hans">每圈距离</span></span><b><span id="rt-o-d">–</span><i>m</i></b><small><span class="fr">par tour de pédale</span><span class="en" lang="en">per pedal turn</span><span class="zh" lang="zh-Hans">每踩一圈</span></small></div>
+      <div><span class="tdc-rl"><span class="fr">Vitesse</span><span class="en" lang="en">Speed</span><span class="zh" lang="zh-Hans">速度</span></span><b><span id="rt-o-v">–</span><i>km/h</i></b><small id="rt-o-vk"></small></div>
+      <div class="pk"><span class="tdc-rl"><span class="fr">Skid patches</span><span class="en" lang="en">Skid patches</span><span class="zh" lang="zh-Hans">Skid patch</span></span><b id="rt-o-s">–</b><small id="rt-o-sn"></small></div>
+      <div><span class="tdc-rl"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></span><b><span id="rt-o-c">–</span><i>m</i></b><small><span class="fr">de circonférence</span><span class="en" lang="en">circumference</span><span class="zh" lang="zh-Hans">周长</span></small></div>
+    </div>
+    <div class="tdc-verdict"><b>👑</b><p id="rt-o-v2"></p></div>
+  </section>
+  <section style="padding-top:0">
+    <span class="fr tdc-kicker">Même sensation, autre look</span><span class="en tdc-kicker" lang="en">Same feel, different look</span><span class="zh tdc-kicker" lang="zh-Hans">骑感相同，造型不同</span>
+    <h2 class="fr">10 combos qui roulent pareil</h2><h2 class="en" lang="en">10 combos that ride the same</h2><h2 class="zh" lang="zh-Hans">10 组骑感相同的组合</h2>
+    <table class="tdc-eqt">
+      <thead><tr><th><span class="fr">Combo</span><span class="en" lang="en">Combo</span><span class="zh" lang="zh-Hans">组合</span></th><th><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></th><th class="c-dev"><span class="fr">Dév.</span><span class="en" lang="en">Rollout</span><span class="zh" lang="zh-Hans">距离</span></th><th><span class="fr">Skids</span><span class="en" lang="en">Skids</span><span class="zh" lang="zh-Hans">Skid</span></th><th><span class="fr">Écart</span><span class="en" lang="en">Diff.</span><span class="zh" lang="zh-Hans">差值</span></th></tr></thead>
+      <tbody id="rt-eq"></tbody>
+    </table>
+    <p class="fr tdc-note">Tape sur une ligne pour l’essayer dans le calculateur. Plus de skid patches = ton pneu s’use plus régulièrement.</p><p class="en tdc-note" lang="en">Tap a row to try it in the calculator. More skid patches = your tyre wears more evenly.</p><p class="zh tdc-note" lang="zh-Hans">点击任意一行即可代入计算器。skid patch 越多，轮胎磨损越均匀。</p>
+  </section>
+  <section id="tdc-cmp" style="padding-top:0">
+    <span class="fr tdc-kicker">Duel de braquets</span><span class="en tdc-kicker" lang="en">Gear duel</span><span class="zh tdc-kicker" lang="zh-Hans">齿比对决</span>
+    <h2 class="fr">Compare 2 ratios</h2><h2 class="en" lang="en">Compare 2 ratios</h2><h2 class="zh" lang="zh-Hans">比较两个齿比</h2>
+    <div class="tdc-cmp"><div class="tdc-cmp-c a"><div class="tdc-cmp-h"><b>Combo A</b><button type="button" id="cp-copy"><span class="fr">↺ Mon combo</span><span class="en" lang="en">↺ My combo</span><span class="zh" lang="zh-Hans">↺ 我的组合</span></button></div><div class="tdc-cmp-in"><div><label class="tdc-fl" for="cp-a-p"><span class="fr">Plateau</span><span class="en" lang="en">Chainring</span><span class="zh" lang="zh-Hans">牙盘</span></label>
+<div class="tdc-num"><button type="button" data-t="cp-a-p" data-d="-1" aria-label="−1">−</button><input id="cp-a-p" type="number" inputmode="numeric" min="20" max="70" step="1" value="48"><button type="button" data-t="cp-a-p" data-d="1" aria-label="+1">+</button></div></div><div><label class="tdc-fl" for="cp-a-c"><span class="fr">Pignon</span><span class="en" lang="en">Cog</span><span class="zh" lang="zh-Hans">飞轮</span></label>
+<div class="tdc-num"><button type="button" data-t="cp-a-c" data-d="-1" aria-label="−1">−</button><input id="cp-a-c" type="number" inputmode="numeric" min="8" max="40" step="1" value="17"><button type="button" data-t="cp-a-c" data-d="1" aria-label="+1">+</button></div></div></div><div><label class="tdc-fl" for="cp-a-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></label><select class="tdc-sel" id="cp-a-w"><optgroup label="700c / 28" (622)"><option value="622-18">700 × 18 (18-622)</option><option value="622-20">700 × 20 (20-622)</option><option value="622-23">700 × 23 (23-622)</option><option value="622-25">700 × 25 (25-622)</option><option value="622-26">700 × 26 (26-622)</option><option value="622-28" selected>700 × 28 (28-622)</option><option value="622-30">700 × 30 (30-622)</option><option value="622-32">700 × 32 (32-622)</option><option value="622-35">700 × 35 (35-622)</option><option value="622-38">700 × 38 (38-622)</option><option value="622-40">700 × 40 (40-622)</option><option value="622-42">700 × 42 (42-622)</option><option value="622-45">700 × 45 (45-622)</option><option value="622-47">700 × 47 (47-622)</option><option value="622-50">700 × 50 (50-622)</option></optgroup><optgroup label="29" VTT (622)"><option value="622-54">29 × 2.1 (54-622)</option><option value="622-57">29 × 2.25 (57-622)</option><option value="622-61">29 × 2.4 (61-622)</option><option value="622-66">29 × 2.6 (66-622)</option></optgroup><optgroup label="27" ancien (630)"><option value="630-25">27 × 1 (25-630)</option><option value="630-28">27 × 1 1/8 (28-630)</option><option value="630-32">27 × 1 1/4 (32-630)</option></optgroup><optgroup label="650b / 27.5" (584)"><option value="584-38">650b × 38 (38-584)</option><option value="584-40">650b × 40 (40-584)</option><option value="584-42">650b × 42 (42-584)</option><option value="584-45">650b × 45 (45-584)</option><option value="584-47">650b × 47 (47-584)</option><option value="584-48">650b × 48 (48-584)</option><option value="584-50">650b × 50 (50-584)</option><option value="584-54">27.5 × 2.1 (54-584)</option><option value="584-57">27.5 × 2.25 (57-584)</option><option value="584-61">27.5 × 2.4 (61-584)</option><option value="584-66">27.5 × 2.6 (66-584)</option><option value="584-71">27.5 × 2.8 (71-584)</option></optgroup><optgroup label="650c (571)"><option value="571-20">650c × 20 (20-571)</option><option value="571-23">650c × 23 (23-571)</option><option value="571-25">650c × 25 (25-571)</option><option value="571-28">650c × 28 (28-571)</option></optgroup><optgroup label="26" route ancien (590 / 597)"><option value="590-35">650a × 35 (35-590)</option><option value="597-32">26 × 1 1/4 (32-597)</option></optgroup><optgroup label="26" VTT (559)"><option value="559-25">26 × 1.0 (25-559)</option><option value="559-32">26 × 1.25 (32-559)</option><option value="559-38">26 × 1.5 (38-559)</option><option value="559-44">26 × 1.75 (44-559)</option><option value="559-50">26 × 1.95 (50-559)</option><option value="559-54">26 × 2.1 (54-559)</option><option value="559-57">26 × 2.25 (57-559)</option><option value="559-61">26 × 2.4 (61-559)</option></optgroup><optgroup label="24" (507)"><option value="507-38">24 × 1.5 (38-507)</option><option value="507-44">24 × 1.75 (44-507)</option><option value="507-50">24 × 2.0 (50-507)</option><option value="507-58">24 × 2.3 (58-507)</option></optgroup><optgroup label="20" (451 / 406)"><option value="451-28">20 × 1 1/8 (28-451)</option><option value="406-38">20 × 1.5 (38-406)</option><option value="406-44">20 × 1.75 (44-406)</option><option value="406-50">20 × 2.0 (50-406)</option><option value="406-55">20 × 2.2 (55-406)</option><option value="406-61">20 × 2.4 (61-406)</option></optgroup><optgroup label="16" (349)"><option value="349-35">16 × 1 3/8 (35-349)</option></optgroup></select></div><div class="tdc-cmp-o"><div><span><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></span><b id="cp-a-r">–</b></div><div><span><span class="fr">À 80 tr/min</span><span class="en" lang="en">At 80 rpm</span><span class="zh" lang="zh-Hans">80 转/分</span></span><b><span id="cp-a-v">–</span><i>km/h</i></b></div><div><span><span class="fr">Skids</span><span class="en" lang="en">Skids</span><span class="zh" lang="zh-Hans">Skid</span></span><b id="cp-a-s">–</b></div></div><div class="tdc-cmp-bar" aria-hidden="true"><i id="cp-a-bar"></i></div></div><div class="tdc-vs">VS</div><div class="tdc-cmp-c b"><div class="tdc-cmp-h"><b>Combo B</b></div><div class="tdc-cmp-in"><div><label class="tdc-fl" for="cp-b-p"><span class="fr">Plateau</span><span class="en" lang="en">Chainring</span><span class="zh" lang="zh-Hans">牙盘</span></label>
+<div class="tdc-num"><button type="button" data-t="cp-b-p" data-d="-1" aria-label="−1">−</button><input id="cp-b-p" type="number" inputmode="numeric" min="20" max="70" step="1" value="46"><button type="button" data-t="cp-b-p" data-d="1" aria-label="+1">+</button></div></div><div><label class="tdc-fl" for="cp-b-c"><span class="fr">Pignon</span><span class="en" lang="en">Cog</span><span class="zh" lang="zh-Hans">飞轮</span></label>
+<div class="tdc-num"><button type="button" data-t="cp-b-c" data-d="-1" aria-label="−1">−</button><input id="cp-b-c" type="number" inputmode="numeric" min="8" max="40" step="1" value="16"><button type="button" data-t="cp-b-c" data-d="1" aria-label="+1">+</button></div></div></div><div><label class="tdc-fl" for="cp-b-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></label><select class="tdc-sel" id="cp-b-w"><optgroup label="700c / 28" (622)"><option value="622-18">700 × 18 (18-622)</option><option value="622-20">700 × 20 (20-622)</option><option value="622-23">700 × 23 (23-622)</option><option value="622-25">700 × 25 (25-622)</option><option value="622-26">700 × 26 (26-622)</option><option value="622-28" selected>700 × 28 (28-622)</option><option value="622-30">700 × 30 (30-622)</option><option value="622-32">700 × 32 (32-622)</option><option value="622-35">700 × 35 (35-622)</option><option value="622-38">700 × 38 (38-622)</option><option value="622-40">700 × 40 (40-622)</option><option value="622-42">700 × 42 (42-622)</option><option value="622-45">700 × 45 (45-622)</option><option value="622-47">700 × 47 (47-622)</option><option value="622-50">700 × 50 (50-622)</option></optgroup><optgroup label="29" VTT (622)"><option value="622-54">29 × 2.1 (54-622)</option><option value="622-57">29 × 2.25 (57-622)</option><option value="622-61">29 × 2.4 (61-622)</option><option value="622-66">29 × 2.6 (66-622)</option></optgroup><optgroup label="27" ancien (630)"><option value="630-25">27 × 1 (25-630)</option><option value="630-28">27 × 1 1/8 (28-630)</option><option value="630-32">27 × 1 1/4 (32-630)</option></optgroup><optgroup label="650b / 27.5" (584)"><option value="584-38">650b × 38 (38-584)</option><option value="584-40">650b × 40 (40-584)</option><option value="584-42">650b × 42 (42-584)</option><option value="584-45">650b × 45 (45-584)</option><option value="584-47">650b × 47 (47-584)</option><option value="584-48">650b × 48 (48-584)</option><option value="584-50">650b × 50 (50-584)</option><option value="584-54">27.5 × 2.1 (54-584)</option><option value="584-57">27.5 × 2.25 (57-584)</option><option value="584-61">27.5 × 2.4 (61-584)</option><option value="584-66">27.5 × 2.6 (66-584)</option><option value="584-71">27.5 × 2.8 (71-584)</option></optgroup><optgroup label="650c (571)"><option value="571-20">650c × 20 (20-571)</option><option value="571-23">650c × 23 (23-571)</option><option value="571-25">650c × 25 (25-571)</option><option value="571-28">650c × 28 (28-571)</option></optgroup><optgroup label="26" route ancien (590 / 597)"><option value="590-35">650a × 35 (35-590)</option><option value="597-32">26 × 1 1/4 (32-597)</option></optgroup><optgroup label="26" VTT (559)"><option value="559-25">26 × 1.0 (25-559)</option><option value="559-32">26 × 1.25 (32-559)</option><option value="559-38">26 × 1.5 (38-559)</option><option value="559-44">26 × 1.75 (44-559)</option><option value="559-50">26 × 1.95 (50-559)</option><option value="559-54">26 × 2.1 (54-559)</option><option value="559-57">26 × 2.25 (57-559)</option><option value="559-61">26 × 2.4 (61-559)</option></optgroup><optgroup label="24" (507)"><option value="507-38">24 × 1.5 (38-507)</option><option value="507-44">24 × 1.75 (44-507)</option><option value="507-50">24 × 2.0 (50-507)</option><option value="507-58">24 × 2.3 (58-507)</option></optgroup><optgroup label="20" (451 / 406)"><option value="451-28">20 × 1 1/8 (28-451)</option><option value="406-38">20 × 1.5 (38-406)</option><option value="406-44">20 × 1.75 (44-406)</option><option value="406-50">20 × 2.0 (50-406)</option><option value="406-55">20 × 2.2 (55-406)</option><option value="406-61">20 × 2.4 (61-406)</option></optgroup><optgroup label="16" (349)"><option value="349-35">16 × 1 3/8 (35-349)</option></optgroup></select></div><div class="tdc-cmp-o"><div><span><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></span><b id="cp-b-r">–</b></div><div><span><span class="fr">À 80 tr/min</span><span class="en" lang="en">At 80 rpm</span><span class="zh" lang="zh-Hans">80 转/分</span></span><b><span id="cp-b-v">–</span><i>km/h</i></b></div><div><span><span class="fr">Skids</span><span class="en" lang="en">Skids</span><span class="zh" lang="zh-Hans">Skid</span></span><b id="cp-b-s">–</b></div></div><div class="tdc-cmp-bar" aria-hidden="true"><i id="cp-b-bar"></i></div></div></div>
+    <div class="tdc-verdict tdc-cmp-sum"><b>⚖️</b><p id="cp-sum"></p></div>
+  </section>
+  <section style="padding-top:0">
+    <span class="fr tdc-kicker">Cadence / vitesse</span><span class="en tdc-kicker" lang="en">Cadence / speed</span><span class="zh tdc-kicker" lang="zh-Hans">踏频 / 速度</span>
+    <h2 class="fr">Combien ça pousse</h2><h2 class="en" lang="en">How fast it goes</h2><h2 class="zh" lang="zh-Hans">能骑多快</h2>
+    <div class="tdc-cad" id="rt-cad"></div>
+  </section>
+  <section style="padding-top:0">
+    <span class="fr tdc-kicker">Petit lexique du fixe</span><span class="en tdc-kicker" lang="en">Fixed-gear glossary</span><span class="zh tdc-kicker" lang="zh-Hans">死飞小词典</span>
+    <h2 class="fr">C’est quoi tout ça&nbsp;?</h2><h2 class="en" lang="en">What does it all mean?</h2><h2 class="zh" lang="zh-Hans">这些都是什么意思？</h2>
+    <div class="tdc-rules">
+      <article class="tdc-card"><h3 class="fr">Le ratio</h3><h3 class="en" lang="en">Ratio</h3><h3 class="zh" lang="zh-Hans">齿比</h3><p class="fr">Dents du plateau divisées par les dents du pignon. 48/17 = 2,82&nbsp;: la roue fait 2,82 tours quand tu fais un tour de pédale.</p><p class="en" lang="en">Chainring teeth divided by cog teeth. 48/17 = 2.82: the wheel spins 2.82 times for every pedal turn.</p><p class="zh" lang="zh-Hans">牙盘齿数除以飞轮齿数。48/17 = 2.82：每踩一圈，后轮转 2.82 圈。</p></article>
+      <article class="tdc-card bleu"><h3 class="fr">Le développement</h3><h3 class="en" lang="en">Rollout</h3><h3 class="zh" lang="zh-Hans">每圈距离</h3><p class="fr">La distance que tu parcours en un tour de pédale. Ça dépend du ratio, mais aussi du diamètre de ta roue, pneu compris.</p><p class="en" lang="en">The distance you cover in one pedal turn. It depends on the ratio, but also on your wheel diameter, tyre included.</p><p class="zh" lang="zh-Hans">每踩一圈前进的距离。它取决于齿比，也取决于车轮直径（含轮胎）。</p></article>
+      <article class="tdc-card rose"><h3 class="fr">Le skid patch</h3><h3 class="en" lang="en">Skid patch</h3><h3 class="zh" lang="zh-Hans">Skid patch</h3><p class="fr">Les endroits du pneu qui frottent quand tu skides. Peu de patches = tu creuses toujours les mêmes zones et ton pneu meurt vite.</p><p class="en" lang="en">The spots on your tyre that hit the ground when you skid. Few patches = you always wear the same spots and your tyre dies fast.</p><p class="zh" lang="zh-Hans">skid（锁死后轮滑行）时轮胎着地摩擦的位置。位置越少，越会反复磨同一处，轮胎坏得越快。</p></article>
+    </div>
+    <p class="fr tdc-note">Diamètre de roue estimé à partir de la taille ETRTO (jante + 2 × hauteur du pneu). Le vrai chiffre varie de 1 à 2 % selon le pneu et la pression.</p><p class="en tdc-note" lang="en">Wheel diameter is estimated from the ETRTO size (rim + 2 × tyre height). The real figure varies by 1–2% depending on tyre and pressure.</p><p class="zh tdc-note" lang="zh-Hans">车轮直径根据 ETRTO 尺寸估算（轮圈 + 2 × 轮胎高度）。实际数值会因轮胎和胎压不同而有 1–2% 的差异。</p>
+  </section>
+  <section style="padding-top:0">
+    <div class="tdc-fb">
+      <div><h3 class="fr">Une idée&nbsp;? Un bug&nbsp;?</h3><h3 class="en" lang="en">An idea? A bug?</h3><h3 class="zh" lang="zh-Hans">有想法？发现 bug？</h3><p class="fr">Il manque une taille de roue, une fonction&nbsp;? Un truc s’affiche de travers&nbsp;? Écris-moi, je lis tout.</p><p class="en" lang="en">Missing a wheel size, a feature? Something looks off? Drop me a line, I read everything.</p><p class="zh" lang="zh-Hans">缺少某个车轮尺寸或功能？显示有问题？给我写信，我都会看。</p></div>
+      <div class="tdc-actions"><a class="tdc-btn " href="mailto:tensiondechaine@gmail.com?subject=Calculateur%20de%20ratio%20%3A%20id%C3%A9e%20de%20fonction"><span class="fr">💡 Proposer une idée</span><span class="en" lang="en">💡 Suggest a feature</span><span class="zh" lang="zh-Hans">💡 提建议</span></a><a class="tdc-btn rose" href="mailto:tensiondechaine@gmail.com?subject=Calculateur%20de%20ratio%20%3A%20bug"><span class="fr">🐞 Signaler un bug</span><span class="en" lang="en">🐞 Report a bug</span><span class="zh" lang="zh-Hans">🐞 报告 bug</span></a></div>
+    </div>
+  </section>
+  <section class="tdc-contact tdc-block tdc-final" style="margin-top:0">
+    <h2 class="fr">Ton build est prêt&nbsp;?</h2><h2 class="en" lang="en">Is your build ready?</h2><h2 class="zh" lang="zh-Hans">你的车装好了吗？</h2>
+    <p class="fr">Envoie-le au cabinet du dentiste. Je regarde ton ratio, et tout le reste aussi.</p><p class="en" lang="en">Send it to the dentist’s office. I’ll check your ratio, and everything else too.</p><p class="zh" lang="zh-Hans">把它送来牙医诊所吧。我会看看你的齿比，还有其他一切。</p>
+    <div class="tdc-actions"><a class="tdc-btn " href="https://tally.so/r/dbaeJD" target="_blank" rel="noopener"><span class="fr">🦷 Envoyer mon vélo au cabinet</span><span class="en" lang="en">🦷 Send my bike to the office</span><span class="zh" lang="zh-Hans">🦷 把我的车送去诊所</span></a></div>
+    <p class="tdc-peace">Peace ✌️</p>
+  </section>
+</div></div>
+<script>
+(function(){
+var R=document.getElementById('tdc-ratio');if(!R)return;
+function q(s){return document.getElementById(s)}
+var iP=q('rt-p'),iC=q('rt-c'),iW=q('rt-w'),iK=q('rt-k'),iA=q('rt-a'),bp=q('rt-bp');
+var LIM={'rt-p':[20,70],'rt-c':[8,40],'rt-k':[20,220]};
+function lang(){var h=location.hash;return h==='#tdc-en'?'en':(h==='#tdc-zh'?'zh':'fr')}
+function f(n,d){var s=n.toFixed(d);return lang()==='fr'?s.replace('.',','):s}
+function L3(fr,en,zh){return '<span class="fr">'+fr+'</span><span class="en" lang="en">'+en+'</span><span class="zh" lang="zh-Hans">'+zh+'</span>'}
+function gcd(a,b){while(b){var t=b;b=a%b;a=t}return a}
+function val(el){var mn=+el.min,mx=+el.max,v=parseInt(el.value,10);if(isNaN(v))v=mn;return Math.min(mx,Math.max(mn,v))}
+function skid(p,c,amb){var g=gcd(p,c),s=c/g;if(amb){if((p/g)%2===1)s*=2}return s}
+function att(id,o){var e=q(id);for(var k in o)e.setAttribute(k,o[k])}
+function teeth(cx,cy,r,n){var d='',m=n*2;for(var i=0;i<m;i++){var a=i/m*Math.PI*2,rr=r+(i%2?-3:3);d+=(i?'L':'M')+(cx+rr*Math.cos(a)).toFixed(1)+' '+(cy+rr*Math.sin(a)).toFixed(1)}return d+'Z'}
+var st={},ang={c:0,w:0,ch:0};
+var WX=200,WY=205,BX=478,BY=228;
+function draw(p,c,bsd,tw,D,ratio,s,k){
+ var Rp=168*D/760,sc=Rp/(D/2),ds=sc*1.55;
+ var tr=tw*sc;
+ att('rt-tire',{cx:WX,cy:WY,r:(Rp-tr/2).toFixed(1),'stroke-width':tr.toFixed(1)});
+ att('rt-tout',{cx:WX,cy:WY,r:Rp.toFixed(1)});
+ att('rt-tin',{cx:WX,cy:WY,r:(Rp-tr).toFixed(1)});
+ var rim=bsd/2*sc;
+ att('rt-rim',{cx:WX,cy:WY,r:rim.toFixed(1)});att('rt-rim2',{cx:WX,cy:WY,r:(rim-7).toFixed(1)});
+ att('rt-hub',{cx:WX,cy:WY,r:9});
+ var sp='';for(var i=0;i<32;i++){var a=i/32*Math.PI*2,b=a+(i%2?0.42:-0.42);sp+='M'+(WX+9*Math.cos(a)).toFixed(1)+' '+(WY+9*Math.sin(a)).toFixed(1)+'L'+(WX+(rim-7)*Math.cos(b)).toFixed(1)+' '+(WY+(rim-7)*Math.sin(b)).toFixed(1)}
+ att('rt-spokes',{d:sp});
+ var sk='';for(var j=0;j<s;j++){var a2=j/s*Math.PI*2-Math.PI/2,r1=Rp-tr*0.15,r2=Rp+5;sk+='M'+(WX+r1*Math.cos(a2)).toFixed(1)+' '+(WY+r1*Math.sin(a2)).toFixed(1)+'L'+(WX+r2*Math.cos(a2)).toFixed(1)+' '+(WY+r2*Math.sin(a2)).toFixed(1)}
+ att('rt-skids',{d:sk});
+ var rc=12.7/(2*Math.sin(Math.PI/c))*ds,rr=12.7/(2*Math.sin(Math.PI/p))*ds;
+ att('rt-cog',{d:teeth(WX,WY,rc,c)});att('rt-cogc',{cx:WX,cy:WY,r:(rc*0.62).toFixed(1)});
+ att('rt-ring',{d:teeth(BX,BY,rr,p)});
+ var bd='';for(var t=0;t<5;t++){var a3=t/5*Math.PI*2;bd+='M'+BX+' '+BY+'L'+(BX+rr*0.72*Math.cos(a3)).toFixed(1)+' '+(BY+rr*0.72*Math.sin(a3)).toFixed(1)}
+ att('rt-ringb',{d:bd+'M'+(BX+rr*0.72)+' '+BY+'A'+(rr*0.72).toFixed(1)+' '+(rr*0.72).toFixed(1)+' 0 1 0 '+(BX-rr*0.72)+' '+BY+'A'+(rr*0.72).toFixed(1)+' '+(rr*0.72).toFixed(1)+' 0 1 0 '+(BX+rr*0.72)+' '+BY});
+ att('rt-bb',{cx:BX,cy:BY,r:11});
+ var cl=rr+26;att('rt-crank',{d:'M'+BX+' '+BY+'L'+BX+' '+(BY+cl)});
+ att('rt-pedal',{x:BX-17,y:BY+cl-5,width:34,height:10});
+ /* chaine : tangentes exterieures */
+ var dx=BX-WX,dy=BY-WY,d=Math.sqrt(dx*dx+dy*dy),ph=Math.atan2(dy,dx),al=Math.acos((rc-rr)/d);
+ function P(cx,cy,r,a){return [(cx+r*Math.cos(a)).toFixed(1),(cy+r*Math.sin(a)).toFixed(1)]}
+ var a1=ph-al,a2b=ph+al,c1=P(WX,WY,rc,a1),r1p=P(BX,BY,rr,a1),r2p=P(BX,BY,rr,a2b),c2=P(WX,WY,rc,a2b);
+ att('rt-chain',{d:'M'+c1+'L'+r1p+'A'+rr.toFixed(1)+' '+rr.toFixed(1)+' 0 1 1 '+r2p+'L'+c2+'A'+rc.toFixed(1)+' '+rc.toFixed(1)+' 0 0 1 '+c1});
+ st.chainR=rr;
+ var y=WY+Rp+22;
+ att('rt-dim',{d:'M'+(WX-Rp).toFixed(1)+' '+y+'H'+(WX+Rp).toFixed(1)+'M'+(WX-Rp).toFixed(1)+' '+(y-7)+'V'+(y+7)+'M'+(WX+Rp).toFixed(1)+' '+(y-7)+'V'+(y+7)});
+ att('rt-dimt',{x:WX,y:Math.min(y+22,414)});q('rt-dimt').textContent='Ø '+Math.round(D)+' mm';
+ att('rt-ringt',{x:BX,y:(BY-rr-16).toFixed(1)});q('rt-ringt').textContent=p+'T';
+ q('rt-l1').textContent=p+'T × '+c+'T · '+k+' rpm';
+ q('rt-l2').textContent='SKID × '+s;
+ q('rt-big').textContent=f(ratio,2);
+}
+function verdict(r){
+ if(r<4.9)return L3('Moulinette assumée. Parfait pour les tricks, les côtes et les démarrages de feu rouge. Sur le plat, tu mouline comme un batteur électrique.','Proud spinner. Perfect for tricks, hills and traffic-light starts. On the flat, you spin like a kitchen mixer.','轻齿比，毫不掩饰。适合玩花式、爬坡和红绿灯起步。到了平路，你会踩得像打蛋器一样快。');
+ if(r<5.75)return L3('Le combo ville parfait. Ça démarre vite, ça skide facile, ça grimpe sans mourir. Le rite de passage du fixe.','The perfect city combo. Quick starts, easy skids, climbs without dying. The fixed-gear rite of passage.','完美的城市组合。起步快、skid 容易、爬坡不累。死飞入门必经之路。');
+ if(r<6.6)return L3('Ça commence à pousser. Rapide sur le plat, un peu plus de cuisse au démarrage. Vibe alleycat.','Now it pulls. Fast on the flat, a bit more thigh at the start. Alleycat vibe.','开始有劲了。平路很快，起步需要多一点腿力。Alleycat 氛围。');
+ if(r<7.45)return L3('Braquet de costaud. Vitesse de croisière fun, démarrages qui piquent. Les côtes, on en reparle.','Big-gear territory. Fun cruising speed, starts that sting. Hills? Let’s talk later.','大齿比领域。巡航速度很爽，起步很吃力。至于爬坡……以后再说。');
+ return L3('Track day only. Soit t’as des cuisses de dieu du tuning, soit tu vis sur un vélodrome. Tes genoux t’envoient leurs salutations.','Track day only. Either you’ve got god-tier thighs or you live on a velodrome. Your knees send their regards.','只适合场地日。要么你有神级大腿，要么你住在场地赛车馆。你的膝盖向你问好。');
+}
+function skidNote(s){
+ if(s<=3)return L3('Pas terrible : ton pneu s’use toujours aux mêmes endroits.','Not great: your tyre always wears in the same spots.','不太理想：轮胎总磨同几个位置。');
+ if(s<=8)return L3('Correct pour rouler tranquille.','Fine for everyday riding.','日常骑行没问题。');
+ return L3('Top : l’usure se répartit bien.','Great: wear is spread evenly.','很好：磨损分布均匀。');
+}
+function update(){
+ var p=val(iP),c=val(iC),k=val(iK),w=iW.value.split('-'),bsd=+w[0],tw=+w[1],D=bsd+2*tw,amb=iA.checked;
+ var ratio=p/c,circ=Math.PI*D/1000,dev=ratio*circ,gi=ratio*D/25.4,v=dev*k*60/1000,s=skid(p,c,amb);
+ st={p:p,c:c,k:k,ratio:ratio};
+ q('rt-o-r').textContent=f(ratio,2);
+ q('rt-o-gi').innerHTML=f(gi,1)+' '+L3('gear inches','gear inches','齿比英寸');
+ q('rt-o-d').textContent=f(dev,2);
+ q('rt-o-v').textContent=f(v,1);
+ q('rt-o-vk').innerHTML=L3('à '+k+' tours/min','at '+k+' rpm','踏频 '+k+' 转/分');
+ q('rt-o-s').textContent=s;
+ q('rt-o-sn').innerHTML=skidNote(s);
+ q('rt-o-c').textContent=f(circ,3);
+ q('rt-o-v2').innerHTML=verdict(dev);
+ var list=[];for(var a=34;a<=60;a++)for(var b=12;b<=23;b++){if(a===p){if(b===c)continue}list.push({a:a,b:b,r:a/b,d:(a/b-ratio)/ratio})}
+ list.sort(function(x,y){return (Math.abs(x.d)-Math.abs(y.d))||(Math.abs(x.a-p)-Math.abs(y.a-p))});
+ var h='';for(var i=0;i<10;i++){var e=list[i],pc=e.d*100,ds=Math.abs(pc)<0.05?'0':(pc>0?'+':'−')+f(Math.abs(pc),1);
+  h+='<tr class="go" data-p="'+e.a+'" data-c="'+e.b+'"><td>'+e.a+' × '+e.b+'</td><td>'+f(e.r,2)+'</td><td class="c-dev">'+f(e.r*circ,2)+' m</td><td>'+skid(e.a,e.b,amb)+'</td><td'+(ds==='0'?' class="d0"':'')+'>'+ds+' %</td></tr>'}
+ q('rt-eq').innerHTML=h;
+ var cs=[60,70,80,90,100,110,120,130];if(cs.indexOf(k)<0){cs.push(k);cs.sort(function(x,y){return x-y})}
+ var g='';for(var j=0;j<cs.length;j++){g+='<div'+(cs[j]===k?' class="on"':'')+'><b>'+f(dev*cs[j]*60/1000,1)+' km/h</b><span>'+cs[j]+' rpm</span></div>'}
+ q('rt-cad').innerHTML=g;
+ draw(p,c,bsd,tw,D,ratio,s,k);
+ cmp();
+}
+function cmp(){
+ var o={};['a','b'].forEach(function(x){var p=val(q('cp-'+x+'-p')),c=val(q('cp-'+x+'-c')),w=q('cp-'+x+'-w').value.split('-'),D=+w[0]+2*w[1],r=p/c,v=r*Math.PI*D/1000*80*60/1000;o[x]=v;
+  q('cp-'+x+'-r').textContent=f(r,2);q('cp-'+x+'-v').textContent=f(v,1);q('cp-'+x+'-s').textContent=skid(p,c,iA.checked)});
+ var mx=Math.max(o.a,o.b);q('cp-a-bar').style.width=(o.a/mx*100).toFixed(1)+'%';q('cp-b-bar').style.width=(o.b/mx*100).toFixed(1)+'%';
+ var d=(o.b-o.a)/o.a*100,a=f(Math.abs(d),1),h;
+ if(Math.abs(d)<0.5)h=L3('Kif-kif. Même sensation à la pédale, choisis au look.','Same same. Same feel at the pedals, pick on looks.','几乎一样。脚感相同，看颜值选吧。');
+ else if(d>0)h=L3('Le combo B va <b>'+a+' % plus vite</b> que le A à la même cadence. Plus de vitesse, plus de cuisse au démarrage.','Combo B is <b>'+a+'% faster</b> than A at the same cadence. More speed, more thigh at the start.','同样踏频下，组合 B 比 A <b>快 '+a+'%</b>。速度更快，起步更费腿。');
+ else h=L3('Le combo B est <b>'+a+' % plus souple</b> que le A. Ça démarre plus facile, ça va moins vite à cadence égale.','Combo B is <b>'+a+'% lighter</b> than A. Easier starts, less speed at the same cadence.','组合 B 比 A <b>轻 '+a+'%</b>。起步更轻松，同样踏频下速度更慢。');
+ q('cp-sum').innerHTML=h;
+}
+function fix(el){el.value=val(el)}
+[iP,iC,iK].forEach(function(el){el.addEventListener('input',update);el.addEventListener('change',function(){fix(el);update()})});
+iW.addEventListener('change',update);
+['cp-a-p','cp-a-c','cp-b-p','cp-b-c'].forEach(function(i){var el=q(i);el.addEventListener('input',cmp);el.addEventListener('change',function(){fix(el);cmp()})});
+q('cp-a-w').addEventListener('change',cmp);q('cp-b-w').addEventListener('change',cmp);
+q('cp-copy').addEventListener('click',function(){q('cp-a-p').value=val(iP);q('cp-a-c').value=val(iC);q('cp-a-w').value=iW.value;cmp()});iA.addEventListener('change',update);
+document.addEventListener('click',function(e){
+ var b=e.target.closest('[data-t]');if(b){var el=q(b.getAttribute('data-t'));if(!el)return;el.value=val(el)+(+b.getAttribute('data-d'));fix(el);update();return}
+ var tr=e.target.closest('tr.go');if(tr){iP.value=tr.getAttribute('data-p');iC.value=tr.getAttribute('data-c');update();bp.scrollIntoView({behavior:'smooth',block:'center'})}
+});
+window.addEventListener('hashchange',update);
+/* animation */
+var reduce=(window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)').matches:false),run=!reduce,vis=true,last=0;
+if(!run)bp.classList.add('paused');
+q('rt-play').addEventListener('click',function(){run=!run;bp.classList.toggle('paused',!run);last=0;if(run)requestAnimationFrame(tick)});
+if('IntersectionObserver' in window){new IntersectionObserver(function(en){vis=en[0].isIntersecting;if(vis){if(run){last=0;requestAnimationFrame(tick)}}}).observe(bp)}
+function rot(id,a,x,y){q(id).setAttribute('transform','rotate('+a.toFixed(2)+' '+x+' '+y+')')}
+function tick(t){
+ if(!run||!vis)return;
+ var dt=last?Math.min(0.05,(t-last)/1000):0;last=t;
+ var w=st.k/60*360*0.33*dt;
+ ang.c+=w;ang.w+=w*st.ratio;ang.ch+=w*Math.PI/180*st.chainR;
+ rot('rt-ringg',ang.c%360,BX,BY);rot('rt-wheel',ang.w%360,WX,WY);rot('rt-cogg',ang.w%360,WX,WY);
+ q('rt-chain').style.strokeDashoffset=(-ang.ch%8.5).toFixed(2);
+ requestAnimationFrame(tick);
+}
+update();if(run)requestAnimationFrame(tick);
+})();
+</script>
+
+<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html" class=on><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="ligne-de-chaine.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
+<script>
+(function(){
+function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
+try{var s=localStorage.getItem('tdc-lang');if(s){if(!location.hash){history.replaceState(null,'',s)}}}catch(e){}
+sync();window.addEventListener('hashchange',sync);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-app]');if(a){if(location.hash){a.setAttribute('href',a.getAttribute('href').split('#')[0]+location.hash)}}});
+function net(){document.documentElement.classList.toggle('offline',!navigator.onLine)}net();window.addEventListener('online',net);window.addEventListener('offline',net);
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')})}
+})();
+</script>
+</body>
+</html>

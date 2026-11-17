@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Comparateur de transmissions – L’atelier Tension de chaine</title>
+<meta name="description" content="1x13 contre 2x12, SRAM contre Shimano, rapports en commun.">
+<meta name="theme-color" content="#0e1230">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+html,body{margin:0;padding:0;background:#fff}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+.tdc-menu,.tdc-mnav{display:none!important}
+.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-template-columns:repeat(7,1fr);background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
+.app-bar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 1px;border-radius:12px;color:#fff;text-decoration:none;font-weight:800;font-size:10px;line-height:1.1;-webkit-tap-highlight-color:transparent}
+.app-bar a.on{background:#d81b6a}
+.app-bar a:active{background:#ff4f9a;color:#0e1230}
+.app-bar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-bar .en,.app-bar .zh{display:none}
+html.l-en .app-bar .fr,html.l-zh .app-bar .fr{display:none}
+html.l-en .app-bar .en{display:inline}html.l-zh .app-bar .zh{display:inline}
+.app-off{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));translate:-50% 0;z-index:9999;background:#0e1230;color:#fff;font:800 12px Inter,system-ui,sans-serif;padding:7px 12px;border-radius:99px;display:none}
+html.offline .app-off{display:block}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ---------- Base ---------- */
+.tdc{--rose:#ff4f9a;--rose-deep:#d81b6a;--rose-soft:#ffe3ef;--bleu:#2346ff;--bleu-soft:#e4e9ff;--ink:#0e1230;--blanc:#fff;
+  --r-s:14px;--r-m:22px;--r-l:32px;--ease:cubic-bezier(.2,.9,.2,1);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--blanc);line-height:1.5;font-size:16px;
+  width:100%;max-width:1240px;margin:0 auto;overflow:clip;-webkit-font-smoothing:antialiased}
+.tdc *,.tdc *::before,.tdc *::after{box-sizing:border-box}
+.tdc h1,.tdc h2,.tdc h3{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;line-height:1.05;margin:0;letter-spacing:-.01em;color:inherit}
+.tdc p,.tdc ul{margin:0}
+.tdc img{max-width:100%}
+.tdc a{transition:color .2s}
+.tdc a:focus-visible{outline:3px solid var(--bleu);outline-offset:3px;border-radius:99px}
+.tdc section{padding:72px 28px}
+.tdc .tdc-kicker{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:12px}
+.tdc h2{font-size:clamp(32px,5vw,52px);margin-bottom:32px}
+.tdc-block{margin:0 12px;border-radius:var(--r-l)}
+.tdc-block+.tdc-block{margin-top:24px}
+/* ---------- Thème WordPress : fond blanc, sans en-tête ni titre (uniquement sur cette page) ---------- */
+html,body,.wp-site-blocks,.site,.site-content,.entry-content,main{background:#fff!important}
+body>.wp-site-blocks>header,header.wp-block-template-part,.site-header,
+.wp-block-site-title,.wp-block-post-title,.entry-title,.page-title{display:none!important}
+.wp-site-blocks,.entry-content,main{padding-top:0!important;margin-top:0!important}
+/* Ton thème coupe l'écran en 2 colonnes (contenu à gauche, en-tête à droite) : on passe en une seule colonne pleine largeur */
+.wp-block-columns:has(.tdc){display:block!important;gap:0!important}
+.wp-block-columns:has(.tdc)>.wp-block-column:not(:has(.tdc)){display:none!important}
+.wp-block-column:has(.tdc){width:100%!important;max-width:none!important;flex-basis:auto!important}
+body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{display:none!important}
+:where(.wp-block-group,.entry-content,.wp-block-post-content,main):has(.tdc){max-width:none!important;width:100%!important;min-width:0!important;align-self:stretch!important;
+  padding-left:0!important;padding-right:0!important;padding-top:0!important;margin-left:0!important;margin-right:0!important;margin-top:0!important;gap:0!important}
+.wp-block-columns:has(.tdc) .wp-block-group:not(:has(.tdc)):has(.wp-block-navigation),footer.wp-block-template-part{display:none!important}
+/* ---------- Langue (sans script) ---------- */
+.tdc .en{display:none!important}
+.tdc:target .fr{display:none!important}
+.tdc:target .en{display:revert!important}
+.tdc:target .tdc-kicker.en{display:inline-block!important}
+.tdc:target small.en,.tdc:target .tdc-brm strong.en{display:block!important}
+.tdc:target .tdc-cta-btn .en{display:inline!important}
+.tdc .zh{display:none!important}
+.tdc-zw{display:block;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+.tdc-zw:target .tdc .fr,.tdc-zw:target .tdc .en{display:none!important}
+.tdc-zw:target .tdc .zh{display:revert!important}
+.tdc-zw:target .tdc .tdc-kicker.zh{display:inline-block!important}
+.tdc-zw:target .tdc small.zh,.tdc-zw:target .tdc .tdc-brm strong.zh{display:block!important}
+.tdc-zw:target .tdc .tdc-cta-btn .zh{display:inline!important}
+.tdc-zw:target .tdc .tdc-lang .b-fr{background:transparent}
+.tdc-zw:target .tdc-lang .b-zh{background:var(--rose-deep)}
+.tdc .zh{line-height:1.7}
+.tdc h1.zh,.tdc h2.zh,.tdc h3.zh,.tdc .tdc-big.zh,.tdc .tdc-tag.zh,.tdc .tdc-stat b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900;letter-spacing:0;line-height:1.25}
+.tdc .tdc-tag.zh{font-weight:600;line-height:1.7}
+/* Toujours visible en haut à droite */
+.tdc-lang{position:fixed;top:calc(16px + var(--wp-admin--admin-bar--height,0px));right:16px;z-index:9999;display:flex;pointer-events:none}
+.tdc-lang div{pointer-events:auto;background:var(--ink);border-radius:99px;padding:4px;display:flex;gap:2px;box-shadow:0 6px 20px rgba(14,18,48,.25)}
+.tdc-lang a{color:#fff!important;text-decoration:none!important;font-weight:800;font-size:13px;padding:9px 15px;border-radius:99px;line-height:1}
+.tdc:not(:target) .tdc-lang .b-fr,.tdc:target .tdc-lang .b-en{background:var(--rose-deep)}
+/* ---------- Hero ---------- */
+.tdc-hero{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;padding-top:56px!important;padding-bottom:56px!important}
+.tdc-hero h1{font-size:clamp(52px,6vw,84px)}
+.tdc-hero h1 span{color:var(--rose)}
+.tdc-tag{font-size:clamp(18px,2vw,21px);font-weight:600;margin:22px 0 24px!important;max-width:32ch}
+.tdc-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.tdc-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 22px;border-radius:99px;font-weight:800;font-size:16px;
+  color:#fff!important;text-decoration:none!important;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+  transition:background-color .2s,transform .2s var(--ease),box-shadow .2s}
+.tdc-cta-btn.c1{background:var(--rose-deep)}
+.tdc-cta-btn.c2{background:var(--bleu)}
+.tdc-cta-btn.c1:hover,.tdc-cta-btn.c1:focus-visible,.tdc-cta-btn.c1:active{background:var(--bleu)}
+.tdc-cta-btn.c2:hover,.tdc-cta-btn.c2:focus-visible,.tdc-cta-btn.c2:active{background:var(--rose-deep)}
+.tdc-cta-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tdc-pills{display:flex;flex-wrap:wrap;gap:8px}
+.tdc-pills span{background:var(--bleu-soft);color:var(--bleu);font-weight:800;font-size:13px;padding:6px 12px;border-radius:99px}
+.tdc-net-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;max-width:330px}
+.tdc-net-btns a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;font-size:14px;padding:11px 15px;border-radius:99px}
+.tdc-net-btns a:nth-child(odd){background:var(--rose-deep)}
+.tdc-net-btns svg{width:18px;height:18px;fill:currentColor;flex:none}
+.tdc-photo{position:relative;display:flex;justify-content:center;align-items:center}
+.tdc-photo img{display:block;width:100%;height:auto;border-radius:var(--r-l)}
+/* ---------- Bandeau ---------- */
+.tdc-ticker{background:var(--rose);color:var(--ink);rotate:-2deg;margin:8px -24px 64px;padding:14px 0;overflow:hidden;
+  font-family:"Archivo Black",Impact,sans-serif;font-size:20px;white-space:nowrap;border-block:3px solid var(--ink)}
+.tdc-ticker>div{display:inline-flex}
+/* ---------- Chiffres ---------- */
+.tdc-stats{background:var(--ink);color:#fff}
+.tdc-stats .tdc-kicker{color:var(--rose)}
+.tdc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tdc-stat{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:22px}
+.tdc-stat b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.1;color:var(--rose)}
+.tdc-stat small{display:block;opacity:.8;font-size:13px;margin-top:6px}
+.tdc-net{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+.tdc-audience{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:32px;font-size:15px}
+.tdc-audience strong{color:var(--rose)}
+.tdc-foot{font-size:13px;opacity:.75;margin-top:18px!important}
+/* ---------- Cartes ---------- */
+.tdc-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.tdc-card{position:relative;border:3px solid var(--ink);border-radius:var(--r-m);padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.tdc-card h3{font-size:22px}
+.tdc-num{font-weight:800;color:var(--bleu);font-size:15px}
+.tdc-card.rose{background:var(--rose-soft)}
+.tdc-card.bleu{background:var(--bleu-soft)}
+.tdc-video{position:relative;aspect-ratio:16/9;width:100%;border-radius:var(--r-s);background:var(--ink);overflow:hidden}
+.tdc-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tdc-ig{aspect-ratio:auto;height:560px;max-width:340px;margin:0 auto;background:#fff;border:1px solid #e6e6e6}
+.tdc-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:var(--r-s);overflow:hidden;background:var(--ink)}
+.tdc-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:scale .4s var(--ease)}
+.tdc-thumb::after{content:"";position:absolute;left:50%;top:50%;width:40px;height:28px;translate:-50% -50%;border-radius:8px;
+  background:var(--rose-deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9 7v10l8-5z'/%3E%3C/svg%3E") center/18px no-repeat;
+  box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.tdc-card .tdc-btn{margin-top:4px;text-align:center;font-size:15px}
+/* ---------- Ils m'ont fait confiance (masqué tant qu'il n'y a pas de logo) ---------- */
+.tdc-logos:not(:has(img)){display:none!important}
+.tdc-logos{padding-bottom:0!important}
+/* Deux rangées de logos qui glissent en sens inverse quand on fait défiler la page */
+.tdc-marquee{display:grid;gap:14px;margin:0 -28px;padding:6px 0 10px;overflow:clip;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tdc-row{display:flex;gap:14px;width:max-content}
+.tdc-logo{flex:0 0 auto;width:210px;display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;padding:20px;background:#fff;border:2px solid var(--ink);border-radius:var(--r-m);transition:box-shadow .25s,border-color .25s}
+.tdc-logo img{display:block;max-width:88%;max-height:52px;width:auto;height:auto;object-fit:contain}
+.tdc-logo.carre img{max-height:84px}
+.tdc-row-b .tdc-logo{background:var(--bleu-soft)}
+@media (hover:hover){.tdc-logo:hover{box-shadow:6px 6px 0 var(--rose)}}
+@keyframes tdc-row-ltr{from{translate:-45% 0}to{translate:0 0}}
+@keyframes tdc-row-rtl{from{translate:0 0}to{translate:-45% 0}}
+@media (prefers-reduced-motion:no-preference){
+  /* Navigateurs récents : le mouvement suit le scroll */
+  @supports (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+    .tdc-row-b{animation:tdc-row-rtl linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+  /* Autres navigateurs : léger va-et-vient automatique */
+  @supports not (animation-timeline:view()){
+    .tdc-row-a{animation:tdc-row-ltr 40s ease-in-out infinite alternate}
+    .tdc-row-b{animation:tdc-row-rtl 40s ease-in-out infinite alternate}
+  }
+}
+/* Animations réduites : rangées défilables au doigt */
+@media (prefers-reduced-motion:reduce){.tdc-marquee{overflow-x:auto}}
+@media (max-width:980px){.tdc-logo{width:170px;padding:14px}.tdc-logo img{max-height:42px}.tdc-logo.carre img{max-height:66px}}
+@media (max-width:720px){.tdc-marquee{gap:10px;margin:0 -20px}.tdc-row{gap:10px}.tdc-logo{width:140px;padding:12px}.tdc-logo img{max-height:36px}.tdc-logo.carre img{max-height:58px}}
+/* ---------- Étude de cas ---------- */
+.tdc-rosa{background:var(--rose-soft)}
+.tdc-rosa .tdc-kicker{color:#b8155a}
+.tdc-case{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tdc-brands{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}
+.tdc-brands span{border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px;background:#fff}
+.tdc-big{font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(34px,4vw,44px);line-height:1.1;color:var(--rose-deep);margin-bottom:6px!important}
+.tdc-sub{font-weight:800;margin-bottom:16px!important}
+.tdc-bars{display:flex;flex-direction:column;gap:12px}
+.tdc-bar{display:grid;grid-template-columns:118px 1fr 76px;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.tdc-bar i{display:block;height:14px;border-radius:99px;background:var(--rose)}
+.tdc-bar:nth-child(even) i{background:var(--bleu)}
+.tdc-bar em{font-style:normal;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.tdc-bar small{opacity:.6;font-size:12px}
+.tdc-shot{display:block;width:100%;height:auto;border-radius:var(--r-m);margin-top:26px;border:3px solid var(--ink)}
+/* ---------- Podcast La Selle ---------- */
+.tdc-pod{background:var(--bleu-soft)}
+.tdc-pod-in{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.tdc-pod .tdc-kicker{color:var(--bleu)}
+.tdc-pod p{max-width:52ch}
+.tdc-pod-series{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
+.tdc-pod-series span{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px}
+.tdc-pod-note{font-size:14px;opacity:.8;margin-top:14px!important}
+.tdc-pod-cover{display:block;aspect-ratio:1;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff;box-shadow:10px 10px 0 var(--rose);transition:transform .25s var(--ease),box-shadow .25s}
+.tdc-pod-cover img{display:block;width:100%;height:100%;object-fit:cover}
+@media (hover:hover){.tdc-pod-cover:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:14px 14px 0 var(--rose)}}
+@media (max-width:720px){.tdc-pod-in{grid-template-columns:1fr;gap:28px}.tdc-pod-cover{max-width:300px;width:100%;margin:0 auto;box-shadow:8px 8px 0 var(--rose)}}
+/* ---------- Étude de cas 2 : Superséxu (fond bleu nuit) ---------- */
+.tdc-sexu{background:var(--ink);color:#fff}
+.tdc-sexu .tdc-kicker{color:var(--rose)}
+.tdc-sexu .tdc-brands span{background:#fff;color:var(--ink);border-color:#fff}
+.tdc-sexu .tdc-big{color:var(--rose)}
+.tdc-sexu .tdc-bar em{color:#fff}
+.tdc-sexu .tdc-thumbs{margin-top:10px}
+.tdc-sexu .tdc-video{border:2px solid rgba(255,255,255,.15)}
+.tdc-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
+.tdc-kpis>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:18px 16px}
+.tdc-kpis b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;color:var(--rose)}
+.tdc-kpis b .zh{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",sans-serif;font-weight:900}
+.tdc-kpis small{display:block;font-size:13px;opacity:.85;margin-top:4px}
+.tdc-kpi-note{font-size:15px;margin-top:16px!important;opacity:.9}
+/* ---------- Offres ---------- */
+.tdc-offers .tdc-card{padding-top:20px}
+.tdc-idx{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink)}
+.tdc-card ul{padding-left:18px;font-size:15px;display:grid;gap:4px}
+.tdc-cta{margin-top:32px;text-align:center}
+.tdc-cta>p:first-child,.tdc-cta>p.en:nth-child(2){font-weight:800;font-size:18px}
+.tdc-note{font-size:13px;opacity:.75;margin-top:18px!important;text-align:center}
+.tdc-btn{display:inline-block;margin-top:20px;background:var(--ink);color:#fff!important;text-decoration:none!important;
+  font-weight:800;padding:16px 28px;border-radius:99px;font-size:17px}
+.tdc-btn.rose{background:var(--rose-deep)}
+.tdc-contact-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.tdc-contact-btns .tdc-btn{margin-top:0}
+.tdc-btn.tdc-btn-ghost{background:transparent;color:var(--ink)!important;border:3px solid var(--ink);padding:13px 25px}
+.tdc-brm{position:relative;margin-top:64px;color:#fff;border-radius:var(--r-l);padding:44px 36px;min-height:240px;overflow:hidden;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+  background:linear-gradient(100deg,rgba(14,18,48,.92) 0%,rgba(35,70,255,.75) 60%,rgba(35,70,255,.3) 100%),
+  url("https://tensiondechaine.com/wp-content/uploads/2026/11/PXL_20260719_1609079542.jpg") center/cover var(--ink)}
+.tdc-brm b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:44px;line-height:1}
+.tdc-brm strong{display:block;font-size:19px;margin-bottom:6px}
+.tdc-brm p{max-width:46ch}
+/* ---------- Me soutenir (liens affiliés) ---------- */
+.tdc-support{padding-top:24px!important}
+.tdc-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-perk{border:3px solid var(--ink);border-radius:var(--r-m);padding:20px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.tdc-perk:nth-child(odd){background:var(--rose-soft)}
+.tdc-perk h3{font-size:20px;min-height:34px;display:flex;align-items:center}
+.tdc-perk-logo img{display:block;height:34px;width:auto;max-width:100%}
+.tdc-perk p{font-size:15px}
+.tdc-code{align-self:flex-start;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:16px;letter-spacing:.08em;background:var(--ink);color:#fff;border-radius:8px;padding:6px 12px;user-select:all}
+.tdc-perk .tdc-btn{margin-top:auto;padding:12px 18px;font-size:15px;text-align:center}
+.tdc-affil{font-size:13px;opacity:.75;margin-top:16px!important}
+@media (max-width:980px){.tdc-support-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.tdc-support-grid{grid-template-columns:1fr}}
+/* ---------- Contact ---------- */
+.tdc-contact{position:relative;background:var(--rose);color:var(--ink);margin-top:40px;margin-bottom:24px}
+.tdc-contact-in{padding-right:44%;min-height:300px}
+.tdc-contact h2{color:#fff;margin-bottom:14px;-webkit-text-stroke:0}
+.tdc-mail{font-weight:800;margin-top:8px!important;font-size:18px}
+.tdc-contact-img{position:absolute;right:2%;bottom:-40px;width:420px;height:420px;max-width:42%;object-fit:cover;object-position:50% 50%;pointer-events:none;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
+.tdc-socials{display:flex;flex-wrap:wrap;gap:0 20px;margin-top:14px;font-weight:800}
+.tdc-socials a{color:var(--ink)!important;display:inline-block;padding:10px 0}
+.tdc-peace{margin-top:14px!important;font-weight:600}
+/* ---------- Animations (CSS uniquement) ---------- */
+@keyframes tdc-marquee{to{translate:-50% 0}}
+@keyframes tdc-up{from{opacity:0;translate:0 60px}to{opacity:1;translate:0 0}}
+@keyframes tdc-left{from{opacity:0;translate:-70px 0;rotate:-3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-right{from{opacity:0;translate:70px 0;rotate:3deg}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes tdc-zoom{from{opacity:0;scale:.6;rotate:-6deg}to{opacity:1;scale:1;rotate:0deg}}
+@keyframes tdc-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -5% 0 0)}}
+@keyframes tdc-pop{0%{opacity:0;scale:.3;rotate:-20deg}60%{opacity:1;scale:1.15;rotate:6deg}100%{opacity:1;scale:1;rotate:-3deg}}
+@keyframes tdc-grow{from{scale:0 1}to{scale:1 1}}
+@keyframes tdc-float{50%{translate:0 -12px;rotate:1deg}}
+@keyframes tdc-spin{to{rotate:360deg}}
+@keyframes tdc-wiggle{0%,100%{rotate:0deg}25%{rotate:-6deg}75%{rotate:6deg}}
+@keyframes tdc-pulse{0%{box-shadow:0 0 0 0 rgba(14,18,48,.45)}100%{box-shadow:0 0 0 22px rgba(14,18,48,0)}}
+@keyframes tdc-shine{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes tdc-rise{from{opacity:0;translate:0 120px;scale:.85}to{opacity:1;translate:0 0;scale:1}}
+@keyframes tdc-parallax{to{translate:0 -60px}}
+@media (prefers-reduced-motion:no-preference){
+  .tdc-ticker>div{animation:tdc-marquee 24s linear infinite}
+  /* Ouverture de page */
+  .tdc-hero>div:first-child>*{animation:tdc-up .9s var(--ease) both}
+  .tdc-hero h1{animation-delay:.08s}
+  .tdc-tag{animation-delay:.2s!important}
+  .tdc-hero h1 span{display:inline-block;animation:tdc-pop 1s .5s var(--ease) both}
+  .tdc-pills span,.tdc-net-btns a,.tdc-cta-btn{animation:tdc-zoom .5s var(--ease) both}
+  .tdc-cta-btn.c2{animation-delay:.3s}.tdc-cta-btn.c1{animation-delay:.38s}
+  .tdc-ctas{animation:none!important}
+  .tdc-pills span:nth-child(1){animation-delay:.45s}.tdc-pills span:nth-child(2){animation-delay:.5s}
+  .tdc-pills span:nth-child(3),.tdc-pills span:nth-child(4){animation-delay:.55s}
+  .tdc-pills span:nth-child(5){animation-delay:.6s}.tdc-pills span:nth-child(6){animation-delay:.65s}
+  .tdc-net-btns a:nth-child(1){animation-delay:.7s}.tdc-net-btns a:nth-child(2){animation-delay:.78s}
+  .tdc-net-btns a:nth-child(3){animation-delay:.86s}.tdc-net-btns a:nth-child(4){animation-delay:.94s}
+  .tdc-photo{animation:tdc-zoom 1s .15s var(--ease) both}
+  .tdc-photo img{animation:tdc-float 5s 1.2s ease-in-out infinite}
+    .tdc-lang div{animation:tdc-zoom .6s .9s var(--ease) both}
+  /* En continu */
+  .tdc-contact .tdc-btn{animation:tdc-pulse 1.8s ease-out infinite}
+  .tdc-big{background:linear-gradient(100deg,var(--rose-deep) 40%,var(--rose) 50%,var(--rose-deep) 60%) 0 0/250% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:tdc-shine 4s linear infinite}
+  /* Au scroll : Chrome, Edge, Safari récents. Ailleurs, tout s'affiche sans animation. */
+  @supports (animation-timeline:view()){
+    .tdc-hero{animation:tdc-parallax linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+    .tdc h2{animation:tdc-reveal linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+    .tdc-kicker{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+    .tdc-stat{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    .tdc-stat:nth-child(2){animation-range:entry 8% entry 68%}
+    .tdc-stat:nth-child(3){animation-range:entry 16% entry 76%}
+    .tdc-stat:nth-child(4){animation-range:entry 24% entry 84%}
+    .tdc-audience>span{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-card:nth-child(odd){animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-card:nth-child(even){animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 30%}
+    .tdc-case>div:first-child{animation:tdc-left linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-case>div:last-child{animation:tdc-right linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+    .tdc-brands span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-bar i{transform-origin:left;animation:tdc-grow linear both;animation-timeline:view();animation-range:entry 30% cover 40%}
+    .tdc-pod-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-pod-series span{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+    .tdc-kpis>div{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+    .tdc-perk{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-shot{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-brm{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+    .tdc-contact-img{animation:tdc-rise linear both;animation-timeline:view();animation-range:entry 10% entry 70%}
+    .tdc-contact h2{animation:tdc-pop linear both;animation-timeline:view();animation-range:entry 10% entry 80%}
+  }
+  /* Survol : uniquement souris/trackpad, pas sur téléphone */
+  @media (hover:hover){
+    .tdc-card,.tdc-stat{transition:transform .25s var(--ease),box-shadow .25s,background-color .25s}
+    .tdc-card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:10px 10px 0 var(--rose)}
+    .tdc-card.rose:hover{box-shadow:10px 10px 0 var(--bleu)}
+    .tdc-stat:hover{transform:translateY(-6px) rotate(1deg);background-color:rgba(255,79,154,.18)}
+    .tdc-btn,.tdc-net-btns a,.tdc-pills span,.tdc-brands span,.tdc-shot{transition:transform .2s var(--ease)}
+    .tdc-btn:hover,.tdc-net-btns a:hover{transform:scale(1.07) rotate(-3deg)}
+    .tdc-cta-btn:hover{transform:translate(-2px,-2px) rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+    .tdc-pills span:hover,.tdc-brands span:hover{transform:rotate(-6deg) scale(1.12)}
+    .tdc-shot:hover{transform:scale(1.02) rotate(.5deg)}
+    .tdc-thumb:hover img{scale:1.08}
+    .tdc-card a.tdc-btn:hover{animation:tdc-wiggle .3s ease-in-out 3}
+    .tdc-ticker:hover>div{animation-play-state:paused}
+    .tdc-socials a:hover{color:#fff!important}
+  }
+}
+/* ---------- Petits ordis et tablettes : 2 cartes par ligne (les reels Instagram ont besoin de 326 px minimum) ---------- */
+@media (max-width:1180px){
+  .tdc-grid3{grid-template-columns:1fr 1fr}
+  .tdc-grid3>.tdc-card:last-child{grid-column:1/-1}
+  .tdc-grid3>.tdc-card:last-child :is(.tdc-video,.tdc-thumbs){width:100%;max-width:640px;margin-inline:auto}
+}
+@media (max-width:900px){.tdc-grid3{grid-template-columns:1fr}}
+/* ---------- Tablette ---------- */
+@media (max-width:980px){
+  .tdc-grid4{grid-template-columns:repeat(2,1fr)}
+}
+/* ---------- Mobile ---------- */
+@media (max-width:720px){
+  .tdc section{padding:52px 20px}
+  .tdc-block{margin:0 8px}
+  .tdc-block+.tdc-block{margin-top:16px}
+  .tdc-hero,.tdc-case{grid-template-columns:1fr}
+  .tdc-lang{top:calc(10px + env(safe-area-inset-top,0px));right:10px}
+  .tdc-lang a{font-size:12px;padding:9px 12px}
+  .tdc-lang div{padding:3px}
+  .tdc-hero{gap:28px}
+  .tdc-ctas{flex-direction:column}
+  .tdc-cta-btn{width:100%}
+  .tdc-photo{max-width:440px;margin:0 auto}
+  .tdc-grid3{grid-template-columns:1fr}
+  .tdc-card .tdc-ig{max-width:none;width:calc(100% + 48px);margin:0 -24px;border-left:0;border-right:0;border-radius:0}
+  .tdc-grid4{gap:10px}
+  .tdc-stat{padding:16px}
+  .tdc-ticker{font-size:16px;margin-bottom:48px}
+  .tdc-bar{grid-template-columns:96px 1fr 64px;font-size:13px}
+  .tdc-brm{grid-template-columns:1fr;padding:32px 24px;gap:14px}
+  .tdc-brm b{font-size:38px}
+  .tdc-kpis{gap:8px}
+  .tdc-kpis>div{padding:14px 10px}
+  .tdc-kpis b{font-size:22px;white-space:nowrap}
+  .tdc-kpis small{font-size:12px}
+  .tdc-contact{display:flex;flex-direction:column;padding-bottom:0!important;margin-top:48px;text-align:center}
+  .tdc-contact-in{padding-right:0;min-height:0}
+  .tdc-socials{justify-content:center}
+  .tdc-contact-btns{justify-content:center}
+  .tdc-contact-img{position:relative;right:auto;bottom:auto;order:2;display:block;width:300px;height:300px;max-width:85%;margin:24px auto -29px}
+}
+/* ---------- Accueil : L'atelier ---------- */
+.tdc-atelier .tdc-at-lead{max-width:60ch;margin-bottom:24px}
+.tdc-at-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-at-card{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:16px;color:var(--ink)!important;text-decoration:none!important;box-shadow:8px 8px 0 var(--rose);transition:translate .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+@media (hover:hover){.tdc-at-card:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--rose)}}
+.tdc-at-card:active{translate:4px 4px;box-shadow:4px 4px 0 var(--rose)}
+.tdc-at-ic{flex:none;width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.tdc-at-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tdc-at-tx{display:grid;gap:4px;flex:1;min-width:0}
+.tdc-at-tx b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:18px;line-height:1.1}
+.tdc-at-tx small{font-size:13px;font-weight:600;opacity:.8;line-height:1.35}
+.tdc-at-go{font-family:"Archivo Black",Impact,sans-serif;font-size:22px}
+@media (max-width:980px){.tdc-at-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.tdc-at-grid{grid-template-columns:1fr}.tdc-at-card{box-shadow:6px 6px 0 var(--rose)}}
+/* ---------- Menu flottant (bord droit) ---------- */
+.tdc-menu{position:fixed;right:14px;top:50%;translate:0 -50%;z-index:9998;display:flex;flex-direction:column;gap:6px;background:var(--ink);padding:6px;border-radius:99px;box-shadow:0 8px 24px rgba(14,18,48,.3)}
+.tdc-menu a,.tdc-mnav a,.tdc-mnav summary{-webkit-tap-highlight-color:transparent}
+.tdc-menu a{position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff!important;text-decoration:none!important;transition:background-color .2s}
+.tdc-menu svg,.tdc-mnav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tdc-menu a.is-active{background:var(--rose-deep)}
+.tdc-sub{position:relative}
+.tdc-sub-b{all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;color:#fff;cursor:pointer;transition:background-color .2s;-webkit-tap-highlight-color:transparent}
+.tdc-sub.is-active .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub.open .tdc-sub-b{background:rgba(255,255,255,.18)}.tdc-sub.is-active.open .tdc-sub-b{background:var(--rose-deep)}
+.tdc-sub-b:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.tdc-sub-panel{position:absolute;right:calc(100% + 14px);top:50%;translate:0 -50%;min-width:260px;display:none;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+.tdc-sub-panel::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:16px}
+.tdc-sub.open .tdc-sub-panel{display:grid}
+.tdc-sub-t,.tdc-mnav-t{margin:0!important;padding:8px 12px 4px;color:var(--rose)!important;font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.tdc-sub-panel a{width:auto;height:auto;border-radius:14px;justify-content:flex-start;gap:12px;padding:11px 14px;font-weight:800;font-size:14px;line-height:1.2;white-space:nowrap}
+.tdc-sub.open .tdc-menu-label{opacity:0!important}
+@media (hover:hover){.tdc-sub:hover .tdc-sub-panel{display:grid}.tdc-sub:hover .tdc-menu-label{opacity:0!important}.tdc-sub-b:hover{background:rgba(255,255,255,.14)}.tdc-sub.is-active .tdc-sub-b:hover{background:var(--rose-deep)}}
+@media (prefers-reduced-motion:no-preference){.tdc-sub.open .tdc-sub-panel,.tdc-sub:hover .tdc-sub-panel{animation:tdc-zoom .25s var(--ease) both}}
+.tdc-menu-label{position:absolute;right:calc(100% + 12px);top:50%;translate:0 -50%;white-space:nowrap;background:var(--ink);color:#fff;font-weight:800;font-size:13px;line-height:1;padding:9px 13px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s;box-shadow:0 6px 16px rgba(14,18,48,.25)}
+@media (hover:hover){.tdc-menu a:hover{background:rgba(255,255,255,.14)}.tdc-menu a.is-active:hover{background:var(--rose-deep)}.tdc-menu>a:hover .tdc-menu-label,.tdc-sub-b:hover .tdc-menu-label{opacity:1;translate:-4px -50%}}
+.tdc-menu>a:focus-visible .tdc-menu-label{opacity:1}
+@media (prefers-reduced-motion:no-preference){.tdc-menu{animation:tdc-zoom .6s 1s var(--ease) both}}
+@media (min-width:1025px){.tdc{max-width:min(1240px,calc(100vw - 172px))!important}}
+/* Menu mobile : un bouton qui ouvre la liste des pages avec leur nom */
+.tdc-mnav{display:none}
+@media (max-width:1024px){
+  .tdc-menu{display:none}
+  .tdc-mnav{display:block;position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9998}
+  .tdc-mnav summary{list-style:none;display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(14,18,48,.35);transition:background-color .2s}
+  .tdc-mnav summary::-webkit-details-marker{display:none}
+  .tdc-mnav summary::marker{content:""}
+  .tdc-mnav .i-close{display:none}
+  .tdc-mnav[open] summary{background:var(--rose-deep)}
+  .tdc-mnav[open] .i-open{display:none}
+  .tdc-mnav[open] .i-close{display:block}
+  .tdc-mnav-panel{position:absolute;right:0;bottom:calc(100% + 10px);min-width:236px;max-height:calc(100vh - 110px);max-height:calc(100dvh - 110px);overflow-y:auto;transform-origin:100% 100%;display:grid;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
+  .tdc-mnav-panel a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;color:#fff!important;text-decoration:none!important;font-weight:800;font-size:15px;line-height:1.2;white-space:nowrap}
+  .tdc-mnav-panel a{transition:background-color .15s,scale .15s}
+  .tdc-mnav-panel a.is-active{background:var(--rose-deep)}
+  .tdc-mnav-t{border-top:1px solid rgba(255,255,255,.15);margin-top:4px!important;padding-top:12px}
+  .tdc-mnav-panel a.sub{padding:10px 14px 10px 22px;font-size:14px}
+  .tdc-mnav-lang{display:flex;gap:4px;padding:4px;margin-bottom:4px;background:rgba(255,255,255,.08);border-radius:16px}
+  .tdc-mnav-panel .tdc-mnav-lang a{flex:1;justify-content:center;padding:10px 6px;font-size:14px;border-radius:12px}
+  .tdc:not(:target) .tdc-mnav-lang .b-fr,.tdc:target .tdc-mnav-lang .b-en,.tdc-zw:target .tdc-mnav-lang .b-zh{background:var(--rose-deep)}
+  .tdc-zw:target .tdc .tdc-mnav-lang .b-fr{background:transparent}
+  .tdc-lang{position:absolute!important}
+  .tdc-mnav-panel a:active,.tdc-mnav-panel a:focus{background:var(--rose)!important;color:var(--ink)!important;scale:.96;outline:none}
+  @media (prefers-reduced-motion:no-preference){.tdc-mnav[open] .tdc-mnav-panel{animation:tdc-zoom .25s var(--ease) both}.tdc-mnav{animation:tdc-zoom .6s 1s var(--ease) both}}
+}
+.tdc-swipe{display:none;margin:0 0 8px!important;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rose-deep)}
+.tdc-swipe b{display:inline-block;animation:tdc-swipe 1.6s ease-in-out infinite}
+@keyframes tdc-swipe{0%,100%{translate:-3px 0}50%{translate:3px 0}}
+@media (max-width:900px){.tdc-swipe{display:block}}
+@media (max-width:720px){.tdc-page-hero h1{font-size:min(52px,calc((100vw - 48px)/7.9))!important}.tdc-hero>*{min-width:0}}
+.tdc h1>span.t1{color:inherit!important;animation:none!important;display:inline}
+.tdc h1>span.t1.en,.tdc h1>span.t1.zh{display:none}
+/* ---------- Pages Podcast & Cabinet ---------- */
+.tdc-page-hero{padding-top:56px!important}
+.tdc-lead{font-size:clamp(18px,2vw,21px);font-weight:600;margin:20px 0 24px!important;max-width:36ch}
+.tdc-lead-wide{max-width:60ch;font-weight:400}
+.tdc-player{border:3px solid var(--ink);border-radius:var(--r-m);overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--rose)}
+.tdc-player iframe{display:block}
+.tdc-actions{display:flex;flex-wrap:wrap;gap:10px}
+.tdc-actions .tdc-btn{margin-top:0}
+.tdc-cover{display:block;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;box-shadow:12px 12px 0 var(--rose);max-width:460px;width:100%;justify-self:center}
+.tdc-cover img{display:block;width:100%;height:auto}
+.tdc-series{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tdc-series .tdc-card h3{font-size:20px}
+.tdc-tag-new{align-self:flex-start;background:var(--bleu);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:5px 10px}
+.tdc-eps{display:grid;gap:12px}
+.tdc-ep{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;border:3px solid var(--ink);border-radius:var(--r-m);padding:18px 22px;background:#fff}
+.tdc-ep-n{font-family:"Archivo Black",Impact,sans-serif;font-size:34px;line-height:1;color:var(--rose-deep)}
+.tdc-ep h3{font-size:20px}
+.tdc-ep p{font-size:15px;opacity:.85}
+.tdc-ep.soon{background:var(--bleu-soft);border-style:dashed}
+.tdc-ep .tdc-btn{margin-top:0;padding:12px 18px;font-size:15px}
+.tdc-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+.tdc-step{border:3px solid var(--ink);border-radius:var(--r-m);padding:22px;background:#fff;counter-increment:st}
+.tdc-step::before{content:counter(st,decimal-leading-zero);display:block;font-family:"Archivo Black",Impact,sans-serif;font-size:40px;line-height:1;color:transparent;-webkit-text-stroke:2px var(--ink);margin-bottom:10px}
+.tdc-step h3{font-size:20px;margin-bottom:6px}
+.tdc-step p{font-size:15px}
+.tdc-scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:8px}
+.tdc-scale>div{background:rgba(255,255,255,.07);border-radius:var(--r-m);padding:16px 10px;text-align:center}
+.tdc-teeth{display:flex;justify-content:center;gap:2px;min-height:26px;flex-wrap:wrap}
+.tdc-teeth svg{width:22px;height:22px;fill:var(--rose);stroke:none}
+.tdc-scale b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:26px;margin-top:8px}
+.tdc-scale small{display:block;font-size:13px;opacity:.85;min-height:2.6em;margin-top:4px}
+.tdc-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-rules .tdc-card p{font-size:15px}
+.tdc-final{text-align:center}
+.tdc-final p{max-width:46ch;margin:0 auto!important}
+.tdc-final .tdc-actions{justify-content:center;margin-top:22px}
+.tdc-final .tdc-peace{margin-top:22px!important}
+@media (max-width:980px){.tdc-series{grid-template-columns:repeat(2,minmax(0,1fr))}.tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr))}.tdc-scale small{font-size:12px}}
+@media (max-width:720px){
+  .tdc-steps,.tdc-rules,.tdc-series{grid-template-columns:1fr}
+  .tdc-ep{grid-template-columns:auto 1fr;padding:16px}
+  .tdc-ep .tdc-btn{grid-column:1/-1;text-align:center}
+  .tdc-scale{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .tdc-scale>div{padding:12px 4px}
+  .tdc-teeth svg{width:14px;height:14px}
+  .tdc-scale b{font-size:20px}
+  .tdc-scale small{font-size:11px}
+  .tdc-cover{max-width:340px;box-shadow:8px 8px 0 var(--rose)}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-step,.tdc-ep,.tdc-scale>div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
+  .tdc-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Calculateur de ratio ---------- */
+.tdc-hero.tdc-solo{grid-template-columns:1fr;padding-bottom:36px!important}
+.tdc-hero.tdc-solo .tdc-lead{max-width:52ch}
+.tdc-calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:stretch}
+.tdc-ctrl{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:24px;display:grid;gap:18px;align-content:start;box-shadow:10px 10px 0 var(--ink)}
+.tdc-fl{display:block;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.tdc-fl small{font-weight:600;letter-spacing:0;text-transform:none;opacity:.7}
+.tdc-num{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;border:3px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.tdc-num:focus-within{box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-num button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;line-height:1;background:var(--rose-soft);color:var(--ink);transition:background-color .15s,scale .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.tdc-num button:active{background:var(--rose)}
+.tdc-num button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+@media (hover:hover){.tdc-num button:hover{background:var(--rose)}}
+.tdc-num input{all:unset;box-sizing:border-box;width:100%;min-width:0;text-align:center;font-family:"Archivo Black",Impact,sans-serif;font-size:30px;line-height:1;padding:10px 0;color:var(--ink);-moz-appearance:textfield;appearance:textfield}
+.tdc-num input::-webkit-inner-spin-button,.tdc-num input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-sel{box-sizing:border-box;width:100%;-webkit-appearance:none;appearance:none;border:3px solid var(--ink);border-radius:16px;padding:14px 46px 14px 16px;font:800 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e1230' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/20px;cursor:pointer}
+.tdc-sel:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-switch{display:flex;align-items:center;justify-content:space-between;gap:14px;font-weight:800;cursor:pointer;border-top:2px dashed rgba(14,18,48,.2);padding-top:16px}
+.tdc-switch small{display:block;font-weight:600;font-size:13px;opacity:.7}
+.tdc-switch input{-webkit-appearance:none;appearance:none;flex:none;width:56px;height:32px;margin:0;border:3px solid var(--ink);border-radius:99px;background:#fff;position:relative;cursor:pointer;transition:background-color .2s}
+.tdc-switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:translate .2s var(--ease)}
+.tdc-switch input:checked{background:var(--rose)}
+.tdc-switch input:checked::after{translate:24px 0}
+.tdc-switch input:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-bp{position:relative;border:3px solid var(--ink);border-radius:var(--r-l);overflow:clip;color:#fff;background-color:var(--bleu);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px);background-size:16px 16px,16px 16px,80px 80px,80px 80px;box-shadow:10px 10px 0 var(--rose);display:flex;align-items:center}
+.tdc-bp svg{display:block;width:100%;height:auto}
+.tdc-bp .ln{fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tdc-bp .lf{fill:none;stroke:#fff;stroke-opacity:.45;stroke-width:1}
+.tdc-bp .tire{fill:none;stroke:#fff;stroke-opacity:.14}
+.tdc-bp .sk{fill:none;stroke:var(--rose);stroke-width:6;stroke-linecap:round}
+.tdc-bp .ch{fill:none;stroke:var(--rose);stroke-width:3.5;stroke-dasharray:5 3.5;stroke-linejoin:round}
+.tdc-bp text{fill:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;letter-spacing:.04em}
+.tdc-bp .t-big{font-family:"Archivo Black",Impact,sans-serif;font-size:44px;letter-spacing:0}
+.tdc-bp .t-rose{fill:var(--rose)}
+.tdc-bp-play{all:unset;position:absolute;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+.tdc-bp-play:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media (hover:hover){.tdc-bp-play:hover{background:var(--rose-deep)}}
+.tdc-bp-play svg{width:16px;height:16px;fill:currentColor}
+.tdc-bp-play .i-play{display:none}
+.tdc-bp.paused .tdc-bp-play .i-play{display:block}
+.tdc-bp.paused .tdc-bp-play .i-pause{display:none}
+.tdc-res{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px}
+.tdc-res>div{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tdc-res>div.hot{background:var(--ink);color:#fff}
+.tdc-res>div.pk{background:var(--rose)}
+.tdc-res .tdc-rl{font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.tdc-res b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:clamp(26px,2.8vw,36px);line-height:1;font-variant-numeric:tabular-nums}
+.tdc-res b i{font-style:normal;font-size:.5em;margin-left:3px}
+.tdc-res small{font-size:13px;line-height:1.35;opacity:.85}
+.tdc-verdict{margin-top:16px;border:3px dashed var(--ink);border-radius:var(--r-m);padding:16px 20px;background:var(--rose-soft);font-weight:600;display:flex;gap:14px;align-items:flex-start}
+.tdc-verdict>b{flex:none;font-size:26px;line-height:1}
+.tdc-verdict p{margin:0!important}
+.tdc-eqt{width:100%;border-collapse:separate;border-spacing:0 8px;font-variant-numeric:tabular-nums;margin-top:-8px}
+.tdc-eqt th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:0 14px;font-weight:800;opacity:.75}
+.tdc-eqt th:last-child,.tdc-eqt td:last-child{text-align:right}
+.tdc-eqt td{background:#fff;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:12px 14px;font-weight:700;transition:background-color .15s}
+.tdc-eqt td:first-child{border-left:3px solid var(--ink);border-radius:14px 0 0 14px;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;white-space:nowrap}
+.tdc-eqt td:last-child{border-right:3px solid var(--ink);border-radius:0 14px 14px 0}
+.tdc-eqt tr.go{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tdc-eqt tr.go:active td{background:var(--rose)}
+@media (hover:hover){.tdc-eqt tr.go:hover td{background:var(--rose-soft)}}
+.tdc-eqt .d0{color:var(--rose-deep)}
+.tdc-eqt button{all:unset;cursor:pointer;background:var(--ink);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.tdc-eqt button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-cad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tdc-cad div{border:3px solid var(--ink);border-radius:var(--r-m);padding:12px 16px;background:#fff;transition:background-color .2s}
+.tdc-cad div.on{background:var(--rose)}
+.tdc-cad b{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tdc-cad span{font-size:13px;font-weight:700;opacity:.8}
+.tdc-note{font-size:14px;opacity:.75;margin-top:16px!important}
+.tdc-cmp{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center}
+.tdc-cmp-c{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:20px;display:grid;gap:12px;box-shadow:8px 8px 0 var(--ink)}
+.tdc-cmp-c.b{box-shadow:8px 8px 0 var(--rose)}
+.tdc-cmp-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cmp-h b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px}
+.tdc-cmp-h button{all:unset;cursor:pointer;font-weight:800;font-size:12px;border:2px solid var(--ink);border-radius:99px;padding:5px 10px;-webkit-tap-highlight-color:transparent}
+.tdc-cmp-h button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cmp-h button:hover{background:var(--rose-soft)}}
+.tdc-cmp-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-cmp .tdc-fl{font-size:11px;margin-bottom:6px}
+.tdc-cmp .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cmp .tdc-num input{font-size:22px;padding:7px 0}
+.tdc-cmp .tdc-num button{font-size:20px}
+.tdc-cmp .tdc-sel{padding:11px 40px 11px 12px;font-size:16px;border-radius:14px}
+.tdc-cmp-o{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:2px dashed rgba(14,18,48,.2);padding-top:12px}
+.tdc-cmp-o div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tdc-cmp-o span{font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tdc-cmp-o b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tdc-cmp-o b span{font-size:inherit;letter-spacing:0;text-transform:none;opacity:1;font-weight:400}
+.tdc-cmp-o b i{font-style:normal;font-size:.5em;margin-left:2px}
+.tdc-cmp-bar{height:10px;border-radius:99px;background:var(--bleu-soft);overflow:hidden}
+.tdc-cmp-bar i{display:block;height:100%;border-radius:99px;background:var(--ink);transition:width .4s var(--ease)}
+.tdc-cmp-c.b .tdc-cmp-bar i{background:var(--rose)}
+.tdc-vs{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-cmp-sum{margin-top:22px}
+@media (max-width:980px){
+  .tdc-cmp{grid-template-columns:1fr}
+  .tdc-vs{justify-self:center;width:48px;height:48px;margin:-4px 0}
+  .tdc-calc{grid-template-columns:1fr}
+  .tdc-bp{order:-1}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-res>div.hot{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .tdc-ctrl{padding:14px;box-shadow:6px 6px 0 var(--ink)}
+  /* vue compacte mobile : tout l'essentiel sur un écran */
+  .tdc-calc{gap:16px}
+  .tdc-ctrl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 10px}
+  .tdc-ctrl>div:nth-child(3){grid-column:1/-1}
+  .tdc-ctrl .tdc-fl{font-size:11px;margin-bottom:5px;letter-spacing:.06em}
+  .tdc-ctrl .tdc-fl small{display:none}
+  .tdc-ctrl .tdc-num{grid-template-columns:38px minmax(0,1fr) 38px}
+  .tdc-ctrl .tdc-num input{font-size:22px;padding:7px 0}
+  .tdc-ctrl .tdc-num button{font-size:20px}
+  .tdc-ctrl .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-switch{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px;border:0;padding:0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .tdc-switch small{display:none}
+  .tdc-switch input{height:30px;width:54px}
+  .tdc-switch input:checked::after{translate:22px 0}
+  .tdc-res{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+  .tdc-res>div{padding:10px 12px;gap:2px;border-radius:14px}
+  .tdc-res>div.hot{grid-column:auto}
+  .tdc-res>div:nth-child(5){display:none}
+  .tdc-res small{display:none}
+  .tdc-res .tdc-rl{font-size:10px;letter-spacing:.06em}
+  .tdc-res b{font-size:26px}
+  .tdc-verdict{margin-top:10px;font-size:14px;line-height:1.4}
+  .tdc-verdict>b{font-size:20px}
+  .tdc-bp{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-num{grid-template-columns:50px minmax(0,1fr) 50px}
+  .tdc-eqt th{padding:0 8px;font-size:11px;letter-spacing:.04em}
+  .tdc-eqt td{padding:10px 8px;font-size:14px}
+  .tdc-eqt td:first-child{font-size:16px}
+  .tdc-eqt .c-dev{display:none}
+  .tdc-eqt button{padding:6px 10px;font-size:12px}
+  .tdc-cad{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tdc-verdict{padding:14px 16px}
+  .tdc-bp text{font-size:18px}
+  .tdc-bp .t-big,#rt-l2{display:none}
+  .tdc-bp-play{width:36px;height:36px;right:10px;bottom:10px}
+}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .tdc-res>div,.tdc-cad div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}}
+/* ---------- Page Comparateur de transmissions ---------- */
+.tdc-x{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
+.tdc-xc{border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px;display:grid;gap:14px;align-content:start;box-shadow:10px 10px 0 var(--bleu)}
+.tdc-xc.b{box-shadow:10px 10px 0 var(--rose)}
+.tdc-xh{display:flex;align-items:center;gap:12px}
+.tdc-xh i{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:"Archivo Black",Impact,sans-serif;font-size:20px;color:#fff;background:var(--bleu)}
+.tdc-xc.b .tdc-xh i{background:var(--rose-deep)}
+.tdc-xh b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;line-height:1.1}
+.tdc-xh small{display:block;font-weight:700;font-size:13px;opacity:.7;margin-top:2px}
+.tdc-x2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tdc-xin{box-sizing:border-box;width:100%;border:3px solid var(--ink);border-radius:16px;padding:12px 14px;font:700 16px/1.2 Inter,system-ui,sans-serif;color:var(--ink);background:#fff}
+.tdc-xin:focus{outline:none;box-shadow:0 0 0 4px var(--bleu-soft)}
+.tdc-mode{display:flex;width:max-content;max-width:100%;margin:0 auto 10px;border:3px solid var(--ink);border-radius:99px;padding:4px;background:#fff;gap:4px}
+.tdc-mode button{all:unset;cursor:pointer;padding:10px 18px;border-radius:99px;font-weight:800;font-size:15px;line-height:1.2;text-align:center;-webkit-tap-highlight-color:transparent;transition:background-color .2s,color .2s}
+.tdc-mode button.on{background:var(--ink);color:#fff}
+.tdc-mode button[data-mode="pro"].on{background:var(--rose-deep)}
+.tdc-mode button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-mode button:not(.on):hover{background:var(--rose-soft)}}
+.tdc-mode-t{text-align:center;font-size:14px;font-weight:600;opacity:.8;margin:0 auto 22px!important;max-width:60ch}
+#tdc-cmpx .tdc-mode-t.p,#tdc-cmpx.is-pro .tdc-mode-t.s{display:none}
+#tdc-cmpx.is-pro .tdc-mode-t.p{display:block}
+.tdc-cats{display:flex;flex-wrap:wrap;gap:6px}
+.tdc-cat{all:unset;cursor:pointer;border:2px solid var(--ink);border-radius:99px;padding:7px 12px;font-weight:800;font-size:13px;line-height:1.2;background:#fff;-webkit-tap-highlight-color:transparent;transition:background-color .15s,color .15s}
+.tdc-cat.on{background:var(--ink);color:#fff}
+.tdc-xc.b .tdc-cat.on{background:var(--rose-deep);border-color:var(--rose-deep)}
+.tdc-xc.a .tdc-cat.on{background:var(--bleu);border-color:var(--bleu)}
+.tdc-cat:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+@media (hover:hover){.tdc-cat:not(.on):hover{background:var(--rose-soft)}}
+.tdc-cat:active{scale:.96}
+#tdc-cmpx:not(.is-pro) .tdc-cat.pro,#tdc-cmpx:not(.is-pro) .tdc-cls,#tdc-cmpx:not(.is-pro) .tdc-sch{display:none!important}
+.tdc-xc.is-custom .tdc-gw{display:none}
+.tdc-xcus{display:none;gap:12px}
+.tdc-cls{padding-top:12px!important;font-size:14px}
+.tdc-cls input{width:52px!important;height:30px!important}
+.tdc-cls input:checked::after{translate:22px 0!important}
+.tdc-xc.has-hub .tdc-cls,.tdc-xc.is-custom .tdc-cls{display:none}
+.tdc-xnote{display:none;margin:0!important;border-radius:12px;background:var(--rose-soft);padding:10px 12px;font-size:13px;font-weight:700;line-height:1.4}
+.tdc-xnote.on{display:block}
+.tdc-xc.is-custom .tdc-xnote{display:none}
+.tdc-cnt{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;border:3px solid var(--ink);border-radius:99px;overflow:hidden}
+.tdc-cnt button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;background:var(--rose-soft);-webkit-tap-highlight-color:transparent;transition:background-color .15s}
+.tdc-cnt button:active{background:var(--rose)}
+@media (hover:hover){.tdc-cnt button:hover{background:var(--rose)}}
+.tdc-cnt button:focus-visible{outline:3px solid var(--bleu);outline-offset:-5px}
+.tdc-cnt b{display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:22px;padding:6px 0}
+.tdc-teeth{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px}
+.tdc-teeth label{display:grid;gap:3px;text-align:center;font-size:11px;font-weight:800;opacity:.9}
+.tdc-teeth input{box-sizing:border-box;width:100%;min-width:0;border:2px solid var(--ink);border-radius:12px;padding:9px 2px;text-align:center;font:400 18px/1 "Archivo Black",Impact,sans-serif;color:var(--ink);background:#fff;-moz-appearance:textfield;appearance:textfield}
+.tdc-teeth input::-webkit-inner-spin-button,.tdc-teeth input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.tdc-teeth input:focus{outline:none;border-color:var(--bleu);box-shadow:0 0 0 3px var(--bleu-soft)}
+.tdc-teeth input.bad{border-color:var(--rose-deep);background:var(--rose-soft)}
+.tdc-xc.is-custom .tdc-xcus,.tdc-xc.cr .tdc-xcus,.tdc-xc.cc .tdc-xcus{display:grid}
+.tdc-xcus .cu-r,.tdc-xcus .cu-c{display:none;gap:8px}
+.tdc-xc.is-custom .cu-r,.tdc-xc.cr .cu-r,.tdc-xc.is-custom .cu-c,.tdc-xc.cc .cu-c{display:grid}
+.tdc-cuh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tdc-cuh .tdc-fl{margin:0!important}
+.tdc-cuh .tdc-cnt{width:132px;grid-template-columns:38px minmax(0,1fr) 38px}
+.tdc-cuh .tdc-cnt b{font-size:18px;padding:4px 0}
+.tdc-cuh .tdc-cnt button{font-size:18px}
+.tdc-xfun{margin:0!important;border-radius:12px;background:var(--ink);color:#fff;padding:10px 12px;font-size:13px;font-weight:800;line-height:1.4}
+.tdc-xc.is-custom .tdc-xstd{display:none}
+.tdc-xvs{align-self:center;width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo Black",Impact,sans-serif;font-size:18px}
+.tdc-chart{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:22px 22px 16px;box-shadow:10px 10px 0 var(--ink)}
+.tdc-chart-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin-bottom:10px}
+.tdc-chart-h h3{margin:0!important;font-size:20px}
+.tdc-leg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;font-weight:700}
+.tdc-leg span{display:inline-flex;align-items:center;gap:6px}
+.tdc-leg i{display:inline-block;width:14px;height:14px;border-radius:50%}
+.tdc-leg .la{background:var(--bleu)}
+.tdc-leg .lb{background:var(--rose)}
+.tdc-leg .lc{background:#fff;border:3px solid var(--ink)}
+.tdc-leg .lz{width:22px;border-radius:4px;background:repeating-linear-gradient(45deg,rgba(14,18,48,.14) 0 4px,transparent 4px 8px)}
+#cx-svg{width:100%;overflow:hidden}
+#cx-svg svg{display:block;width:100%;height:auto;touch-action:manipulation}
+#cx-svg text{font-family:Inter,system-ui,sans-serif;font-size:12px;fill:var(--ink)}
+#cx-svg .rl{font-weight:800;font-size:13px}
+#cx-svg .tk{stroke:rgba(14,18,48,.12);stroke-width:1}
+#cx-svg .tt{fill:rgba(14,18,48,.6);font-size:11px}
+#cx-svg .zz{fill:url(#cx-hatch)}
+#cx-svg .ln{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3;opacity:.55}
+#cx-svg .row{stroke:rgba(14,18,48,.18);stroke-width:2}
+#cx-svg circle{cursor:pointer;transition:r .15s}
+#cx-svg circle.a{fill:var(--bleu)}
+#cx-svg circle.b{fill:var(--rose)}
+#cx-svg circle.cm{stroke:var(--ink);stroke-width:3}
+#cx-svg circle.on{stroke:var(--ink);stroke-width:4}
+.tdc-read{margin-top:10px;min-height:44px;border-radius:14px;background:var(--bleu-soft);padding:11px 14px;font-weight:700;font-size:14px;line-height:1.4}
+.tdc-read b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400}
+.tdc-xt{margin-top:30px;border:3px solid var(--ink);border-radius:var(--r-l);overflow:hidden;background:#fff}
+.tdc-xt-r{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);align-items:center;border-top:2px solid rgba(14,18,48,.1)}
+.tdc-xt-r:first-child{border-top:0;background:var(--ink);color:#fff}
+.tdc-xt-r>*{padding:13px 16px;min-width:0}
+.tdc-xt-r>span:first-child{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tdc-xt-r>b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tdc-xt-r>b.w{background:var(--rose-soft);position:relative;padding-right:34px}
+.tdc-xt-r>b.w::after{content:"✓";position:absolute;right:12px;top:50%;translate:0 -50%;font-family:Inter,system-ui,sans-serif;font-weight:900;font-size:14px;color:var(--rose-deep)}
+.tdc-xt-r:first-child>b{font-size:16px}
+.tdc-xt-r:first-child .ha{color:#9fb0ff}
+.tdc-xt-r:first-child .hb{color:var(--rose)}
+.tdc-xt-r>b i{font-style:normal;font-size:.6em;white-space:nowrap}
+.tdc-xt-r>b{white-space:nowrap}
+.tdc-xt-r>b small{white-space:normal}
+.tdc-xt-r small{display:block;font-family:Inter,system-ui,sans-serif;font-size:12px;font-weight:700;opacity:.65}
+.tdc-mxs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.tdc-mxs details{border:3px solid var(--ink);border-radius:var(--r-m);background:#fff}
+.tdc-mxs summary{cursor:pointer;padding:14px 16px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.tdc-mxs summary::-webkit-details-marker{display:none}
+.tdc-mxs summary::after{content:"+";font-size:22px;line-height:1}
+.tdc-mxs details[open] summary::after{content:"−"}
+.tdc-mx{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.tdc-mx th,.tdc-mx td{padding:7px 10px;text-align:right;border-top:1px solid rgba(14,18,48,.1)}
+.tdc-mx th:first-child,.tdc-mx td:first-child{text-align:left;font-weight:800}
+.tdc-mx thead th{background:var(--ink);color:#fff}
+.tdc-mx td.cm{background:var(--rose-soft);font-weight:800}
+@media (max-width:980px){
+  .tdc-x{grid-template-columns:1fr;gap:12px}
+  .tdc-xvs{justify-self:center;width:46px;height:46px;font-size:15px}
+  .tdc-mxs{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .tdc-mode button{padding:9px 12px;font-size:13px}
+  .tdc-cat{padding:6px 10px;font-size:12px}
+  .tdc-xc{padding:16px;gap:10px;box-shadow:6px 6px 0 var(--bleu)}
+  .tdc-xc.b{box-shadow:6px 6px 0 var(--rose)}
+  .tdc-xc .tdc-fl{font-size:11px;margin-bottom:5px}
+  .tdc-xc .tdc-cls{flex-direction:row!important;align-items:center!important;justify-content:space-between!important;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;gap:12px!important}
+  .tdc-xc .tdc-cls small{display:block!important}
+  .tdc-xc .tdc-sel{padding:10px 40px 10px 12px;border-radius:14px}
+  .tdc-chart{padding:14px 12px 12px;box-shadow:6px 6px 0 var(--ink)}
+  .tdc-xt-r>*{padding:10px 10px}
+  .tdc-xt-r>span:first-child{font-size:11px;letter-spacing:.02em}
+  .tdc-xt-r>b{font-size:17px}
+  .tdc-xt-r>b.w{padding-right:26px}
+  .tdc-xt-r>b.w::after{right:8px}
+}
+.tdc-fb{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;border:3px dashed var(--ink);border-radius:var(--r-l);background:var(--bleu-soft);padding:24px 26px}
+.tdc-fb h3{margin:0 0 6px!important}
+.tdc-fb p{margin:0!important;max-width:46ch}
+.tdc-fb .tdc-actions{margin:0!important}
+@media (max-width:720px){.tdc-fb{padding:18px}.tdc-fb .tdc-actions{width:100%}.tdc-fb .tdc-btn{flex:1 1 100%;justify-content:center;text-align:center}}
+</style>
+<span id="tdc-fr"></span>
+<div class="tdc-zw" id="tdc-zh"><div class="tdc" id="tdc-en">
+  <nav class="tdc-lang" aria-label="Langue / Language"><div>
+    <a class="b-fr" href="#tdc-fr" hreflang="fr">FR</a>
+    <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
+    <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
+  </div></nav>
+  <section class="tdc-hero tdc-page-hero tdc-solo">
+    <div>
+      <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
+      <h1><span class="fr t1">Le comparateur de <span>transmissions</span></span><span class="en t1" lang="en">The <span>drivetrain</span> comparator</span><span class="zh t1" lang="zh-Hans"><span>传动系统</span>对比器</span></h1>
+      <p class="fr tdc-lead">1x13 contre 2x12, SRAM contre Shimano, gravel contre route. Tu choisis deux transmissions, je te montre où leurs rapports se superposent, laquelle grimpe le mieux et laquelle va le plus vite. Fini les débats de parking.</p><p class="en tdc-lead" lang="en">1x13 vs 2x12, SRAM vs Shimano, gravel vs road. Pick two drivetrains and see where their gears overlap, which one climbs better and which one goes faster. No more car-park debates.</p><p class="zh tdc-lead" lang="zh-Hans">1x13 对 2x12，SRAM 对 Shimano，砾石对公路。选两套传动，看看它们的档位在哪里重叠、哪套更会爬坡、哪套更快。停车场争论到此为止。</p>
+    </div>
+  </section>
+  <section id="tdc-cmpx" style="padding-top:0">
+    <div class="tdc-mode" role="group" aria-label="Mode"><button type="button" class="on" data-mode="simple"><span class="fr">Mode simple</span><span class="en" lang="en">Simple mode</span><span class="zh" lang="zh-Hans">简单模式</span></button><button type="button" data-mode="pro"><span class="fr">Mode Dentiste 🦷</span><span class="en" lang="en">Dentist mode 🦷</span><span class="zh" lang="zh-Hans">牙医模式 🦷</span></button></div>
+    <p class="tdc-mode-t s"><span class="fr">Les groupes route, gravel et VTT les plus courants, plus le mode perso.</span><span class="en" lang="en">The most common road, gravel and MTB groupsets, plus custom.</span><span class="zh" lang="zh-Hans">最常见的公路、砾石和山地套件，外加自定义。</span></p><p class="tdc-mode-t p"><span class="fr">Tout débloqué : Brompton, moyeux, boîtes Pinion, rétro, groupes de dentiste et moyeu Classified.</span><span class="en" lang="en">Everything unlocked: Brompton, hubs, Pinion gearboxes, retro, dentist builds and Classified hub.</span><span class="zh" lang="zh-Hans">全部解锁：Brompton、内变速、Pinion 变速箱、复古、牙医组合和 Classified 花鼓。</span></p>
+    <div class="tdc-x"><div class="tdc-xc a" id="cx-a">
+<div class="tdc-xh"><i>A</i><div><b id="cx-a-t">–</b><small id="cx-a-sub"></small></div></div>
+<div><span class="tdc-fl"><span class="fr">Type</span><span class="en" lang="en">Type</span><span class="zh" lang="zh-Hans">类型</span></span><div class="tdc-cats" id="cx-a-cats" data-c0="gravel"><button type="button" class="tdc-cat " data-cat="route" data-x="a">🛣️ <span class="fr">Route</span><span class="en" lang="en">Road</span><span class="zh" lang="zh-Hans">公路</span></button><button type="button" class="tdc-cat " data-cat="gravel" data-x="a">🪨 <span class="fr">Gravel</span><span class="en" lang="en">Gravel</span><span class="zh" lang="zh-Hans">砾石</span></button><button type="button" class="tdc-cat " data-cat="vtt" data-x="a">🌲 <span class="fr">VTT</span><span class="en" lang="en">MTB</span><span class="zh" lang="zh-Hans">山地</span></button><button type="button" class="tdc-cat pro" data-cat="bromp" data-x="a">🧳 <span class="fr">Brompton</span><span class="en" lang="en">Brompton</span><span class="zh" lang="zh-Hans">Brompton</span></button><button type="button" class="tdc-cat pro" data-cat="hub" data-x="a">🔩 <span class="fr">Moyeux</span><span class="en" lang="en">Hubs</span><span class="zh" lang="zh-Hans">内变速</span></button><button type="button" class="tdc-cat pro" data-cat="box" data-x="a">⚙️ <span class="fr">Boîtes</span><span class="en" lang="en">Gearboxes</span><span class="zh" lang="zh-Hans">变速箱</span></button><button type="button" class="tdc-cat pro" data-cat="retro" data-x="a">🕰️ <span class="fr">Rétro</span><span class="en" lang="en">Retro</span><span class="zh" lang="zh-Hans">复古</span></button><button type="button" class="tdc-cat pro" data-cat="dent" data-x="a">🦷 <span class="fr">Dentiste</span><span class="en" lang="en">Dentist</span><span class="zh" lang="zh-Hans">牙医</span></button><button type="button" class="tdc-cat " data-cat="perso" data-x="a">✏️ <span class="fr">Perso</span><span class="en" lang="en">Custom</span><span class="zh" lang="zh-Hans">自定义</span></button></div></div><div class="tdc-gw"><label class="tdc-fl" for="cx-a-g"><span class="fr">Groupe</span><span class="en" lang="en">Groupset</span><span class="zh" lang="zh-Hans">套件</span></label><select class="tdc-sel" id="cx-a-g" data-g0="xplr13"></select></div>
+<p class="tdc-xnote" id="cx-a-note"></p><div class="tdc-x2 tdc-xstd"><div><label class="tdc-fl" for="cx-a-c"><span class="fr">Cassette</span><span class="en" lang="en">Cassette</span><span class="zh" lang="zh-Hans">飞轮</span></label><select class="tdc-sel" id="cx-a-c" data-v="10-46"></select></div><div><label class="tdc-fl" for="cx-a-r"><span class="fr">Plateau(x)</span><span class="en" lang="en">Chainring(s)</span><span class="zh" lang="zh-Hans">牙盘</span></label><select class="tdc-sel" id="cx-a-r" data-v="42"></select></div></div>
+<label class="tdc-switch tdc-cls" id="cx-a-clsw"><span><span class="fr">Moyeu Classified Powershift</span><span class="en" lang="en">Classified Powershift hub</span><span class="zh" lang="zh-Hans">Classified Powershift 花鼓</span><small><span class="fr">2 vitesses dans le moyeu : 1 et 0,686</span><span class="en" lang="en">2 speeds in the hub: 1 and 0.686</span><span class="zh" lang="zh-Hans">花鼓内 2 速：1 和 0.686</span></small></span><input type="checkbox" id="cx-a-cls"></label><div class="tdc-sch"><label class="tdc-fl" for="cx-a-sch"><span class="fr">Pédalier Schlumpf</span><span class="en" lang="en">Schlumpf crank</span><span class="zh" lang="zh-Hans">Schlumpf 中轴变速</span></label><select class="tdc-sel" id="cx-a-sch"><option value="1">—</option><option value="1.65">Speed Drive · ×1,65</option><option value="0.4">Mountain Drive · ×0,4</option><option value="2.5">High Speed Drive · ×2,5</option></select></div><div class="tdc-xcus"><p class="tdc-xfun"><span class="fr">🦷 Tu customises&nbsp;? Bienvenue dans le clan des dentistes.</span><span class="en" lang="en">🦷 Going custom? Welcome to the dentists’ club.</span><span class="zh" lang="zh-Hans">🦷 自己改装？欢迎加入牙医俱乐部。</span></p><div class="cu-r"><div class="tdc-cuh"><span class="tdc-fl"><span class="fr">Plateaux</span><span class="en" lang="en">Chainrings</span><span class="zh" lang="zh-Hans">牙盘</span></span><div class="tdc-cnt"><button type="button" data-cx="a-rn" data-d="-1" aria-label="−1">−</button><b id="cx-a-rn">2</b><button type="button" data-cx="a-rn" data-d="1" aria-label="+1">+</button></div></div><div class="tdc-teeth" id="cx-a-ri"></div></div><div class="cu-c"><div class="tdc-cuh"><span class="tdc-fl"><span class="fr">Pignons</span><span class="en" lang="en">Cogs</span><span class="zh" lang="zh-Hans">飞轮</span> <small><span class="fr">du plus petit au plus grand</span><span class="en" lang="en">smallest to largest</span><span class="zh" lang="zh-Hans">从小到大</span></small></span><div class="tdc-cnt"><button type="button" data-cx="a-cn" data-d="-1" aria-label="−1">−</button><b id="cx-a-cn">12</b><button type="button" data-cx="a-cn" data-d="1" aria-label="+1">+</button></div></div><div class="tdc-teeth" id="cx-a-ci"></div></div></div>
+<div><label class="tdc-fl" for="cx-a-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></label><select class="tdc-sel" id="cx-a-w"><optgroup label="700c / 28" (622)"><option value="622-18">700 × 18 (18-622)</option><option value="622-20">700 × 20 (20-622)</option><option value="622-23">700 × 23 (23-622)</option><option value="622-25">700 × 25 (25-622)</option><option value="622-26">700 × 26 (26-622)</option><option value="622-28">700 × 28 (28-622)</option><option value="622-30">700 × 30 (30-622)</option><option value="622-32">700 × 32 (32-622)</option><option value="622-35">700 × 35 (35-622)</option><option value="622-38">700 × 38 (38-622)</option><option value="622-40" selected>700 × 40 (40-622)</option><option value="622-42">700 × 42 (42-622)</option><option value="622-45">700 × 45 (45-622)</option><option value="622-47">700 × 47 (47-622)</option><option value="622-50">700 × 50 (50-622)</option></optgroup><optgroup label="29" VTT (622)"><option value="622-54">29 × 2.1 (54-622)</option><option value="622-57">29 × 2.25 (57-622)</option><option value="622-61">29 × 2.4 (61-622)</option><option value="622-66">29 × 2.6 (66-622)</option></optgroup><optgroup label="27" ancien (630)"><option value="630-25">27 × 1 (25-630)</option><option value="630-28">27 × 1 1/8 (28-630)</option><option value="630-32">27 × 1 1/4 (32-630)</option></optgroup><optgroup label="650b / 27.5" (584)"><option value="584-38">650b × 38 (38-584)</option><option value="584-40">650b × 40 (40-584)</option><option value="584-42">650b × 42 (42-584)</option><option value="584-45">650b × 45 (45-584)</option><option value="584-47">650b × 47 (47-584)</option><option value="584-48">650b × 48 (48-584)</option><option value="584-50">650b × 50 (50-584)</option><option value="584-54">27.5 × 2.1 (54-584)</option><option value="584-57">27.5 × 2.25 (57-584)</option><option value="584-61">27.5 × 2.4 (61-584)</option><option value="584-66">27.5 × 2.6 (66-584)</option><option value="584-71">27.5 × 2.8 (71-584)</option></optgroup><optgroup label="650c (571)"><option value="571-20">650c × 20 (20-571)</option><option value="571-23">650c × 23 (23-571)</option><option value="571-25">650c × 25 (25-571)</option><option value="571-28">650c × 28 (28-571)</option></optgroup><optgroup label="26" route ancien (590 / 597)"><option value="590-35">650a × 35 (35-590)</option><option value="597-32">26 × 1 1/4 (32-597)</option></optgroup><optgroup label="26" VTT (559)"><option value="559-25">26 × 1.0 (25-559)</option><option value="559-32">26 × 1.25 (32-559)</option><option value="559-38">26 × 1.5 (38-559)</option><option value="559-44">26 × 1.75 (44-559)</option><option value="559-50">26 × 1.95 (50-559)</option><option value="559-54">26 × 2.1 (54-559)</option><option value="559-57">26 × 2.25 (57-559)</option><option value="559-61">26 × 2.4 (61-559)</option></optgroup><optgroup label="24" (507)"><option value="507-38">24 × 1.5 (38-507)</option><option value="507-44">24 × 1.75 (44-507)</option><option value="507-50">24 × 2.0 (50-507)</option><option value="507-58">24 × 2.3 (58-507)</option></optgroup><optgroup label="20" (451 / 406)"><option value="451-28">20 × 1 1/8 (28-451)</option><option value="406-38">20 × 1.5 (38-406)</option><option value="406-44">20 × 1.75 (44-406)</option><option value="406-50">20 × 2.0 (50-406)</option><option value="406-55">20 × 2.2 (55-406)</option><option value="406-61">20 × 2.4 (61-406)</option></optgroup><optgroup label="16" (349)"><option value="349-35">16 × 1 3/8 (35-349)</option></optgroup></select></div>
+</div><div class="tdc-xvs">VS</div><div class="tdc-xc b" id="cx-b">
+<div class="tdc-xh"><i>B</i><div><b id="cx-b-t">–</b><small id="cx-b-sub"></small></div></div>
+<div><span class="tdc-fl"><span class="fr">Type</span><span class="en" lang="en">Type</span><span class="zh" lang="zh-Hans">类型</span></span><div class="tdc-cats" id="cx-b-cats" data-c0="route"><button type="button" class="tdc-cat " data-cat="route" data-x="b">🛣️ <span class="fr">Route</span><span class="en" lang="en">Road</span><span class="zh" lang="zh-Hans">公路</span></button><button type="button" class="tdc-cat " data-cat="gravel" data-x="b">🪨 <span class="fr">Gravel</span><span class="en" lang="en">Gravel</span><span class="zh" lang="zh-Hans">砾石</span></button><button type="button" class="tdc-cat " data-cat="vtt" data-x="b">🌲 <span class="fr">VTT</span><span class="en" lang="en">MTB</span><span class="zh" lang="zh-Hans">山地</span></button><button type="button" class="tdc-cat pro" data-cat="bromp" data-x="b">🧳 <span class="fr">Brompton</span><span class="en" lang="en">Brompton</span><span class="zh" lang="zh-Hans">Brompton</span></button><button type="button" class="tdc-cat pro" data-cat="hub" data-x="b">🔩 <span class="fr">Moyeux</span><span class="en" lang="en">Hubs</span><span class="zh" lang="zh-Hans">内变速</span></button><button type="button" class="tdc-cat pro" data-cat="box" data-x="b">⚙️ <span class="fr">Boîtes</span><span class="en" lang="en">Gearboxes</span><span class="zh" lang="zh-Hans">变速箱</span></button><button type="button" class="tdc-cat pro" data-cat="retro" data-x="b">🕰️ <span class="fr">Rétro</span><span class="en" lang="en">Retro</span><span class="zh" lang="zh-Hans">复古</span></button><button type="button" class="tdc-cat pro" data-cat="dent" data-x="b">🦷 <span class="fr">Dentiste</span><span class="en" lang="en">Dentist</span><span class="zh" lang="zh-Hans">牙医</span></button><button type="button" class="tdc-cat " data-cat="perso" data-x="b">✏️ <span class="fr">Perso</span><span class="en" lang="en">Custom</span><span class="zh" lang="zh-Hans">自定义</span></button></div></div><div class="tdc-gw"><label class="tdc-fl" for="cx-b-g"><span class="fr">Groupe</span><span class="en" lang="en">Groupset</span><span class="zh" lang="zh-Hans">套件</span></label><select class="tdc-sel" id="cx-b-g" data-g0="105"></select></div>
+<p class="tdc-xnote" id="cx-b-note"></p><div class="tdc-x2 tdc-xstd"><div><label class="tdc-fl" for="cx-b-c"><span class="fr">Cassette</span><span class="en" lang="en">Cassette</span><span class="zh" lang="zh-Hans">飞轮</span></label><select class="tdc-sel" id="cx-b-c" data-v="11-34"></select></div><div><label class="tdc-fl" for="cx-b-r"><span class="fr">Plateau(x)</span><span class="en" lang="en">Chainring(s)</span><span class="zh" lang="zh-Hans">牙盘</span></label><select class="tdc-sel" id="cx-b-r" data-v="50/34"></select></div></div>
+<label class="tdc-switch tdc-cls" id="cx-b-clsw"><span><span class="fr">Moyeu Classified Powershift</span><span class="en" lang="en">Classified Powershift hub</span><span class="zh" lang="zh-Hans">Classified Powershift 花鼓</span><small><span class="fr">2 vitesses dans le moyeu : 1 et 0,686</span><span class="en" lang="en">2 speeds in the hub: 1 and 0.686</span><span class="zh" lang="zh-Hans">花鼓内 2 速：1 和 0.686</span></small></span><input type="checkbox" id="cx-b-cls"></label><div class="tdc-sch"><label class="tdc-fl" for="cx-b-sch"><span class="fr">Pédalier Schlumpf</span><span class="en" lang="en">Schlumpf crank</span><span class="zh" lang="zh-Hans">Schlumpf 中轴变速</span></label><select class="tdc-sel" id="cx-b-sch"><option value="1">—</option><option value="1.65">Speed Drive · ×1,65</option><option value="0.4">Mountain Drive · ×0,4</option><option value="2.5">High Speed Drive · ×2,5</option></select></div><div class="tdc-xcus"><p class="tdc-xfun"><span class="fr">🦷 Tu customises&nbsp;? Bienvenue dans le clan des dentistes.</span><span class="en" lang="en">🦷 Going custom? Welcome to the dentists’ club.</span><span class="zh" lang="zh-Hans">🦷 自己改装？欢迎加入牙医俱乐部。</span></p><div class="cu-r"><div class="tdc-cuh"><span class="tdc-fl"><span class="fr">Plateaux</span><span class="en" lang="en">Chainrings</span><span class="zh" lang="zh-Hans">牙盘</span></span><div class="tdc-cnt"><button type="button" data-cx="b-rn" data-d="-1" aria-label="−1">−</button><b id="cx-b-rn">2</b><button type="button" data-cx="b-rn" data-d="1" aria-label="+1">+</button></div></div><div class="tdc-teeth" id="cx-b-ri"></div></div><div class="cu-c"><div class="tdc-cuh"><span class="tdc-fl"><span class="fr">Pignons</span><span class="en" lang="en">Cogs</span><span class="zh" lang="zh-Hans">飞轮</span> <small><span class="fr">du plus petit au plus grand</span><span class="en" lang="en">smallest to largest</span><span class="zh" lang="zh-Hans">从小到大</span></small></span><div class="tdc-cnt"><button type="button" data-cx="b-cn" data-d="-1" aria-label="−1">−</button><b id="cx-b-cn">12</b><button type="button" data-cx="b-cn" data-d="1" aria-label="+1">+</button></div></div><div class="tdc-teeth" id="cx-b-ci"></div></div></div>
+<div><label class="tdc-fl" for="cx-b-w"><span class="fr">Roue</span><span class="en" lang="en">Wheel</span><span class="zh" lang="zh-Hans">车轮</span></label><select class="tdc-sel" id="cx-b-w"><optgroup label="700c / 28" (622)"><option value="622-18">700 × 18 (18-622)</option><option value="622-20">700 × 20 (20-622)</option><option value="622-23">700 × 23 (23-622)</option><option value="622-25">700 × 25 (25-622)</option><option value="622-26">700 × 26 (26-622)</option><option value="622-28" selected>700 × 28 (28-622)</option><option value="622-30">700 × 30 (30-622)</option><option value="622-32">700 × 32 (32-622)</option><option value="622-35">700 × 35 (35-622)</option><option value="622-38">700 × 38 (38-622)</option><option value="622-40">700 × 40 (40-622)</option><option value="622-42">700 × 42 (42-622)</option><option value="622-45">700 × 45 (45-622)</option><option value="622-47">700 × 47 (47-622)</option><option value="622-50">700 × 50 (50-622)</option></optgroup><optgroup label="29" VTT (622)"><option value="622-54">29 × 2.1 (54-622)</option><option value="622-57">29 × 2.25 (57-622)</option><option value="622-61">29 × 2.4 (61-622)</option><option value="622-66">29 × 2.6 (66-622)</option></optgroup><optgroup label="27" ancien (630)"><option value="630-25">27 × 1 (25-630)</option><option value="630-28">27 × 1 1/8 (28-630)</option><option value="630-32">27 × 1 1/4 (32-630)</option></optgroup><optgroup label="650b / 27.5" (584)"><option value="584-38">650b × 38 (38-584)</option><option value="584-40">650b × 40 (40-584)</option><option value="584-42">650b × 42 (42-584)</option><option value="584-45">650b × 45 (45-584)</option><option value="584-47">650b × 47 (47-584)</option><option value="584-48">650b × 48 (48-584)</option><option value="584-50">650b × 50 (50-584)</option><option value="584-54">27.5 × 2.1 (54-584)</option><option value="584-57">27.5 × 2.25 (57-584)</option><option value="584-61">27.5 × 2.4 (61-584)</option><option value="584-66">27.5 × 2.6 (66-584)</option><option value="584-71">27.5 × 2.8 (71-584)</option></optgroup><optgroup label="650c (571)"><option value="571-20">650c × 20 (20-571)</option><option value="571-23">650c × 23 (23-571)</option><option value="571-25">650c × 25 (25-571)</option><option value="571-28">650c × 28 (28-571)</option></optgroup><optgroup label="26" route ancien (590 / 597)"><option value="590-35">650a × 35 (35-590)</option><option value="597-32">26 × 1 1/4 (32-597)</option></optgroup><optgroup label="26" VTT (559)"><option value="559-25">26 × 1.0 (25-559)</option><option value="559-32">26 × 1.25 (32-559)</option><option value="559-38">26 × 1.5 (38-559)</option><option value="559-44">26 × 1.75 (44-559)</option><option value="559-50">26 × 1.95 (50-559)</option><option value="559-54">26 × 2.1 (54-559)</option><option value="559-57">26 × 2.25 (57-559)</option><option value="559-61">26 × 2.4 (61-559)</option></optgroup><optgroup label="24" (507)"><option value="507-38">24 × 1.5 (38-507)</option><option value="507-44">24 × 1.75 (44-507)</option><option value="507-50">24 × 2.0 (50-507)</option><option value="507-58">24 × 2.3 (58-507)</option></optgroup><optgroup label="20" (451 / 406)"><option value="451-28">20 × 1 1/8 (28-451)</option><option value="406-38">20 × 1.5 (38-406)</option><option value="406-44">20 × 1.75 (44-406)</option><option value="406-50">20 × 2.0 (50-406)</option><option value="406-55">20 × 2.2 (55-406)</option><option value="406-61">20 × 2.4 (61-406)</option></optgroup><optgroup label="16" (349)"><option value="349-35">16 × 1 3/8 (35-349)</option></optgroup></select></div>
+</div></div>
+    <div class="tdc-chart">
+      <div class="tdc-chart-h"><h3 class="fr">Tous les rapports, du plus souple au plus dur</h3><h3 class="en" lang="en">Every gear, lightest to hardest</h3><h3 class="zh" lang="zh-Hans">所有档位，从轻到重</h3>
+        <div class="tdc-leg"><span><i class="la"></i>A</span><span><i class="lb"></i>B</span><span><i class="lc"></i><span class="fr">En commun (±2 %)</span><span class="en" lang="en">Shared (±2%)</span><span class="zh" lang="zh-Hans">重合（±2%）</span></span><span><i class="lz"></i><span class="fr">Doublons 2x</span><span class="en" lang="en">2x overlap</span><span class="zh" lang="zh-Hans">2x 重复区</span></span></div>
+      </div>
+      <div id="cx-svg"></div>
+      <div class="tdc-read" id="cx-read" aria-live="polite"><span class="fr">Touche ou survole un point pour voir le rapport.</span><span class="en" lang="en">Tap or hover a dot to see the gear.</span><span class="zh" lang="zh-Hans">点击或悬停圆点查看档位。</span></div>
+    </div>
+    <div class="tdc-xt">
+      <div class="tdc-xt-r"><span><span class="fr">Face à face</span><span class="en" lang="en">Head to head</span><span class="zh" lang="zh-Hans">正面对比</span></span><b class="ha" id="cx-a-h">A</b><b class="hb" id="cx-b-h">B</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Rapports</span><span class="en" lang="en">Gears</span><span class="zh" lang="zh-Hans">档位数</span></span><b id="cx-a-n">–</b><b id="cx-b-n">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Rapports utiles</span><span class="en" lang="en">Useful gears</span><span class="zh" lang="zh-Hans">有效档位</span></span><b id="cx-a-u">–</b><b id="cx-b-u">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Le plus souple</span><span class="en" lang="en">Lightest gear</span><span class="zh" lang="zh-Hans">最轻档</span></span><b id="cx-a-lo">–</b><b id="cx-b-lo">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Le plus dur</span><span class="en" lang="en">Hardest gear</span><span class="zh" lang="zh-Hans">最重档</span></span><b id="cx-a-hi">–</b><b id="cx-b-hi">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Étendue</span><span class="en" lang="en">Range</span><span class="zh" lang="zh-Hans">齿比范围</span></span><b id="cx-a-rg">–</b><b id="cx-b-rg">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Écart moyen</span><span class="en" lang="en">Average step</span><span class="zh" lang="zh-Hans">平均级差</span></span><b id="cx-a-st">–</b><b id="cx-b-st">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">Vitesse max à 90 tr/min</span><span class="en" lang="en">Top speed at 90 rpm</span><span class="zh" lang="zh-Hans">90 转/分 极速</span></span><b id="cx-a-vm">–</b><b id="cx-b-vm">–</b></div>
+      <div class="tdc-xt-r"><span><span class="fr">En commun avec l’autre</span><span class="en" lang="en">Shared with the other</span><span class="zh" lang="zh-Hans">与对方重合</span></span><b id="cx-a-cm">–</b><b id="cx-b-cm">–</b></div>
+    </div>
+    <div class="tdc-verdict"><b>👑</b><p id="cx-v"></p></div>
+    <div class="tdc-mxs">
+      <details><summary><span class="fr">Tous les rapports de A</span><span class="en" lang="en">All gears of A</span><span class="zh" lang="zh-Hans">A 的所有档位</span></summary><div id="cx-a-mx"></div></details>
+      <details><summary><span class="fr">Tous les rapports de B</span><span class="en" lang="en">All gears of B</span><span class="zh" lang="zh-Hans">B 的所有档位</span></summary><div id="cx-b-mx"></div></details>
+    </div>
+  </section>
+  <section style="padding-top:0">
+    <span class="fr tdc-kicker">Petit lexique</span><span class="en tdc-kicker" lang="en">Glossary</span><span class="zh tdc-kicker" lang="zh-Hans">小词典</span>
+    <h2 class="fr">Comment lire tout ça&nbsp;?</h2><h2 class="en" lang="en">How to read all this?</h2><h2 class="zh" lang="zh-Hans">怎么看这些数据？</h2>
+    <div class="tdc-rules">
+      <article class="tdc-card"><h3 class="fr">Rapports utiles</h3><h3 class="en" lang="en">Useful gears</h3><h3 class="zh" lang="zh-Hans">有效档位</h3><p class="fr">Une 2x12, c’est 24 combinaisons sur le papier. Mais plein se chevauchent entre le grand et le petit plateau. On ne compte que celles qui sont vraiment différentes (plus de 2 % d’écart).</p><p class="en" lang="en">A 2x12 has 24 combinations on paper, but lots of them overlap between big and small ring. We only count the ones that are really different (more than 2% apart).</p><p class="zh" lang="zh-Hans">2x12 理论上有 24 个组合，但大小盘之间有很多重叠。这里只统计真正不同（相差超过 2%）的档位。</p></article>
+      <article class="tdc-card bleu"><h3 class="fr">Étendue</h3><h3 class="en" lang="en">Range</h3><h3 class="zh" lang="zh-Hans">齿比范围</h3><p class="fr">Le rapport le plus dur divisé par le plus souple. 500 %, ça veut dire que ton plus gros braquet va cinq fois plus loin que ton plus petit à chaque tour de pédale.</p><p class="en" lang="en">Hardest gear divided by lightest. 500% means your biggest gear goes five times further than your smallest on each pedal turn.</p><p class="zh" lang="zh-Hans">最重档除以最轻档。500% 表示每踩一圈，最重档比最轻档走得远五倍。</p></article>
+      <article class="tdc-card rose"><h3 class="fr">Écart moyen</h3><h3 class="en" lang="en">Average step</h3><h3 class="zh" lang="zh-Hans">平均级差</h3><p class="fr">Le saut moyen entre deux rapports qui se suivent. Petit écart = tu gardes ta cadence. Gros écart = ça saute, mais tu as plus de plage.</p><p class="en" lang="en">The average jump between two neighbouring gears. Small step = you keep your cadence. Big step = it jumps, but you get more range.</p><p class="zh" lang="zh-Hans">相邻两个档位之间的平均跳跃。级差小 = 踏频稳定；级差大 = 跳得多，但范围更广。</p></article>
+    </div>
+    <p class="fr tdc-note">Étagements tirés des fiches constructeurs (novembre 2026). Les combinaisons extrêmes en 2x (grand plateau / grand pignon) sont comptées mais pas recommandées. Vérifie toujours la compatibilité dérailleur / cassette / corps de roue libre avant d’acheter.</p><p class="en tdc-note" lang="en">Gearing taken from manufacturer specs (November 2026). Extreme 2x cross-chain combinations are counted but not recommended. Always check derailleur / cassette / freehub compatibility before buying.</p><p class="zh tdc-note" lang="zh-Hans">齿比数据来自厂商规格（2026 年 11 月）。2x 的极端交叉链组合也计入统计，但不推荐使用。购买前请务必确认后拨、飞轮与花鼓塔基的兼容性。</p>
+  </section>
+  <section style="padding-top:0">
+    <div class="tdc-fb">
+      <div><h3 class="fr">Une idée&nbsp;? Un bug&nbsp;?</h3><h3 class="en" lang="en">An idea? A bug?</h3><h3 class="zh" lang="zh-Hans">有想法？发现 bug？</h3><p class="fr">Il manque un groupe, une cassette, une fonction&nbsp;? Un truc s’affiche de travers&nbsp;? Écris-moi, je lis tout.</p><p class="en" lang="en">Missing a groupset, a cassette, a feature? Something looks off? Drop me a line, I read everything.</p><p class="zh" lang="zh-Hans">缺少某个套件、飞轮或功能？显示有问题？给我写信，我都会看。</p></div>
+      <div class="tdc-actions"><a class="tdc-btn " href="mailto:tensiondechaine@gmail.com?subject=Comparateur%20de%20transmissions%20%3A%20id%C3%A9e%20de%20fonction"><span class="fr">💡 Proposer une idée</span><span class="en" lang="en">💡 Suggest a feature</span><span class="zh" lang="zh-Hans">💡 提建议</span></a><a class="tdc-btn rose" href="mailto:tensiondechaine@gmail.com?subject=Comparateur%20de%20transmissions%20%3A%20bug"><span class="fr">🐞 Signaler un bug</span><span class="en" lang="en">🐞 Report a bug</span><span class="zh" lang="zh-Hans">🐞 报告 bug</span></a></div>
+    </div>
+  </section>
+  <section class="tdc-contact tdc-block tdc-final" style="margin-top:0">
+    <h2 class="fr">Et en pignon fixe&nbsp;?</h2><h2 class="en" lang="en">What about fixed gear?</h2><h2 class="zh" lang="zh-Hans">那死飞呢？</h2>
+    <p class="fr">Une seule vitesse, zéro débat. Calcule ton ratio, ton développement et tes skid patches.</p><p class="en" lang="en">One gear, zero debate. Work out your ratio, rollout and skid patches.</p><p class="zh" lang="zh-Hans">一个档位，零争议。算算你的齿比、每圈距离和 skid patch。</p>
+    <div class="tdc-actions"><a class="tdc-btn " href="ratio.html" target="_blank" rel="noopener"><span class="fr">⚙️ Calculateur de ratio fixie</span><span class="en" lang="en">⚙️ Fixed-gear ratio calculator</span><span class="zh" lang="zh-Hans">⚙️ 死飞齿比计算器</span></a></div>
+    <p class="tdc-peace">Peace ✌️</p>
+  </section>
+</div></div>
+<script>
+(function(){
+var R=document.getElementById('tdc-cmpx');if(!R)return;
+var DATA={"105":{"n":"Shimano 105 R7100 · 2x12","c":{"11-34":[11,12,13,14,15,17,19,21,24,27,30,34],"11-36":[11,12,13,14,15,17,19,21,24,28,32,36]},"r":[[50,34],[52,36]],"w":"622-28","u":"route"},"ult":{"n":"Shimano Ultegra R8100 · 2x12","c":{"11-30":[11,12,13,14,15,16,17,19,21,24,27,30],"11-34":[11,12,13,14,15,17,19,21,24,27,30,34]},"r":[[50,34],[52,36]],"w":"622-28","u":"route"},"da":{"n":"Shimano Dura-Ace R9200 · 2x12","c":{"11-28":[11,12,13,14,15,16,17,18,19,21,24,28],"11-30":[11,12,13,14,15,16,17,19,21,24,27,30],"11-34":[11,12,13,14,15,17,19,21,24,27,30,34]},"r":[[50,34],[52,36],[54,40]],"w":"622-28","u":"route"},"tia":{"n":"Shimano Tiagra 4700 · 2x10","c":{"11-25":[11,12,13,14,15,17,19,21,23,25],"12-28":[12,13,14,15,17,19,21,23,25,28],"11-32":[11,12,14,16,18,20,22,25,28,32],"11-34":[11,13,15,17,19,21,23,26,30,34]},"r":[[50,34],[52,36]],"w":"622-28","u":"route"},"sora":{"n":"Shimano Sora R3000 · 2x9","c":{"11-25":[11,12,13,15,17,19,21,23,25]},"r":[[50,34],[50,39]],"w":"622-28","u":"route","t":["Une seule cassette vérifiée pour l’instant (11-25). Pour une autre, passe la cassette en Custom.","Only one verified cassette so far (11-25). For another one, set the cassette to Custom.","目前仅核实了一款飞轮（11-25），其他请用自定义飞轮。"]},"claris":{"n":"Shimano Claris R2000 · 2x8","c":{"11-34":[11,13,15,18,21,24,28,34],"12-25":[12,13,15,17,19,21,23,25],"13-26":[13,14,15,17,19,21,23,26]},"r":[[50,34]],"w":"622-28","u":"route"},"force":{"n":"SRAM Force / Rival AXS · 2x12","c":{"10-28":[10,11,12,13,14,15,16,17,19,21,24,28],"10-30":[10,11,12,13,14,15,17,19,21,24,27,30],"10-33":[10,11,12,13,14,15,17,19,21,24,28,33],"10-36":[10,11,12,13,15,17,19,21,24,28,32,36]},"r":[[46,33],[48,35],[50,37]],"w":"622-28","u":"route"},"red":{"n":"SRAM Red AXS E1 · 2x12","c":{"10-28":[10,11,12,13,14,15,16,17,19,21,24,28],"10-30":[10,11,12,13,14,15,17,19,21,24,27,30],"10-33":[10,11,12,13,14,15,17,19,21,24,28,33],"10-36":[10,11,12,13,15,17,19,21,24,28,32,36]},"r":[[46,33],[48,35],[50,37],[52,39],[54,41],[56,43]],"w":"622-28","u":"route"},"campa12":{"n":"Campagnolo Super Record / Record / Chorus 12 · 2x12","c":{"11-29":[11,12,13,14,15,16,17,19,21,23,26,29],"11-32":[11,12,13,14,15,16,17,19,22,25,28,32],"11-34":[11,12,13,14,15,16,17,19,22,25,29,34]},"r":[[50,34],[52,36],[53,39]],"w":"622-28","u":"route"},"sr13":{"n":"Campagnolo Super Record 13 · 2x13","c":{"10-29":[10,11,12,13,14,15,16,17,18,20,23,26,29],"10-33":[10,11,12,13,14,15,16,18,20,23,26,29,33],"11-32":[11,12,13,14,15,16,17,18,20,23,26,29,32],"11-36":[11,12,13,14,15,16,18,20,23,26,29,32,36]},"r":[[45,29],[48,32],[50,34],[52,36],[53,39],[54,39],[55,39]],"w":"622-28","u":"route"},"ltwoo11":{"n":"LTWOO R9 / Sensah Empire · 2x11","c":{"11-28":[11,12,13,14,15,17,19,21,23,25,28],"11-30":[11,12,13,14,15,17,19,21,24,27,30],"11-32":[11,12,13,14,16,18,20,22,25,28,32],"11-34":[11,13,15,17,19,21,23,25,27,30,34]},"r":[[50,34],[52,36],[53,39]],"w":"622-28","u":"route","t":["LTWOO et Sensah ne font pas leurs propres étagements : on utilise les cassettes compatibles Shimano.","LTWOO and Sensah don’t make their own gearing: we use Shimano-compatible cassettes.","LTWOO 和 Sensah 没有自有齿比：此处使用兼容 Shimano 的飞轮。"]},"ltwoo2":{"n":"LTWOO eRX / RX · 2x12","c":{"11-30":[11,12,13,14,15,16,17,19,21,24,27,30],"11-34":[11,12,13,14,15,17,19,21,24,27,30,34],"11-36":[11,12,13,14,15,17,19,21,24,28,32,36]},"r":[[50,34],[52,36]],"w":"622-28","u":"route","t":["LTWOO et Sensah ne font pas leurs propres étagements : on utilise les cassettes compatibles Shimano.","LTWOO and Sensah don’t make their own gearing: we use Shimano-compatible cassettes.","LTWOO 和 Sensah 没有自有齿比：此处使用兼容 Shimano 的飞轮。"]},"sensah2":{"n":"Sensah Empire Pro · 2x12","c":{"11-30":[11,12,13,14,15,16,17,19,21,24,27,30],"11-34":[11,12,13,14,15,17,19,21,24,27,30,34],"11-36":[11,12,13,14,15,17,19,21,24,28,32,36]},"r":[[50,34],[52,36]],"w":"622-28","u":"route","t":["LTWOO et Sensah ne font pas leurs propres étagements : on utilise les cassettes compatibles Shimano.","LTWOO and Sensah don’t make their own gearing: we use Shimano-compatible cassettes.","LTWOO 和 Sensah 没有自有齿比：此处使用兼容 Shimano 的飞轮。"]},"grx11":{"n":"Shimano GRX 800 / 600 · 2x11","c":{"11-28":[11,12,13,14,15,17,19,21,23,25,28],"11-30":[11,12,13,14,15,17,19,21,24,27,30],"11-32":[11,12,13,14,16,18,20,22,25,28,32],"11-34":[11,13,15,17,19,21,23,25,27,30,34]},"r":[[48,31],[46,30]],"w":"622-40","u":"gravel"},"grx11x1":{"n":"Shimano GRX 800 / 600 · 1x11","c":{"11-40":[11,13,15,17,19,21,24,27,31,35,40],"11-42":[11,13,15,17,19,21,24,28,32,37,42],"11-46":[11,13,15,17,19,21,24,28,32,37,46]},"r":[[38],[40],[42]],"w":"622-40","u":"gravel"},"grx2":{"n":"Shimano GRX RX820 · 2x12","c":{"11-34":[11,12,13,14,15,17,19,21,24,27,30,34],"11-36":[11,12,13,14,15,17,19,21,24,28,32,36]},"r":[[48,31],[46,30]],"w":"622-40","u":"gravel"},"grx1":{"n":"Shimano GRX RX820 · 1x12","c":{"10-45":[10,12,14,16,18,21,24,28,32,36,40,45],"10-51":[10,12,14,16,18,21,24,28,33,39,45,51]},"r":[[38],[40],[42]],"w":"622-40","u":"gravel"},"apex":{"n":"SRAM Apex XPLR · 1x12","c":{"10-44":[10,11,13,15,17,19,21,24,28,32,38,44]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"gravel"},"apexe":{"n":"SRAM Apex Eagle (mulet) · 1x12","c":{"10-50":[10,12,14,16,18,21,24,28,32,36,42,50],"10-52":[10,12,14,16,18,21,24,28,32,36,42,52]},"r":[[38],[40],[42],[44]],"w":"622-40","u":"gravel"},"xplr12":{"n":"SRAM XPLR AXS · 1x12","c":{"10-44":[10,11,13,15,17,19,21,24,28,32,38,44]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"gravel"},"xplr13":{"n":"SRAM XPLR AXS E1 · 1x13","c":{"10-46":[10,11,12,13,15,17,19,21,24,28,32,38,46]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"gravel"},"red1x":{"n":"SRAM Red / Force AXS route · 1x12","c":{"10-28":[10,11,12,13,14,15,16,17,19,21,24,28],"10-30":[10,11,12,13,14,15,17,19,21,24,27,30],"10-33":[10,11,12,13,14,15,17,19,21,24,28,33],"10-36":[10,11,12,13,15,17,19,21,24,28,32,36]},"r":[[40],[42],[44],[46],[48],[50]],"w":"622-40","u":"gravel"},"ekar":{"n":"Campagnolo Ekar / Ekar GT · 1x13","c":{"9-36":[9,10,11,12,13,14,16,18,20,23,27,31,36],"9-42":[9,10,11,12,13,14,16,18,21,25,30,36,42],"10-44":[10,11,12,13,14,15,17,19,22,26,32,38,44],"10-48 (GT)":[10,11,12,13,14,16,18,21,25,30,36,42,48]},"r":[[36],[38],[40],[42],[44]],"w":"622-40","u":"gravel"},"msx":{"n":"microSHIFT Sword / Advent X · 1x10","c":{"11-48":[11,13,15,18,21,24,28,34,40,48]},"r":[[36],[38],[40],[42]],"w":"622-40","u":"gravel"},"sensah1":{"n":"Sensah SRX Pro · 1x11","c":{"11-40":[11,13,15,17,19,21,24,27,31,35,40],"11-42":[11,13,15,17,19,21,24,28,32,37,42],"11-46":[11,13,15,17,19,21,24,28,32,37,46]},"r":[[38],[40],[42],[44]],"w":"622-40","u":"gravel","t":["LTWOO et Sensah ne font pas leurs propres étagements : on utilise les cassettes compatibles Shimano.","LTWOO and Sensah don’t make their own gearing: we use Shimano-compatible cassettes.","LTWOO 和 Sensah 没有自有齿比：此处使用兼容 Shimano 的飞轮。"]},"cues9":{"n":"Shimano CUES · 1x9","c":{"11-36":[11,13,15,17,20,23,26,30,36],"11-41":[11,13,15,17,20,23,28,34,41],"11-46":[11,13,15,17,20,23,28,36,46]},"r":[[30],[32],[34],[36],[38],[40]],"w":"622-61","u":"vtt"},"cues10":{"n":"Shimano CUES · 1x10","c":{"11-39":[11,13,15,17,20,23,26,30,34,39],"11-43":[11,13,15,17,20,23,26,30,36,43],"11-48":[11,13,15,17,20,23,28,34,41,48]},"r":[[30],[32],[34],[36],[38],[40]],"w":"622-61","u":"vtt"},"xt":{"n":"Shimano XT / SLX / Deore · 1x12","c":{"10-45":[10,12,14,16,18,21,24,28,32,36,40,45],"10-51":[10,12,14,16,18,21,24,28,33,39,45,51]},"r":[[30],[32],[34],[36]],"w":"622-61","u":"vtt"},"eagle":{"n":"SRAM Eagle · 1x12","c":{"10-50":[10,12,14,16,18,21,24,28,32,36,42,50],"10-52":[10,12,14,16,18,21,24,28,32,36,42,52]},"r":[[30],[32],[34],[36]],"w":"622-61","u":"vtt"},"msxv":{"n":"microSHIFT Advent X · 1x10","c":{"11-48":[11,13,15,18,21,24,28,34,40,48]},"r":[[30],[32],[34],[36]],"w":"622-61","u":"vtt"},"ltwoo1":{"n":"LTWOO AX / A12 · 1x12","c":{"10-45":[10,12,14,16,18,21,24,28,32,36,40,45],"10-51":[10,12,14,16,18,21,24,28,33,39,45,51],"10-50":[10,12,14,16,18,21,24,28,32,36,42,50],"10-52":[10,12,14,16,18,21,24,28,32,36,42,52]},"r":[[30],[32],[34],[36]],"w":"622-61","u":"vtt","t":["LTWOO et Sensah ne font pas leurs propres étagements : on utilise les cassettes compatibles Shimano.","LTWOO and Sensah don’t make their own gearing: we use Shimano-compatible cassettes.","LTWOO 和 Sensah 没有自有齿比：此处使用兼容 Shimano 的飞轮。"]},"b3":{"n":"Brompton A Line · 3v (moyeu BSR)","c":{"12":[12],"13":[13],"14":[14]},"r":[[44],[50],[54]],"w":"349-35","u":"bromp","t":["Moyeu 3 vitesses BSR : H1 = 0,75, H2 = 1, H3 = 1,33.","BSR 3-speed hub: H1 = 0.75, H2 = 1, H3 = 1.33.","BSR 三速内变速：H1 = 0.75，H2 = 1，H3 = 1.33。"],"h":[0.75,1,1.333]},"b4":{"n":"Brompton P / C / T Line · 4v","c":{"11-18":[11,13,15,18]},"r":[[44],[50],[54],[56]],"w":"349-35","u":"bromp"},"b6":{"n":"Brompton C Line · 6v (moyeu BWR + 13/16)","c":{"13-16":[13,16]},"r":[[44],[50],[54]],"w":"349-35","u":"bromp","t":["Moyeu BWR (H1 = 0,64, H2 = 1, H3 = 1,57) × 2 pignons 13/16.","BWR hub (H1 = 0.64, H2 = 1, H3 = 1.57) × 13/16 sprockets.","BWR 内变速（H1 = 0.64，H2 = 1，H3 = 1.57）× 13/16 双飞轮。"],"h":[0.64,1,1.57]},"rohloff":{"n":"Rohloff Speedhub 500/14 · moyeu 14v","c":{"13":[13],"15":[15],"16":[16],"17":[17],"19":[19]},"r":[[36],[38],[40],[42],[44]],"w":"622-35","u":"hub","t":["Moyeu Rohloff 14 vitesses : 526 % d’étendue, 13,6 % entre chaque vitesse.","Rohloff 14-speed hub: 526% range, 13.6% steps.","Rohloff 14 速内变速：526% 范围，每档 13.6%。"],"h":[0.279,0.316,0.36,0.409,0.464,0.528,0.6,0.682,0.774,0.881,1.0,1.135,1.292,1.467],"hk":"hub"},"alfine11":{"n":"Shimano Alfine 11 · moyeu 11v","c":{"16":[16],"18":[18],"19":[19],"20":[20],"21":[21],"22":[22],"24":[24]},"r":[[33],[36],[38],[39],[42],[46]],"w":"622-35","u":"hub","t":["Moyeu Alfine 11 : 409 % d’étendue. H1 = 0,527 jusqu’à H11 = 2,153.","Alfine 11 hub: 409% range. H1 = 0.527 up to H11 = 2.153.","Alfine 11 内变速：409% 范围，H1 = 0.527 至 H11 = 2.153。"],"h":[0.527,0.681,0.77,0.878,0.995,1.134,1.292,1.462,1.667,1.888,2.153],"hk":"hub"},"alfine8":{"n":"Shimano Nexus 8 / Alfine 8 · moyeu 8v","c":{"16":[16],"18":[18],"19":[19],"20":[20],"21":[21],"22":[22],"24":[24]},"r":[[33],[36],[38],[39],[42],[46]],"w":"622-35","u":"hub","t":["Moyeu 8 vitesses : 307 % d’étendue. H5 = prise directe (1:1).","8-speed hub: 307% range. H5 = direct drive (1:1).","8 速内变速：307% 范围，H5 为直驱（1:1）。"],"h":[0.527,0.644,0.748,0.851,1.0,1.223,1.419,1.615],"hk":"hub"},"nexus7":{"n":"Shimano Nexus 7 · moyeu 7v","c":{"16":[16],"18":[18],"19":[19],"20":[20],"21":[21],"22":[22],"24":[24]},"r":[[33],[36],[38],[39],[42],[46]],"w":"622-35","u":"hub","t":["Moyeu Nexus 7 : 244 % d’étendue.","Nexus 7 hub: 244% range.","Nexus 7 内变速：244% 范围。"],"h":[0.632,0.741,0.843,0.989,1.145,1.335,1.545],"hk":"hub"},"nexus3":{"n":"Shimano Nexus 3 · moyeu 3v","c":{"16":[16],"18":[18],"19":[19],"20":[20],"21":[21],"22":[22],"24":[24]},"r":[[33],[36],[38],[39],[42],[46]],"w":"622-35","u":"hub","t":["Moyeu Nexus 3 : H1 = 0,733, H2 = 1, H3 = 1,364.","Nexus 3 hub: H1 = 0.733, H2 = 1, H3 = 1.364.","Nexus 3 内变速：H1 = 0.733，H2 = 1，H3 = 1.364。"],"h":[0.733,1.0,1.364],"hk":"hub"},"sa3":{"n":"Sturmey-Archer AW · moyeu 3v","c":{"16":[16],"18":[18],"19":[19],"20":[20],"21":[21],"22":[22],"24":[24]},"r":[[33],[36],[38],[39],[42],[46]],"w":"622-35","u":"hub","t":["Le classique des vélos anglais : H1 = 0,75, H2 = 1, H3 = 1,33.","The British classic: H1 = 0.75, H2 = 1, H3 = 1.33.","英式经典：H1 = 0.75，H2 = 1，H3 = 1.33。"],"h":[0.75,1.0,1.333],"hk":"hub"},"pin12":{"n":"Pinion C1.12 / P1.12 · boîte 12v","c":{"24":[24],"28":[28],"32":[32],"34":[34],"36":[36],"39":[39]},"r":[[24],[28],[30],[32],[34]],"w":"622-50","u":"box","t":["Boîte Pinion 12 vitesses : 600 % d’étendue, 17,7 % entre chaque vitesse. G1 à G12 = vitesses de la boîte.","Pinion 12-speed gearbox: 600% range, 17.7% steps. G1 to G12 = gearbox gears.","Pinion 12 速变速箱：600% 范围，每档 17.7%。G1–G12 为变速箱档位。"],"h":[0.5495,0.6467,0.761,0.8957,1.0541,1.2406,1.4601,1.7184,2.0224,2.3801,2.8012,3.2967],"hk":"box"},"pin9":{"n":"Pinion C1.9XR / P1.9XR · boîte 9v","c":{"24":[24],"28":[28],"32":[32],"34":[34],"36":[36],"39":[39]},"r":[[24],[28],[30],[32],[34]],"w":"622-50","u":"box","t":["Boîte Pinion 9 vitesses XR : 568 % d’étendue, 24,3 % entre chaque vitesse.","Pinion 9-speed XR gearbox: 568% range, 24.3% steps.","Pinion 9 速 XR 变速箱：568% 范围，每档 24.3%。"],"h":[0.5495,0.6827,0.8482,1.0539,1.3095,1.627,2.0216,2.5118,3.1209],"hk":"box"},"pin6":{"n":"Pinion C1.6 · boîte 6v","c":{"24":[24],"28":[28],"32":[32],"34":[34],"36":[36],"39":[39]},"r":[[24],[28],[30],[32],[34]],"w":"622-50","u":"box","t":["Boîte Pinion 6 vitesses : 295 % d’étendue, 24,3 % entre chaque vitesse.","Pinion 6-speed gearbox: 295% range, 24.3% steps.","Pinion 6 速变速箱：295% 范围，每档 24.3%。"],"h":[1.0526,1.3069,1.6226,2.0145,2.5011,3.1053],"hk":"box"},"pin18":{"n":"Pinion P1.18 · boîte 18v","c":{"24":[24],"28":[28],"32":[32],"34":[34],"36":[36],"39":[39]},"r":[[24],[28],[30],[32],[34]],"w":"622-50","u":"box","t":["Boîte Pinion 18 vitesses : 636 % d’étendue, 11,5 % entre chaque vitesse. 1re vitesse estimée comme sur la P1.12.","Pinion 18-speed gearbox: 636% range, 11.5% steps. 1st gear estimated like the P1.12.","Pinion 18 速变速箱：636% 范围，每档 11.5%。1 档按 P1.12 估算。"],"h":[0.5495,0.6126,0.6831,0.7616,0.8491,0.9468,1.0556,1.177,1.3123,1.4631,1.6314,1.8189,2.028,2.2612,2.5212,2.811,3.1342,3.4945],"hk":"box"},"da11":{"n":"Shimano Dura-Ace 9000 / R9100 · 2x11","c":{"11-23":[11,12,13,14,15,16,17,18,19,21,23],"11-25":[11,12,13,14,15,16,17,19,21,23,25],"11-28":[11,12,13,14,15,17,19,21,23,25,28],"12-25":[12,13,14,15,16,17,18,19,21,23,25],"12-28":[12,13,14,15,16,17,19,21,23,25,28],"11-30 (R9100)":[11,12,13,14,15,17,19,21,24,27,30]},"r":[[50,34],[52,36],[53,39],[54,42],[55,42]],"w":"622-23","u":"retro"},"ult11":{"n":"Shimano Ultegra / 105 11v (6800, R8000, 5800, R7000) · 2x11","c":{"11-25":[11,12,13,14,15,16,17,19,21,23,25],"11-28":[11,12,13,14,15,17,19,21,23,25,28],"11-30":[11,12,13,14,15,17,19,21,24,27,30],"11-32":[11,12,13,14,16,18,20,22,25,28,32],"11-34":[11,13,15,17,19,21,23,25,27,30,34],"12-25":[12,13,14,15,16,17,18,19,21,23,25]},"r":[[50,34],[52,36],[53,39]],"w":"622-23","u":"retro"},"red11":{"n":"SRAM Red eTap / Red 22 · 2x11","c":{"11-25":[11,12,13,14,15,16,17,19,21,23,25],"11-26":[11,12,13,14,15,16,17,19,21,23,26],"11-28":[11,12,13,14,15,16,17,19,22,25,28],"11-30 (WiFLi)":[11,12,13,14,15,17,19,21,24,27,30],"11-32 (WiFLi)":[11,12,13,14,15,17,19,22,25,28,32]},"r":[[50,34],[52,36],[53,39]],"w":"622-23","u":"retro"},"campa11":{"n":"Campagnolo Super Record / Record / Chorus 11 · 2x11","c":{"11-23":[11,12,13,14,15,16,17,18,19,21,23],"11-25":[11,12,13,14,15,16,17,19,21,23,25],"11-27":[11,12,13,14,15,17,19,21,23,25,27],"11-29":[11,12,13,14,15,17,19,21,23,26,29],"12-25":[12,13,14,15,16,17,18,19,21,23,25],"12-27":[12,13,14,15,16,17,19,21,23,25,27],"12-29":[12,13,14,15,16,17,19,21,23,26,29]},"r":[[50,34],[52,36],[53,39]],"w":"622-23","u":"retro"},"da10":{"n":"Shimano Dura-Ace 7900 / Ultegra 6700 · 2x10","c":{"11-23":[11,12,13,14,15,16,17,19,21,23],"11-25":[11,12,13,14,15,17,19,21,23,25],"11-27":[11,12,13,14,15,17,19,21,24,27],"11-28":[11,12,13,14,15,17,19,21,24,28],"12-23":[12,13,14,15,16,17,18,19,21,23],"12-25":[12,13,14,15,16,17,19,21,23,25],"12-27":[12,13,14,15,16,17,19,21,24,27]},"r":[[50,34],[53,39]],"w":"622-23","u":"retro"},"tri10":{"n":"Shimano Ultegra / 105 triple · 3x10","c":{"12-25":[12,13,14,15,16,17,19,21,23,25],"12-27":[12,13,14,15,16,17,19,21,24,27],"11-28":[11,12,13,14,15,17,19,21,24,28]},"r":[[50,39,30],[52,39,30]],"w":"622-23","u":"retro"},"deore3x9":{"n":"Shimano Deore / XT 3x9 (VTT)","c":{"11-32":[11,12,14,16,18,21,24,28,32],"11-34":[11,13,15,17,20,23,26,30,34]},"r":[[44,32,22]],"w":"622-23","u":"retro"},"deore3x10":{"n":"Shimano Deore / XT 3x10 (VTT)","c":{"11-34":[11,13,15,17,19,21,23,26,30,34],"11-36":[11,13,15,17,19,21,24,28,32,36]},"r":[[42,32,24],[44,32,24]],"w":"622-23","u":"retro"},"g13":{"n":"SRAM XPLR 13 + Garbaruk 10-52 · 1x13","c":{"10-52":[10,11,12,14,16,18,21,24,28,32,37,44,52]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"dent","t":["Cassette Garbaruk XD-GR Gen 2.0. Dérailleur XPLR 13 d’origine, sauf Red XPLR : chape Garbaruk obligatoire.","Garbaruk XD-GR Gen 2.0 cassette. Stock XPLR 13 derailleur, except Red XPLR: Garbaruk cage required.","Garbaruk XD-GR Gen 2.0 飞轮。原装 XPLR 13 后拨即可，Red XPLR 需换 Garbaruk 导轮架。"]},"g48":{"n":"SRAM XPLR 12 + Garbaruk 10-48 · 1x12","c":{"10-48":[10,12,14,16,18,21,24,28,32,36,42,48]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"dent","t":["Plug and play avec un dérailleur XPLR 12 d’origine.","Plug and play with a stock XPLR 12 derailleur.","原装 XPLR 12 后拨即插即用。"]},"g50":{"n":"SRAM XPLR 12 + chape Garbaruk + 10-50 · 1x12","c":{"10-50":[10,12,14,16,18,21,24,28,32,36,42,50]},"r":[[38],[40],[42],[44],[46]],"w":"622-40","u":"dent","t":["Chape et galets Garbaruk obligatoires pour passer le 50.","Garbaruk cage and pulleys required for the 50.","需更换 Garbaruk 导轮架和导轮才能用 50T。"]},"gr48":{"n":"SRAM AXS route 1x + chape Garbaruk + 10-48 · 1x12","c":{"10-48":[10,12,14,16,18,21,24,28,32,36,42,48]},"r":[[40],[42],[44],[46],[48]],"w":"622-40","u":"dent","t":["Avec un dérailleur route AXS, la chape Garbaruk est obligatoire.","With a road AXS derailleur, the Garbaruk cage is required.","使用公路版 AXS 后拨时必须换 Garbaruk 导轮架。"]},"mullet":{"n":"Mulet : manettes AXS route + dérailleur Eagle AXS · 1x12","c":{"10-50":[10,12,14,16,18,21,24,28,32,36,42,50],"10-52":[10,12,14,16,18,21,24,28,32,36,42,52]},"r":[[36],[38],[40],[42],[44]],"w":"622-40","u":"dent","t":["Le fameux « mullet » : manettes route, dérailleur et cassette VTT. Ça marche, mais attention à la tension.","The famous mullet: road shifters, MTB derailleur and cassette. It works, just mind the tension.","著名的“鲻鱼头”组合：公路变把 + 山地后拨和飞轮。可行，但注意张力。"]},"grxg":{"n":"Shimano GRX 1x12 + Garbaruk 10-52 · 1x12","c":{"10-52":[10,12,14,16,18,21,24,28,32,37,44,52]},"r":[[38],[40],[42]],"w":"622-40","u":"dent","t":["Cassette Garbaruk Micro Spline. Dérailleur Shimano chape longue (SGS) obligatoire.","Garbaruk Micro Spline cassette. Long-cage (SGS) Shimano derailleur required.","Garbaruk Micro Spline 飞轮，需 Shimano 长腿（SGS）后拨。"]}};
+var TOL=0.02;
+function q(s){return document.getElementById(s)}
+function lang(){var h=location.hash;return h==='#tdc-en'?'en':(h==='#tdc-zh'?'zh':'fr')}
+function f(n,d){var s=n.toFixed(d);return lang()==='fr'?s.replace('.',','):s}
+function L3(fr,en,zh){return '<span class="fr">'+fr+'</span><span class="en" lang="en">'+en+'</span><span class="zh" lang="zh-Hans">'+zh+'</span>'}
+function setCat(x,cat,gid,keep){
+ var cs=q('cx-'+x+'-cats').querySelectorAll('[data-cat]');for(var i=0;i<cs.length;i++){cs[i].classList.toggle('on',cs[i].getAttribute('data-cat')===cat)}
+ var sg=q('cx-'+x+'-g'),h='',first=null,k;
+ if(cat==='perso'){sg.innerHTML='<option value="custom">custom</option>';sg.value='custom'}
+ else{for(k in DATA){if(DATA[k].u===cat){if(!first)first=k;h+='<option value="'+k+'">'+DATA[k].n+'</option>'}}sg.innerHTML=h;sg.value=gid||first}
+ fill(x,keep);
+}
+function setMode(pro){
+ R.classList.toggle('is-pro',pro);
+ var bs=R.querySelectorAll('.tdc-mode [data-mode]');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',(bs[i].getAttribute('data-mode')==='pro')===pro)}
+ if(!pro){['a','b'].forEach(function(x){var on=q('cx-'+x+'-cats').querySelector('.on');if(on){if(on.classList.contains('pro'))setCat(x,x==='a'?'gravel':'route',null,false)}q('cx-'+x+'-cls').checked=false;q('cx-'+x+'-sch').value='1'})}
+ try{localStorage.setItem('tdc-cx-mode',pro?'pro':'simple')}catch(e){}
+}
+R.addEventListener('click',function(e){var b=e.target.closest('.tdc-mode [data-mode]');if(b){setMode(b.getAttribute('data-mode')==='pro');update()}});
+var CU={a:null,b:null},LAST={a:null,b:null};
+function cuInputs(x){
+ var c=CU[x],h='',i;
+ q('cx-'+x+'-rn').textContent=c.r.length;q('cx-'+x+'-cn').textContent=c.c.length;
+ for(i=0;i<c.r.length;i++){h+='<label>P'+(i+1)+'<input type="number" inputmode="numeric" min="20" max="70" data-k="'+x+'-r-'+i+'" value="'+c.r[i]+'"></label>'}
+ q('cx-'+x+'-ri').innerHTML=h;h='';
+ for(i=0;i<c.c.length;i++){h+='<label>'+(i+1)+'<input type="number" inputmode="numeric" min="8" max="60" data-k="'+x+'-c-'+i+'" value="'+c.c[i]+'"></label>'}
+ q('cx-'+x+'-ci').innerHTML=h;
+}
+function fill(x,keep){
+ var g=q('cx-'+x+'-g').value,card=q('cx-'+x);
+ card.classList.toggle('is-custom',g==='custom');
+ if(g==='custom'){card.classList.remove('cr','cc','has-hub');{var L=LAST[x]||{rings:[50,34],cogs:[11,12,13,14,15,17,19,21,24,27,30,34]};CU[x]={r:L.rings.slice(),c:L.cogs.slice()}}cuInputs(x);return}
+ card.classList.toggle('has-hub',!!DATA[g].h);if(DATA[g].h)q('cx-'+x+'-cls').checked=false;
+ var nt=q('cx-'+x+'-note'),dd=DATA[g];nt.classList.toggle('on',!!dd.t);nt.innerHTML=dd.t?(dd.u==='dent'?'🦷 ':'ℹ️ ')+L3(dd.t[0],dd.t[1],dd.t[2]):'';
+ var d=DATA[g],sc=q('cx-'+x+'-c'),sr=q('cx-'+x+'-r'),vc=keep?sc.getAttribute('data-v'):sc.value,vr=keep?sr.getAttribute('data-v'):sr.value,h='',k;
+ var CUS='<option value="__c">✏️ Custom</option>';
+ for(k in d.c){h+='<option value="'+k+'"'+(k===vc?' selected':'')+'>'+k+'</option>'}sc.innerHTML=h+CUS;
+ h='';for(var i=0;i<d.r.length;i++){var l=d.r[i].join('/');h+='<option value="'+i+'"'+(l===vr?' selected':'')+'>'+l+'</option>'}sr.innerHTML=h+CUS;
+ card.classList.remove('cr','cc');
+ if(!keep){sr.selectedIndex=Math.min(1,d.r.length-1);if(d.r.length===2)sr.selectedIndex=0}
+ if(!keep){var wl=q('cx-'+x+'-w');if(wl.querySelector('option[value="'+d.w+'"]'))wl.value=d.w}
+}
+function setup(x){
+ var g=q('cx-'+x+'-g').value,w=q('cx-'+x+'-w').value.split('-'),D=+w[0]+2*w[1],cogs,rings,name,sub;
+ var hub=[1],hk='hub';
+ if(g==='custom'){cogs=CU[x].c.filter(function(n){return n>=8});rings=CU[x].r.filter(function(n){return n>=20});name=L3('Perso','Custom','自定义');}
+ else{var d=DATA[g],cv=q('cx-'+x+'-c').value,rv=q('cx-'+x+'-r').value;cogs=cv==='__c'?CU[x].c.filter(function(n){return n>=8}):d.c[cv];rings=rv==='__c'?CU[x].r.filter(function(n){return n>=20}):d.r[+rv];name=d.n.split(' · ')[0];if(d.h)hub=d.h;else if(q('cx-'+x+'-cls').checked){if(R.classList.contains('is-pro'))hub=[0.686,1]}var hk=d.hk||(d.h?'hub':'cls')}
+ if(!cogs.length)cogs=[11];if(!rings.length)rings=[42];
+ cogs=cogs.slice().sort(function(a,b){return a-b});rings=rings.slice().sort(function(a,b){return b-a});
+ var baseR=rings.slice(),sm=+q('cx-'+x+'-sch').value,sch=false;if(sm!==1){if(R.classList.contains('is-pro')){sch=true;var vr=rings.map(function(r){return Math.round(r*sm*10)/10});rings=rings.concat(vr).sort(function(a,b){return b-a})}}
+ sub=(baseR.length>1?baseR.length+'x':'1x')+(cogs.length*hub.length)+' · '+baseR.join('/')+' · '+(cogs.length>1?cogs[0]+'-'+cogs[cogs.length-1]:cogs[0]+'T')+(hub.length>1?' · '+(hk==='box'?L3('boîte '+hub.length+'v','gearbox '+hub.length+'s',hub.length+' 速变速箱'):(hk==='cls'?'Classified':L3('moyeu '+hub.length+'v','hub '+hub.length+'s',hub.length+' 速内变速'))):'');
+ if(sch)sub+=' · Schlumpf ×'+f(sm,sm===1.65?2:1);
+ var list=[],circ=Math.PI*D/1000;
+ for(var i=0;i<rings.length;i++)for(var j=0;j<cogs.length;j++)for(var k=0;k<hub.length;k++){var r=rings[i]/cogs[j]*hub[k],hl=hub.length>1?' · '+(hk==='box'?'G':'H')+(k+1):'';list.push({x:x,ri:i,ring:rings[i],cog:cogs[j],hk:k,lab:rings[i]+'×'+cogs[j]+hl,r:r,d:r*circ,cm:false})}
+ LAST[x]={rings:baseR,cogs:cogs.slice()};
+ return {x:x,name:name,sub:sub,rings:rings,cogs:cogs,hub:hub,hk:hk,D:D,circ:circ,list:list}
+}
+function useful(list){var s=list.map(function(g){return g.d}).sort(function(a,b){return a-b}),k=[s[0]];for(var i=1;i<s.length;i++){if(s[i]/k[k.length-1]-1>TOL)k.push(s[i])}return k}
+var A,B,sel=null;
+function compute(){
+ A=setup('a');B=setup('b');
+ A.list.forEach(function(g){g.cm=false;g.m=null});B.list.forEach(function(g){g.cm=false;g.m=null});
+ A.list.forEach(function(a){var best=null,bd=9;B.list.forEach(function(b){var e=Math.abs(b.d/a.d-1);if(e<=TOL){b.cm=true;if(e<bd){bd=e;best=b}}});if(best){a.cm=true;a.m=best}});
+ [A,B].forEach(function(S){var u=useful(S.list);S.u=u;S.lo=u[0];S.hi=u[u.length-1];S.rg=S.hi/S.lo;S.st=u.length>1?Math.pow(S.rg,1/(u.length-1))-1:0;
+  var uc=0;var other=S===A?B:A;u.forEach(function(d){for(var i=0;i<other.list.length;i++){if(Math.abs(other.list[i].d/d-1)<=TOL){uc++;break}}});S.uc=uc});
+}
+function stats(){
+ [A,B].forEach(function(S){var x=S.x,o=S===A?B:A;
+  q('cx-'+x+'-t').innerHTML=S.name;q('cx-'+x+'-sub').innerHTML=S.sub;
+  q('cx-'+x+'-h').innerHTML=(x==='a'?'A · ':'B · ')+S.sub.split(' · ')[0];
+  q('cx-'+x+'-n').textContent=S.list.length;
+  q('cx-'+x+'-u').textContent=S.u.length;
+  q('cx-'+x+'-lo').innerHTML=f(S.lo,2)+'<i> m</i><small>ratio '+f(S.lo/S.circ,2)+'</small>';
+  q('cx-'+x+'-hi').innerHTML=f(S.hi,2)+'<i> m</i><small>ratio '+f(S.hi/S.circ,2)+'</small>';
+  q('cx-'+x+'-rg').textContent=Math.round(S.rg*100)+' %';
+  q('cx-'+x+'-st').textContent=f(S.st*100,1)+' %';
+  q('cx-'+x+'-vm').innerHTML=f(S.hi*90*60/1000,1)+'<i> km/h</i>';
+  q('cx-'+x+'-cm').innerHTML=S.uc+' / '+S.u.length;
+  var w={lo:S.lo<o.lo*0.995,hi:S.hi>o.hi*1.005,rg:S.rg>o.rg*1.005,st:S.st<o.st*0.995,vm:S.hi>o.hi*1.005,u:S.u.length>o.u.length};
+  ['n','u','lo','hi','rg','st','vm','cm'].forEach(function(k){q('cx-'+x+'-'+k).classList.toggle('w',!!w[k])});
+ });
+ var t=[],dl=(B.lo/A.lo-1)*100,dh=(A.hi/B.hi-1)*100;
+ if(Math.abs(dl)<1)t.push(L3('En montée, c’est kif-kif.','Climbing: same same.','爬坡：差不多。'));
+ else if(dl>0)t.push(L3('En montée, <b>A est '+f(dl,0)+' % plus souple</b> que B.','Climbing: <b>A is '+f(dl,0)+'% lighter</b> than B.','爬坡：<b>A 比 B 轻 '+f(dl,0)+'%</b>。'));
+ else t.push(L3('En montée, <b>B est '+f(-dl,0)+' % plus souple</b> que A.','Climbing: <b>B is '+f(-dl,0)+'% lighter</b> than A.','爬坡：<b>B 比 A 轻 '+f(-dl,0)+'%</b>。'));
+ if(Math.abs(dh)<1)t.push(L3('En haut, même vitesse max.','At the top: same top speed.','高速端：极速相同。'));
+ else if(dh>0)t.push(L3('En haut, <b>A va '+f(dh,0)+' % plus vite</b> à cadence égale.','At the top, <b>A goes '+f(dh,0)+'% faster</b> at the same cadence.','高速端：同样踏频下 <b>A 快 '+f(dh,0)+'%</b>。'));
+ else t.push(L3('En haut, <b>B va '+f(-dh,0)+' % plus vite</b> à cadence égale.','At the top, <b>B goes '+f(-dh,0)+'% faster</b> at the same cadence.','高速端：同样踏频下 <b>B 快 '+f(-dh,0)+'%</b>。'));
+ t.push(L3(A.uc+' des '+A.u.length+' rapports utiles de A ont un jumeau chez B.',A.uc+' of A’s '+A.u.length+' useful gears have a twin in B.','A 的 '+A.u.length+' 个有效档位中有 '+A.uc+' 个在 B 中有对应。'));
+ var ds=(A.st-B.st)*100;
+ if(Math.abs(ds)>=0.5)t.push(ds<0?L3('Les sauts de vitesse sont plus doux sur A.','Shifts are smoother on A.','A 的换挡跳跃更平顺。'):L3('Les sauts de vitesse sont plus doux sur B.','Shifts are smoother on B.','B 的换挡跳跃更平顺。'));
+ q('cx-v').innerHTML=t.join(' ');
+}
+function matrix(S){
+ var cm={};S.list.forEach(function(g){if(g.cm)cm[g.ring+'x'+g.cog+'h'+g.hk]=1});
+ var h='<table class="tdc-mx"><thead><tr><th>'+L3('Pignon','Cog','飞轮')+'</th>';
+ S.rings.forEach(function(r){h+='<th>'+r+'</th>'});h+='</tr></thead><tbody>';
+ S.cogs.forEach(function(c){S.hub.forEach(function(hv,k){h+='<tr><td>'+c+(S.hub.length>1?' · '+(S.hk==='box'?'G':'H')+(k+1):'')+'</td>';S.rings.forEach(function(r){h+='<td'+(cm[r+'x'+c+'h'+k]?' class="cm"':'')+'>'+f(r/c*hv*S.circ,2)+' m</td>'});h+='</tr>'})});
+ return h+'</tbody></table>';
+}
+var box=q('cx-svg'),all=[];
+function draw(){
+ var W=Math.max(300,box.clientWidth),mob=W<560,L=mob?44:62,Rr=14,rh=mob?32:36,top=10,r=mob?5.5:7;
+ var rows=[];A.rings.forEach(function(v,i){rows.push({S:A,i:i,lab:'A '+v})});rows.push(null);B.rings.forEach(function(v,i){rows.push({S:B,i:i,lab:'B '+v})});
+ var y=top,ys=[];rows.forEach(function(rw){if(rw===null){y+=rh*0.55}else{y+=rh;ys.push(y)}});
+ var H=y+30,lo=Math.min(A.lo,B.lo)*0.93,hi=Math.max(A.hi,B.hi)*1.05,ll=Math.log(lo),lh=Math.log(hi);
+ function X(d){return L+(Math.log(d)-ll)/(lh-ll)*(W-L-Rr)}
+ var s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Rapports A et B"><defs><pattern id="cx-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="8" fill="rgba(14,18,48,.10)"/></pattern></defs>';
+ for(var m=1;m<=14;m++){if(m>=lo){if(m<=hi){var xx=X(m);s+='<line class="tk" x1="'+xx+'" x2="'+xx+'" y1="'+(top+4)+'" y2="'+(H-24)+'"/><text class="tt" x="'+xx+'" y="'+(H-8)+'" text-anchor="middle">'+m+(m===1?' m':'')+'</text>'}}}
+ /* zones doublons 2x */
+ var k=0,yy={};rows.forEach(function(rw){if(rw){yy[rw.S.x+rw.i]=ys[k];k++}});
+ [A,B].forEach(function(S){if(S.rings.length>1){var big=S.list.filter(function(g){return g.ri===0}),sm=S.list.filter(function(g){return g.ri===S.rings.length-1});
+  var a1=Math.min.apply(null,big.map(function(g){return g.d})),a2=Math.max.apply(null,sm.map(function(g){return g.d}));
+  if(a2>a1){var y1=yy[S.x+0]-rh/2+2,y2=yy[S.x+(S.rings.length-1)]+rh/2-2;s+='<rect class="zz" x="'+X(a1)+'" y="'+y1+'" width="'+(X(a2)-X(a1))+'" height="'+(y2-y1)+'" rx="8"/>'}}});
+ /* lignes de lien A-B */
+ A.list.forEach(function(a){if(a.m){s+='<line class="ln" x1="'+X(a.d)+'" y1="'+yy['a'+a.ri]+'" x2="'+X(a.m.d)+'" y2="'+yy['b'+a.m.ri]+'"/>'}});
+ k=0;all=[];
+ rows.forEach(function(rw){if(!rw)return;var yv=ys[k];k++;
+  var g=rw.S.list.filter(function(z){return z.ri===rw.i}),x1=X(Math.min.apply(null,g.map(function(z){return z.d}))),x2=X(Math.max.apply(null,g.map(function(z){return z.d})));
+  s+='<text class="rl" x="0" y="'+(yv+4)+'">'+rw.lab+'</text><line class="row" x1="'+x1+'" x2="'+x2+'" y1="'+yv+'" y2="'+yv+'"/>';
+  g.forEach(function(z){var id=all.length;all.push(z);s+='<circle class="'+z.x+(z.cm?' cm':'')+(sel===z.x+z.lab?' on':'')+'" data-i="'+id+'" cx="'+X(z.d).toFixed(1)+'" cy="'+yv+'" r="'+r+'"><title>'+z.ring+'×'+z.cog+' · '+f(z.d,2)+' m</title></circle>'});
+ });
+ box.innerHTML=s+'</svg>';
+}
+function read(z){
+ sel=z.x+z.lab;
+ var t='<b>'+z.x.toUpperCase()+' · '+z.lab+'</b> · '+L3('ratio','ratio','齿比')+' '+f(z.r,2)+' · '+f(z.d,2)+' m · '+f(z.d*90*60/1000,1)+' km/h '+L3('à 90 tr/min','at 90 rpm','（90 转/分）');
+ if(z.cm){var o=z.m;if(!o){(z.x==='a'?B:A).list.forEach(function(g){if(Math.abs(g.d/z.d-1)<=TOL){if(!o)o=g}})}if(!o){o=null}
+  if(o)t+=' · '+L3('jumeau','twin','对应')+' '+o.x.toUpperCase()+' '+o.lab+' ('+f(o.d,2)+' m)'}
+ q('cx-read').innerHTML=t;
+ box.querySelectorAll('circle.on').forEach(function(c){c.classList.remove('on')});
+}
+box.addEventListener('pointerover',function(e){var c=e.target.closest('circle');if(c){read(all[+c.getAttribute('data-i')]);c.classList.add('on')}});
+box.addEventListener('click',function(e){var c=e.target.closest('circle');if(c){read(all[+c.getAttribute('data-i')]);c.classList.add('on')}});
+var READ0=q('cx-read').innerHTML;
+function update(){sel=null;q('cx-read').innerHTML=READ0;compute();stats();draw();q('cx-a-mx').innerHTML=matrix(A);q('cx-b-mx').innerHTML=matrix(B)}
+['a','b'].forEach(function(x){
+ q('cx-'+x+'-g').addEventListener('change',function(){fill(x,false);update()});
+ q('cx-'+x+'-cats').addEventListener('click',function(e){var b=e.target.closest('[data-cat]');if(b){setCat(x,b.getAttribute('data-cat'),null,false);update()}});
+ q('cx-'+x+'-w').addEventListener('change',update);
+ q('cx-'+x+'-cls').addEventListener('change',update);
+ q('cx-'+x+'-sch').addEventListener('change',update);
+ ['c','r'].forEach(function(k){q('cx-'+x+'-'+k).addEventListener('change',function(){var on=this.value==='__c',card=q('cx-'+x),L=LAST[x]||{rings:[50,34],cogs:[11,12,13,14,15,17,19,21,24,27,30,34]};
+  if(!CU[x])CU[x]={r:L.rings.slice(),c:L.cogs.slice()};
+  if(on){if(k==='r')CU[x].r=L.rings.slice();else CU[x].c=L.cogs.slice();cuInputs(x)}
+  card.classList.toggle(k==='r'?'cr':'cc',on);update()})});
+ setCat(x,q('cx-'+x+'-cats').getAttribute('data-c0'),q('cx-'+x+'-g').getAttribute('data-g0'),true);
+});
+R.addEventListener('click',function(e){var b=e.target.closest('[data-cx]');if(!b)return;var p=b.getAttribute('data-cx').split('-'),x=p[0],c=CU[x],d=+b.getAttribute('data-d');
+ if(p[1]==='rn'){if(d>0){if(c.r.length<3)c.r.push(Math.max(20,c.r[c.r.length-1]-12))}else{if(c.r.length>1)c.r.pop()}}
+ else{if(d>0){if(c.c.length<14)c.c.push(c.c[c.c.length-1]+3)}else{if(c.c.length>1)c.c.pop()}}
+ cuInputs(x);update()});
+R.addEventListener('input',function(e){var k=e.target.getAttribute('data-k');if(!k)return;var p=k.split('-'),v=parseInt(e.target.value,10),mn=p[1]==='r'?20:8,mx=p[1]==='r'?70:60,ok=!isNaN(v);if(ok){if(v<mn)ok=false;if(v>mx)ok=false}
+ e.target.classList.toggle('bad',!ok);if(ok){CU[p[0]][p[1]][+p[2]]=v;update()}});
+try{if(localStorage.getItem('tdc-cx-mode')==='pro')setMode(true)}catch(e){}
+window.addEventListener('hashchange',update);
+var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(draw,120)});
+update();
+})();
+</script>
+
+<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html" class=on><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="ligne-de-chaine.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
+<script>
+(function(){
+function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
+try{var s=localStorage.getItem('tdc-lang');if(s){if(!location.hash){history.replaceState(null,'',s)}}}catch(e){}
+sync();window.addEventListener('hashchange',sync);
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-app]');if(a){if(location.hash){a.setAttribute('href',a.getAttribute('href').split('#')[0]+location.hash)}}});
+function net(){document.documentElement.classList.toggle('offline',!navigator.onLine)}net();window.addEventListener('online',net);window.addEventListener('offline',net);
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')})}
+})();
+</script>
+</body>
+</html>
