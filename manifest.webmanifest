@@ -84,6 +84,16 @@
    ]
   },
   {
+   "name": "Pression des pneus",
+   "url": "pression.html",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
    "name": "Boîtier de pédalier",
    "url": "boitier.html",
    "icons": [
