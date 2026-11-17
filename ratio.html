@@ -47,6 +47,10 @@ html:not(.l-en):not(.l-zh) .tdc-lang .b-fr,html.l-en .tdc-lang .b-en,html.l-zh .
 .tdc-beta.open{width:calc(100vw - 20px)!important;height:auto;border-radius:26px!important}
 .tdc-beta.open .tx{display:block!important;padding:4px 18px 10px;font-weight:600;font-size:14px;line-height:1.4}
 .tdc-beta.open .tdc-lab-close{display:block!important;margin:0 18px 16px!important;width:auto;text-align:center;background:#7CFF6B!important;color:#0e1230!important;border:0!important}
+/* Pas de barre de défilement visible dans l'app */
+html{scrollbar-width:none}
+::-webkit-scrollbar{width:0!important;height:0!important;display:none}
+html.sp-lock,html.sp-lock body{overflow:hidden!important;height:100%}
 /* Splash d'ouverture */
 .ap-splash{position:fixed;inset:0;z-index:100000;background:#0e1230;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;text-align:center;font-family:Inter,system-ui,sans-serif;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;transition:opacity .5s ease,transform .6s cubic-bezier(.6,0,.2,1)}
 .ap-splash.out{opacity:0;transform:scale(1.06);pointer-events:none}
