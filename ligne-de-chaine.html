@@ -13,9 +13,12 @@
 html,body{margin:0;padding:0;background:#fff}
 body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
 .tdc-menu,.tdc-mnav{display:none!important}
-.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-template-columns:repeat(8,1fr);background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
+.app-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:#0e1230;padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(14,18,48,.25);font-family:Inter,system-ui,sans-serif}
 .app-bar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 1px;border-radius:12px;color:#fff;text-decoration:none;font-weight:800;font-size:10px;line-height:1.1;-webkit-tap-highlight-color:transparent}
 .app-bar a.on{background:#d81b6a}
+.app-bar a.sec{display:none}
+html.lab-on .app-bar a.sec{display:flex}
+html.lab-on .app-bar a{font-size:9.5px}
 .app-bar a:active{background:#ff4f9a;color:#0e1230}
 .app-bar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .app-bar .en,.app-bar .zh{display:none}
@@ -375,7 +378,11 @@ body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{disp
 }
 /* ---------- Accueil : L'atelier ---------- */
 .tdc-atelier .tdc-at-lead{max-width:60ch;margin-bottom:24px}
-.tdc-at-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tdc-at-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.tdc-at-lock{margin-top:22px!important;border:3px dashed var(--ink);border-radius:var(--r-l);padding:14px 18px;font-weight:700;opacity:.7;text-align:center}
+html.lab-on .tdc-at-lock{display:none}
+.tdc-at-labt{font-family:"Archivo Black",Impact,sans-serif;font-size:22px;margin:28px 0 14px!important}
+.tdc-at-card.lab{background:#eaffe6;box-shadow:8px 8px 0 #7CFF6B}
 .tdc-at-card{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:var(--r-l);background:#fff;padding:16px;color:var(--ink)!important;text-decoration:none!important;box-shadow:8px 8px 0 var(--rose);transition:translate .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
 @media (hover:hover){.tdc-at-card:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--rose)}}
 .tdc-at-card:active{translate:4px 4px;box-shadow:4px 4px 0 var(--rose)}
@@ -385,7 +392,6 @@ body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{disp
 .tdc-at-tx b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:18px;line-height:1.1}
 .tdc-at-tx small{font-size:13px;font-weight:600;opacity:.8;line-height:1.35}
 .tdc-at-go{font-family:"Archivo Black",Impact,sans-serif;font-size:22px}
-@media (max-width:980px){.tdc-at-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:720px){.tdc-at-grid{grid-template-columns:1fr}.tdc-at-card{box-shadow:6px 6px 0 var(--rose)}}
 /* ---------- Menu flottant (bord droit) ---------- */
 .tdc-menu{position:fixed;right:14px;top:50%;translate:0 -50%;z-index:9998;display:flex;flex-direction:column;gap:6px;background:var(--ink);padding:6px;border-radius:99px;box-shadow:0 8px 24px rgba(14,18,48,.3)}
@@ -411,6 +417,24 @@ body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{disp
 .tdc-menu>a:focus-visible .tdc-menu-label{opacity:1}
 @media (prefers-reduced-motion:no-preference){.tdc-menu{animation:tdc-zoom .6s 1s var(--ease) both}}
 @media (min-width:1025px){.tdc{max-width:min(1240px,calc(100vw - 172px))!important}}
+/* ---------- Labo secret (easter egg) ---------- */
+.tdc-sec{display:none}
+html.lab-on .tdc-sec,.tdc-sec.on{display:block}
+.tdc-sub-panel .tdc-sec{margin-top:6px;padding-top:6px;border-top:2px dashed rgba(255,255,255,.25)}
+.tdc-peace{cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.tdc-labx{position:fixed;inset:0;z-index:10000;background:rgba(14,18,48,.82);display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(3px)}
+.tdc-labx.open{display:flex;animation:tdc-labx .35s cubic-bezier(.2,.9,.2,1)}
+@keyframes tdc-labx{from{opacity:0}to{opacity:1}}
+.tdc-labx-c{position:relative;width:100%;max-width:440px;background:#0e1230;color:#fff;border:3px solid #7CFF6B;border-radius:28px;padding:26px 22px 20px;box-shadow:0 0 0 6px rgba(124,255,107,.15),10px 10px 0 #ff4f9a;background-image:radial-gradient(circle at 20% 15%,rgba(124,255,107,.18),transparent 40%),radial-gradient(circle at 85% 90%,rgba(255,79,154,.2),transparent 45%)}
+.tdc-labx-c h2{font-size:30px!important;margin:4px 0 10px!important;color:#7CFF6B!important}
+.tdc-labx-c p{margin:0 0 14px!important;font-weight:600;font-size:15px}
+.tdc-labx-k{font:800 12px ui-monospace,Menlo,Consolas,monospace!important;letter-spacing:.14em;text-transform:uppercase;color:#7CFF6B}
+.tdc-labx-l{display:grid;gap:10px;margin-bottom:14px}
+.tdc-labx-l a{display:block;background:#fff;color:#0e1230!important;text-decoration:none!important;border:3px solid #0e1230;border-radius:16px;padding:12px 14px;font-weight:800;box-shadow:5px 5px 0 #7CFF6B}
+.tdc-labx-f{font-size:13px!important;opacity:.75}
+.tdc-labx-x{all:unset;position:absolute;top:12px;right:14px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;font-size:16px}
+.tdc-beta{margin:0 12px 8px;border:3px dashed #0e1230;border-radius:20px;background:#eaffe6;padding:12px 16px;font-weight:700;font-size:14px;display:flex;gap:10px;align-items:center}
+.tdc-beta b{font-family:"Archivo Black",Impact,sans-serif;font-weight:400;white-space:nowrap}
 /* Menu mobile : un bouton qui ouvre la liste des pages avec leur nom */
 .tdc-mnav{display:none}
 @media (max-width:1024px){
@@ -849,6 +873,7 @@ body:has(.tdc) .wp-block-post-featured-image,body:has(.tdc) .post-thumbnail{disp
     <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
     <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
   </div></nav>
+  <div class="tdc-beta" role="note"><b>🧪 <span class="fr">Labo secret · bêta</span><span class="en" lang="en">Secret lab · beta</span><span class="zh" lang="zh-Hans">秘密实验室 · 测试版</span></b><span><span class="fr">Outil de chimiste fou : les données sont encore en cours de vérification. À prendre avec des pincettes.</span><span class="en" lang="en">Mad scientist tool: the data is still being checked. Take it with a pinch of salt.</span><span class="zh" lang="zh-Hans">疯狂化学家工具：数据仍在核实中，仅供参考。</span></span></div>
   <section class="tdc-hero tdc-page-hero tdc-solo">
     <div>
       <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
@@ -1039,7 +1064,7 @@ update();
 })();
 </script>
 
-<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="ligne-de-chaine.html" class=on><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a><a data-app href="pression.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 13l4-5"/><circle cx="12" cy="13" r="1.6"/></svg><span class="fr">Pneus</span><span class="en" lang="en">Tyres</span><span class="zh" lang="zh-Hans">胎压</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
+<nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><a data-app href="ratio.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg><span class="fr">Ratio</span><span class="en" lang="en">Ratio</span><span class="zh" lang="zh-Hans">齿比</span></a><a data-app href="comparateur.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg><span class="fr">Compare</span><span class="en" lang="en">Compare</span><span class="zh" lang="zh-Hans">对比</span></a><a data-app href="pression.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 13l4-5"/><circle cx="12" cy="13" r="1.6"/></svg><span class="fr">Pneus</span><span class="en" lang="en">Tyres</span><span class="zh" lang="zh-Hans">胎压</span></a><a data-app href="rayons.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 3v7M12 14v7M3 12h7M14 12h7M5.6 5.6l5 5M13.4 13.4l5 5M18.4 5.6l-5 5M10.6 13.4l-5 5"/></svg><span class="fr">Rayons</span><span class="en" lang="en">Spokes</span><span class="zh" lang="zh-Hans">辐条</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a><a data-app href="ligne-de-chaine.html" class="on sec"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg><span class="fr">Ligne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></a><a data-app href="compatibilite.html" class="sec"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg><span class="fr">Compat</span><span class="en" lang="en">Compat</span><span class="zh" lang="zh-Hans">兼容</span></a><a data-app href="labo-tirages.html" class="sec"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span></a></nav><div class="app-off">📴 Hors ligne : tout marche quand même</div>
 <script>
 (function(){
 function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
@@ -1049,6 +1074,6 @@ document.addEventListener('click',function(e){var a=e.target.closest('a[data-app
 function net(){document.documentElement.classList.toggle('offline',!navigator.onLine)}net();window.addEventListener('online',net);window.addEventListener('offline',net);
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')})}
 })();
-</script>
+</script><script>(function(){var LK="tdc-lab",H=document.documentElement;function labOn(){H.classList.add("lab-on")}try{if(localStorage.getItem(LK)==="1")labOn()}catch(x){}try{console.log("🧪 Psst… tape 3 fois sur Peace ✌️")}catch(x){}function T3(a,b,c){return "<span class=\"fr\">"+a+"</span><span class=\"en\" lang=\"en\">"+b+"</span><span class=\"zh\" lang=\"zh-Hans\">"+c+"</span>"}function labOpen(){var o=document.querySelector(".tdc-labx");if(!o){var root=document.querySelector(".tdc")||document.body;o=document.createElement("div");o.className="tdc-labx";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.innerHTML="<div class=\"tdc-labx-c\"><button type=\"button\" class=\"tdc-labx-x\" aria-label=\"Fermer\">✕</button><p class=\"tdc-labx-k\">"+T3("🧪 Accès autorisé","🧪 Access granted","🧪 已授权")+"</p><h2>"+T3("Le labo du chimiste fou","The mad scientist’s lab","疯狂化学家实验室")+"</h2><p>"+T3("Zone bêta, pour les vrais geeks. Les données sont encore en cours de vérification : manipule avec des gants.","Beta zone, for real geeks. The data is still being checked: handle with gloves.","测试区，专为真极客。数据仍在核实中：请戴手套操作。")+"</p><div class=\"tdc-labx-l\"><a href=\"ligne-de-chaine.html\">📏 "+T3("Ligne de chaîne","Chainline","链线")+"</a><a href=\"compatibilite.html\">🔗 "+T3("Compatibilité leviers et dérailleurs","Shifter and derailleur compatibility","指拨与拨链器兼容性")+"</a><a href=\"labo-tirages.html\">⚗️ "+T3("Labo des tirages","Cable pull lab","拉线实验室")+"</a></div><p class=\"tdc-labx-f\">"+T3("Le labo reste ouvert dans ton menu 🔧.","The lab now stays in your 🔧 menu.","实验室已加入你的 🔧 菜单。")+"</p></div>";root.appendChild(o)}o.classList.add("open");var x=o.querySelector(".tdc-labx-x");if(x)x.focus()}var pn=0,pt=0;document.addEventListener("click",function(e){var c=e.target.closest(".tdc-labx-x");if(c){c.closest(".tdc-labx").classList.remove("open");return}var bg=e.target.classList;if(bg.contains("tdc-labx")){e.target.classList.remove("open");return}if(!e.target.closest(".tdc-peace"))return;var now=Date.now();if(now-pt>1500)pn=0;pt=now;pn++;if(pn>=3){pn=0;try{localStorage.setItem(LK,"1")}catch(x){}labOn();labOpen()}});})();</script>
 </body>
 </html>
