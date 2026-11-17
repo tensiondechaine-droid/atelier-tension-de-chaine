@@ -7,7 +7,7 @@ on:
 
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Récupérer les fichiers
         uses: actions/checkout@v5
@@ -35,9 +35,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-
-      - name: Installer le SDK Android
-        uses: android-actions/setup-android@v3
 
       - name: Installer Capacitor
         run: npm install
