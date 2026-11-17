@@ -10,15 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer les fichiers
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Ranger les fichiers
+        run: |
+          if [ ! -f www/index.html ]; then
+            mkdir -p www/icons
+            cp *.html sw.js manifest.webmanifest www/
+            cp icon-192.png icon-512.png maskable-512.png www/icons/
+          fi
+          if [ ! -f assets/icon-only.png ]; then
+            mkdir -p assets
+            cp icon-only.png icon-foreground.png icon-background.png assets/ || true
+          fi
+          ls -R www assets
 
       - name: Installer Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
       - name: Installer Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
