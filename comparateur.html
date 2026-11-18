@@ -8,7 +8,11 @@
 <meta name="theme-color" content="#0e1230">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Atelier TDC">
 <style>
 html,body{margin:0;padding:0;background:#fff}
 body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
@@ -1166,5 +1170,22 @@ document.addEventListener('click',function(e){var b=e.target.closest('.app-gb');
 if(e.target.closest('.app-scrimpop')){closeAll()}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll()}});
 document.addEventListener('tdc-lab-off',closeAll);})();</script>
+<div class="app-ios" id="app-ios" hidden><button type="button" class="app-iosx" aria-label="Fermer">✕</button><b class="app-iost"></b><span class="app-iosd"></span></div>
+<style>
+.app-ios{position:fixed;left:10px;right:10px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:9997;background:#fff;color:#0e1230;border:3px solid #0e1230;border-radius:20px;box-shadow:6px 6px 0 #ff4f9a;padding:12px 40px 12px 14px;font:600 14px/1.4 Inter,system-ui,sans-serif;animation:iosin .35s cubic-bezier(.2,.9,.2,1.2)}
+.app-ios[hidden]{display:none}
+.app-ios b{display:block;font-weight:800;font-size:15px;margin-bottom:2px}
+.app-ios .sh{display:inline-flex;width:22px;height:22px;border-radius:6px;background:#2346ff;color:#fff;align-items:center;justify-content:center;font-size:13px;vertical-align:-4px}
+.app-iosx{all:unset;position:absolute;top:8px;right:10px;width:26px;height:26px;border-radius:50%;background:#0e1230;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+@keyframes iosin{from{opacity:0;transform:translateY(16px)}}
+</style>
+<script>(function(){var u=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(u)||(navigator.platform==='MacIntel'?navigator.maxTouchPoints>1:false);
+if(!ios)return;if(navigator.standalone)return;if(window.Capacitor)return;try{if(localStorage.getItem('tdc-ios')==='1')return}catch(e){}
+var el=document.getElementById('app-ios');if(!el)return;var c=document.documentElement.classList,L=c.contains('l-en')?1:(c.contains('l-zh')?2:0);
+var T=['Installe l’atelier sur ton iPhone','Install the workshop on your iPhone','把工作室装到 iPhone 上'];
+var D=['Touche <span class="sh">⬆︎</span> Partager en bas de Safari, puis « Sur l’écran d’accueil ». Ensuite, tout marche hors ligne.','Tap <span class="sh">⬆︎</span> Share in Safari, then “Add to Home Screen”. Then everything works offline.','点 Safari 的 <span class="sh">⬆︎</span> 分享，再选“添加到主屏幕”。之后离线也能用。'];
+el.querySelector('.app-iost').textContent=T[L];el.querySelector('.app-iosd').innerHTML=D[L];
+setTimeout(function(){el.hidden=false},1500);
+el.querySelector('.app-iosx').addEventListener('click',function(){el.hidden=true;try{localStorage.setItem('tdc-ios','1')}catch(e){}});})();</script>
 </body>
 </html>
