@@ -14,6 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Atelier TDC">
 <style>
+.tdc-bapp,.tdc-bmod{display:none!important}
 html,body{margin:0;padding:0;background:#fff}
 body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
 .tdc-menu,.tdc-mnav{display:none!important}
@@ -500,6 +501,7 @@ html.lab-on .tdc-at-lock{display:none}
 .tdc-sub-panel{position:absolute;right:calc(100% + 14px);top:50%;translate:0 -50%;min-width:260px;display:none;gap:4px;padding:8px;background:var(--ink);border-radius:22px;box-shadow:0 12px 32px rgba(14,18,48,.4)}
 .tdc-sub-panel::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:16px}
 .tdc-sub.open .tdc-sub-panel{display:grid}
+.tdc-sub-g{margin:6px 0 0!important;padding:4px 14px 2px;color:rgba(255,255,255,.5)!important;font-weight:800;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
 .tdc-sub-t,.tdc-mnav-t{margin:0!important;padding:8px 12px 4px;color:var(--rose)!important;font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .tdc-sub-panel a{width:auto;height:auto;border-radius:14px;justify-content:flex-start;gap:12px;padding:11px 14px;font-weight:800;font-size:14px;line-height:1.2;white-space:nowrap}
 .tdc-sub.open .tdc-menu-label{opacity:0!important}
@@ -626,6 +628,34 @@ button.tdc-lab-close,button.tdc-lab-hint{all:unset;cursor:pointer;display:block;
   .tdc-step,.tdc-ep,.tdc-scale>div{animation:tdc-up linear both;animation-timeline:view();animation-range:entry 0% entry 50%}
   .tdc-cover{animation:tdc-zoom linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
 }}
+/* ---------- Encart + pop-up app bêta ---------- */
+.tdc-bapp{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;border:3px solid var(--ink);border-radius:var(--r-l);background:var(--rose-soft);padding:18px 22px;box-shadow:8px 8px 0 var(--rose)}
+.tdc-bapp .bt{display:block;font-family:"Archivo Black",Impact,sans-serif;font-weight:400;font-size:20px;line-height:1.15}
+.tdc-bapp .bs{display:block;font-weight:600;font-size:14px;margin-top:4px}
+.tdc-bapp-open{all:unset;cursor:pointer;background:var(--ink);color:#fff;font-weight:800;font-size:15px;padding:12px 18px;border-radius:99px;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+@media (hover:hover){.tdc-bapp-open:hover{background:var(--rose-deep)}}
+.tdc-bapp-open:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tdc-bmod{position:fixed;inset:0;z-index:10003;background:rgba(14,18,48,.8);display:flex;align-items:center;justify-content:center;padding:16px}
+.tdc-bmod[hidden]{display:none}
+.tdc-bmod-c{position:relative;width:100%;max-width:440px;max-height:calc(100dvh - 32px);overflow-y:auto;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:26px;padding:24px 20px 18px;box-shadow:10px 10px 0 var(--rose);animation:tdc-zoom .25s var(--ease) both}
+.tdc-bmod-c h2{font-size:28px!important;margin:2px 0 14px!important}
+.tdc-bmod-k{margin:0!important;font:800 12px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-deep)}
+.tdc-bmod-x{all:unset;position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;cursor:pointer;font-size:14px}
+.tdc-bmod-os{display:flex;gap:6px;border:3px solid var(--ink);border-radius:99px;padding:4px;margin-bottom:14px}
+.tdc-bmod-os button{all:unset;flex:1;text-align:center;cursor:pointer;padding:9px 6px;border-radius:99px;font-weight:800;font-size:15px;-webkit-tap-highlight-color:transparent}
+.tdc-bmod-os button.on{background:var(--ink);color:#fff}
+.tdc-bmod-st{list-style:none;margin:0 0 16px!important;padding:0!important;display:grid;gap:8px}
+.tdc-bmod-st[hidden]{display:none}
+.tdc-bmod-st li{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;background:var(--bleu-soft);border-radius:14px;padding:10px 12px;font-weight:600;font-size:15px}
+.tdc-bmod-st li:nth-child(2){background:var(--rose-soft)}
+.tdc-bmod-st i{font-style:normal;width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:"Archivo Black",Impact,sans-serif;font-size:16px}
+.tdc-bmod-go{display:block!important;text-align:center;margin:0!important;font-size:15px!important;padding:14px 16px!important}
+.tdc-bmod-qr{display:flex;align-items:center;gap:14px;margin-top:14px;border:2px dashed var(--ink);border-radius:16px;padding:10px 12px;font-weight:700;font-size:14px}
+.tdc-bmod-qr svg{flex:none;width:96px;height:96px}
+.tdc-bmod.mob .tdc-bmod-qr{display:none}
+.tdc-bmod-f{margin:12px 0 0!important;font-size:13px;font-weight:600;opacity:.75;text-align:center}
+html.tdc-bmod-on{overflow:hidden}
+@media (max-width:720px){.tdc-bapp{padding:14px 16px;box-shadow:6px 6px 0 var(--rose)}.tdc-bapp-open{width:100%;text-align:center}.tdc-bapp .bt{font-size:18px}}
 /* ---------- Page Calculateur de ratio ---------- */
 .tdc-hero.tdc-solo{grid-template-columns:1fr;padding-bottom:36px!important}
 .tdc-hero.tdc-solo .tdc-lead{max-width:52ch}
@@ -802,6 +832,21 @@ button.tdc-lab-close,button.tdc-lab-hint{all:unset;cursor:pointer;display:block;
 #tdc-cmpx:not(.is-pro) .tdc-cat.pro,#tdc-cmpx:not(.is-pro) .tdc-cls,#tdc-cmpx:not(.is-pro) .tdc-sch{display:none!important}
 .tdc-xc.is-custom .tdc-gw{display:none}
 .tdc-xcus{display:none;gap:12px}
+.tdc-x3{display:none;gap:10px;border-top:2px dashed rgba(14,18,48,.2);padding-top:12px}
+.tdc-xc.is-custom .tdc-x3,.tdc-xc.cc .tdc-x3{display:grid}
+.tdc-x3f{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px;align-items:end}
+.tdc-x3t{display:block;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin-bottom:5px}
+.tdc-x3 .tdc-cats{gap:5px}
+.tdc-x3 .tdc-cat{padding:7px 11px;font-size:13px}
+.tdc-x3l{display:grid;gap:6px;max-height:300px;overflow-y:auto;padding:2px}
+.tdc-x3l button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:2px;border:2px solid var(--ink);border-radius:14px;padding:9px 12px;background:#fff;-webkit-tap-highlight-color:transparent;transition:background-color .15s}
+.tdc-x3l button.on{background:var(--rose)}
+@media (hover:hover){.tdc-x3l button:hover{background:var(--rose-soft)}.tdc-x3l button.on:hover{background:var(--rose)}}
+.tdc-x3l button b{font-size:14px;font-weight:800}
+.tdc-x3l button b i{font-style:normal;font-size:11px;font-weight:800;border-radius:99px;background:var(--ink);color:#fff;padding:2px 7px;margin-left:6px;vertical-align:1px}
+.tdc-x3l button small{font-size:12px;font-weight:700;opacity:.75;font-variant-numeric:tabular-nums}
+.tdc-x3l p{margin:0!important;font-size:13px;font-weight:600;opacity:.75}
+.tdc-x3n{margin:0!important;font-size:12px;font-weight:600;opacity:.7}
 .tdc-cls{padding-top:12px!important;font-size:14px}
 .tdc-cls input{width:52px!important;height:30px!important}
 .tdc-cls input:checked::after{translate:22px 0!important}
@@ -986,6 +1031,24 @@ button.tdc-lab-close,button.tdc-lab-hint{all:unset;cursor:pointer;display:block;
     <a class="b-en" href="#tdc-en" hreflang="en">EN</a>
     <a class="b-zh" href="#tdc-zh" hreflang="zh-Hans">中文</a>
   </div></nav>
+<div class="tdc-bmod" role="dialog" aria-modal="true" aria-label="Installer l’app" hidden><div class="tdc-bmod-c">
+    <button type="button" class="tdc-bmod-x" aria-label="Fermer">✕</button>
+    <p class="tdc-bmod-k">📲 <span class="fr">Bêta · app hors ligne</span><span class="en" lang="en">Beta · offline app</span><span class="zh" lang="zh-Hans">测试版 · 离线 App</span></p>
+    <h2><span class="fr">L’atelier dans ta poche</span><span class="en" lang="en">The workshop in your pocket</span><span class="zh" lang="zh-Hans">口袋里的工作室</span></h2>
+    <div class="tdc-bmod-os"><button type="button" data-os="ios" class="on">🍏 iPhone</button><button type="button" data-os="and">🤖 Android</button></div>
+    <ol class="tdc-bmod-st" data-os="ios"><li><i>1</i><span><span class="fr">Ouvre le lien dans <b>Safari</b> (pas dans Instagram)</span><span class="en" lang="en">Open the link in <b>Safari</b> (not inside Instagram)</span><span class="zh" lang="zh-Hans">用 <b>Safari</b> 打开链接（不要在 Instagram 里）</span></span></li><li><i>2</i><span><span class="fr">Touche <b>⬆️ Partager</b>, en bas</span><span class="en" lang="en">Tap <b>⬆️ Share</b> at the bottom</span><span class="zh" lang="zh-Hans">点底部的 <b>⬆️ 分享</b></span></span></li><li><i>3</i><span><span class="fr">« <b>Sur l’écran d’accueil</b> »</span><span class="en" lang="en">“<b>Add to Home Screen</b>”</span><span class="zh" lang="zh-Hans">“<b>添加到主屏幕</b>”</span></span></li></ol>
+    <ol class="tdc-bmod-st" data-os="and" hidden><li><i>1</i><span><span class="fr">Ouvre le lien dans <b>Chrome</b></span><span class="en" lang="en">Open the link in <b>Chrome</b></span><span class="zh" lang="zh-Hans">用 <b>Chrome</b> 打开链接</span></span></li><li><i>2</i><span><span class="fr">Touche les <b>⋮</b>, en haut à droite</span><span class="en" lang="en">Tap the <b>⋮</b> at the top right</span><span class="zh" lang="zh-Hans">点右上角的 <b>⋮</b></span></span></li><li><i>3</i><span><span class="fr">« <b>Installer l’application</b> »</span><span class="en" lang="en">“<b>Install app</b>”</span><span class="zh" lang="zh-Hans">“<b>安装应用</b>”</span></span></li></ol>
+    <a class="tdc-btn rose tdc-bmod-go" href="https://atelier.tensiondechaine.com/">👉 atelier.tensiondechaine.com</a>
+    <div class="tdc-bmod-qr"><svg viewBox="0 0 33 33" shape-rendering="crispEdges" aria-hidden="true"><rect width="33" height="33" fill="#fff"/><path d="M2 2h7v1h-7zM10 2h1v1h-1zM12 2h1v1h-1zM14 2h2v1h-2zM17 2h1v1h-1zM19 2h4v1h-4zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM11 3h5v1h-5zM18 3h1v1h-1zM20 3h1v1h-1zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h3v1h-3zM17 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h3v1h-3zM14 5h1v1h-1zM16 5h1v1h-1zM19 5h1v1h-1zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h1v1h-1zM21 6h1v1h-1zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM12 7h2v1h-2zM15 7h1v1h-1zM20 7h3v1h-3zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM12 9h1v1h-1zM14 9h1v1h-1zM18 9h2v1h-2zM22 9h1v1h-1zM2 10h4v1h-4zM8 10h1v1h-1zM10 10h1v1h-1zM12 10h4v1h-4zM17 10h4v1h-4zM23 10h1v1h-1zM26 10h3v1h-3zM30 10h1v1h-1zM2 11h1v1h-1zM5 11h2v1h-2zM12 11h1v1h-1zM14 11h3v1h-3zM18 11h1v1h-1zM20 11h7v1h-7zM30 11h1v1h-1zM2 12h1v1h-1zM7 12h2v1h-2zM11 12h5v1h-5zM18 12h3v1h-3zM24 12h2v1h-2zM28 12h2v1h-2zM2 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM11 13h2v1h-2zM17 13h1v1h-1zM20 13h1v1h-1zM23 13h4v1h-4zM30 13h1v1h-1zM4 14h1v1h-1zM8 14h2v1h-2zM11 14h2v1h-2zM14 14h1v1h-1zM16 14h1v1h-1zM19 14h1v1h-1zM22 14h1v1h-1zM27 14h2v1h-2zM2 15h2v1h-2zM5 15h2v1h-2zM9 15h1v1h-1zM13 15h2v1h-2zM16 15h4v1h-4zM21 15h1v1h-1zM24 15h1v1h-1zM28 15h3v1h-3zM6 16h5v1h-5zM12 16h2v1h-2zM15 16h1v1h-1zM19 16h1v1h-1zM21 16h1v1h-1zM23 16h3v1h-3zM28 16h3v1h-3zM3 17h1v1h-1zM6 17h2v1h-2zM9 17h1v1h-1zM11 17h3v1h-3zM16 17h1v1h-1zM21 17h2v1h-2zM25 17h2v1h-2zM29 17h1v1h-1zM3 18h3v1h-3zM7 18h3v1h-3zM11 18h2v1h-2zM14 18h1v1h-1zM16 18h1v1h-1zM20 18h4v1h-4zM25 18h3v1h-3zM29 18h1v1h-1zM4 19h3v1h-3zM9 19h1v1h-1zM11 19h1v1h-1zM16 19h2v1h-2zM19 19h1v1h-1zM22 19h2v1h-2zM25 19h1v1h-1zM27 19h3v1h-3zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h1v1h-1zM15 20h3v1h-3zM20 20h1v1h-1zM22 20h2v1h-2zM26 20h1v1h-1zM28 20h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM10 21h4v1h-4zM15 21h5v1h-5zM24 21h1v1h-1zM28 21h1v1h-1zM2 22h2v1h-2zM6 22h4v1h-4zM15 22h14v1h-14zM10 23h3v1h-3zM20 23h1v1h-1zM22 23h1v1h-1zM26 23h5v1h-5zM2 24h7v1h-7zM12 24h1v1h-1zM16 24h1v1h-1zM18 24h2v1h-2zM21 24h2v1h-2zM24 24h1v1h-1zM26 24h2v1h-2zM29 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM11 25h6v1h-6zM20 25h1v1h-1zM22 25h1v1h-1zM26 25h2v1h-2zM30 25h1v1h-1zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM11 26h1v1h-1zM13 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM22 26h5v1h-5zM28 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM10 27h1v1h-1zM12 27h2v1h-2zM15 27h1v1h-1zM17 27h2v1h-2zM22 27h1v1h-1zM26 27h2v1h-2zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM10 28h3v1h-3zM14 28h1v1h-1zM16 28h1v1h-1zM18 28h1v1h-1zM25 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h3v1h-3zM14 29h2v1h-2zM18 29h1v1h-1zM21 29h2v1h-2zM24 29h4v1h-4zM29 29h1v1h-1zM2 30h7v1h-7zM10 30h1v1h-1zM13 30h1v1h-1zM17 30h1v1h-1zM20 30h3v1h-3zM24 30h2v1h-2zM29 30h1v1h-1z" fill="#0e1230"/></svg><span><span class="fr">Sur ordi ? Scanne avec ton téléphone.</span><span class="en" lang="en">On a computer? Scan with your phone.</span><span class="zh" lang="zh-Hans">在电脑上？用手机扫码。</span></span></div>
+    <p class="tdc-bmod-f"><span class="fr">Un bug ? Écris-moi, c’est une bêta 🐛</span><span class="en" lang="en">A bug? Tell me, it’s a beta 🐛</span><span class="zh" lang="zh-Hans">发现 bug？告诉我，这是测试版 🐛</span></p>
+  </div></div>
+  <script>(function(){var M=document.querySelector('.tdc-bmod');if(!M)return;var u=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(u)||(navigator.platform==='MacIntel'?navigator.maxTouchPoints>1:false),and=/Android/.test(u);
+function os(o){var b=M.querySelectorAll('[data-os]');for(var i=0;i<b.length;i++){if(b[i].tagName==='BUTTON'){b[i].classList.toggle('on',b[i].getAttribute('data-os')===o)}else{b[i].hidden=b[i].getAttribute('data-os')!==o}}}
+if(and){os('and')}if(ios){os('ios')}if(ios||and){M.classList.add('mob')}
+function open(){M.hidden=false;document.documentElement.classList.add('tdc-bmod-on');var x=M.querySelector('.tdc-bmod-x');if(x)x.focus()}
+function close(){M.hidden=true;document.documentElement.classList.remove('tdc-bmod-on')}
+document.addEventListener('click',function(e){if(e.target.closest('.tdc-bapp-open')){e.preventDefault();open();return}if(M.hidden)return;if(e.target.closest('.tdc-bmod-x')){close();return}if(e.target===M){close();return}var b=e.target.closest('.tdc-bmod-os button');if(b){os(b.getAttribute('data-os'))}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!M.hidden)close()}});})();</script>
   <section class="tdc-hero tdc-page-hero">
     <div>
       <span class="fr tdc-kicker">L’atelier de Tension de chaine</span><span class="en tdc-kicker" lang="en">The Tension de chaine workshop</span><span class="zh tdc-kicker" lang="zh-Hans">Tension de chaine 工作室</span>
@@ -1040,7 +1103,11 @@ button.tdc-lab-close,button.tdc-lab-hint{all:unset;cursor:pointer;display:block;
     <p class="fr tdc-note">W : distance centre → flasque, corrigée du déport de la jante. P : Ø de perçage du flasque. E : ERD. X : croisements. N : nombre de rayons. s : Ø du trou dans le flasque. Pour la tension, on équilibre les forces latérales des deux côtés ; pour l’allongement, la loi de Hooke avec l’acier inox (210 GPa).</p><p class="en tdc-note" lang="en">W: centre-to-flange distance, corrected for rim offset. P: flange PCD. E: ERD. X: crosses. N: spoke count. s: flange hole diameter. Tension balances the lateral forces of both sides; stretch uses Hooke’s law with stainless steel (210 GPa).</p><p class="zh tdc-note" lang="zh-Hans">W：中心到法兰距离（已按轮圈偏移修正）。P：法兰孔圆直径。E：ERD。X：交叉数。N：辐条数。s：法兰孔径。张力按两侧横向力平衡计算；伸长量用胡克定律（不锈钢 210 GPa）。</p>
   </section>
   <section style="padding-top:0;padding-bottom:0"><aside class="tdc-disc" role="note"><b>⚠️</b><p><span class="fr">À vérifier : les cotes des moyeux et des jantes viennent des fiches fabricants et de bases de données de monteurs, elles changent parfois d’une version à l’autre. Mesure ton ERD et vérifie les cotes de ton moyeu avant de commander. Rayons straight pull : utilise le calculateur de la marque. Tension de chaine ne peut pas être tenu responsable d’une commande ou d’un montage.</span><span class="en" lang="en">To check: hub and rim dimensions come from maker spec sheets and wheelbuilder databases, and sometimes change between versions. Measure your ERD and check your hub dimensions before ordering. Straight-pull spokes: use the brand’s calculator. Tension de chaine cannot be held responsible for any order or build.</span><span class="zh" lang="zh-Hans">请核实：花鼓和轮圈尺寸来自厂家规格和编轮数据库，不同版本可能变化。下单前请自测 ERD 并核对花鼓尺寸。直拉辐条请用品牌官方计算器。Tension de chaine 不对任何订购或组装负责。</span></p></aside></section>
-    <section style="padding-top:0">
+    <section style="padding-top:0;padding-bottom:24px"><div class="tdc-bapp">
+    <div><b class="bt">📲 <span class="fr">Teste l’atelier en app</span><span class="en" lang="en">Try the workshop as an app</span><span class="zh" lang="zh-Hans">试用工作室 App</span></b><span class="bs"><span class="fr">Tous les outils, hors ligne, sur ton écran d’accueil. Version bêta.</span><span class="en" lang="en">All the tools, offline, on your home screen. Beta version.</span><span class="zh" lang="zh-Hans">所有工具，离线可用，放在主屏幕上。测试版。</span></span></div>
+    <button type="button" class="tdc-bapp-open"><span class="fr">Comment l’installer</span><span class="en" lang="en">How to install it</span><span class="zh" lang="zh-Hans">如何安装</span> →</button>
+  </div></section>
+  <section style="padding-top:0">
     <div class="tdc-fb">
       <div><h3 class="fr">Une idée&nbsp;? Un bug&nbsp;?</h3><h3 class="en" lang="en">An idea? A bug?</h3><h3 class="zh" lang="zh-Hans">有想法？发现 bug？</h3><p class="fr">Il manque un moyeu, une jante, une fonction&nbsp;? Un truc s’affiche de travers&nbsp;? Écris-moi, je lis tout.</p><p class="en" lang="en">Missing a hub, a rim, a feature? Something looks off? Drop me a line, I read everything.</p><p class="zh" lang="zh-Hans">缺少某款花鼓或轮圈或功能？显示有问题？给我写信，我都会看。</p></div>
       <div class="tdc-actions"><a class="tdc-btn " href="mailto:tensiondechaine@gmail.com?subject=Calculateur%20de%20rayons%20%3A%20id%C3%A9e%20de%20fonction"><span class="fr">💡 Proposer une idée</span><span class="en" lang="en">💡 Suggest a feature</span><span class="zh" lang="zh-Hans">💡 提建议</span></a><a class="tdc-btn rose" href="mailto:tensiondechaine@gmail.com?subject=Calculateur%20de%20rayons%20%3A%20bug"><span class="fr">🐞 Signaler un bug</span><span class="en" lang="en">🐞 Report a bug</span><span class="zh" lang="zh-Hans">🐞 报告 bug</span></a></div>
@@ -1116,7 +1183,7 @@ fillHub();fillRim();fillSp();applyHub();applyRim();update();
 
 <div class="app-scrim" aria-hidden="true"></div>
 <nav class="app-bar" aria-label="Outils"><a data-app href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span class="fr">Accueil</span><span class="en" lang="en">Home</span><span class="zh" lang="zh-Hans">首页</span></a><div class="app-grp "><button type="button" class="app-gb" data-pop="gear" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="14" r="5"/><circle cx="8" cy="14" r="1.6"/><circle cx="17.5" cy="7.5" r="3.2"/><circle cx="17.5" cy="7.5" r="1"/><path d="M11.5 10.5l3.2-1.6"/></svg><span class="app-gl"><span class="fr">Braquet</span><span class="en" lang="en">Gears</span><span class="zh" lang="zh-Hans">传动</span><i>▴</i></span></button><div class="app-pop" id="app-pop-gear" role="menu"><a data-app href="ratio.html" class="app-pi"><span class="app-pic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.5"/></svg></span><span class="app-pt"><b><span class="fr">Calculateur de ratio fixie</span><span class="en" lang="en">Fixed-gear ratio calculator</span><span class="zh" lang="zh-Hans">死飞齿比计算器</span></b><small><span class="fr">Développement, vitesse, skid patches, combos équivalents.</span><span class="en" lang="en">Development, speed, skid patches, equivalent combos.</span><span class="zh" lang="zh-Hans">行程、速度、刹车点、等效组合。</span></small></span></a><a data-app href="comparateur.html" class="app-pi"><span class="app-pic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"/></svg></span><span class="app-pt"><b><span class="fr">Comparateur de transmissions</span><span class="en" lang="en">Drivetrain comparator</span><span class="zh" lang="zh-Hans">传动对比器</span></b><small><span class="fr">1x13 contre 2x12, SRAM contre Shimano, rapports en commun.</span><span class="en" lang="en">1x13 vs 2x12, SRAM vs Shimano, shared gears.</span><span class="zh" lang="zh-Hans">1x13 对 2x12，SRAM 对 Shimano，重叠齿比。</span></small></span></a></div></div><a data-app href="pression.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 13l4-5"/><circle cx="12" cy="13" r="1.6"/></svg><span class="fr">Pneus</span><span class="en" lang="en">Tyres</span><span class="zh" lang="zh-Hans">胎压</span></a><a data-app href="rayons.html" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 3v7M12 14v7M3 12h7M14 12h7M5.6 5.6l5 5M13.4 13.4l5 5M18.4 5.6l-5 5M10.6 13.4l-5 5"/></svg><span class="fr">Rayons</span><span class="en" lang="en">Spokes</span><span class="zh" lang="zh-Hans">辐条</span></a><a data-app href="potence.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.4 8.8h8.2c1.6 0 2.4-2.2 4-2.2M4.4 15.2h8.2c1.6 0 2.4 2.2 4 2.2M4.4 8.8a3.2 3.2 0 0 0 0 6.4"/><circle cx="17" cy="12" r="2.7"/><path d="M18.3 6.8a5.4 5.4 0 0 1 0 10.4"/><circle cx="4.4" cy="10.6" r=".75" fill="currentColor" stroke="none"/><circle cx="4.4" cy="13.4" r=".75" fill="currentColor" stroke="none"/></svg><span class="fr">Potence</span><span class="en" lang="en">Stem</span><span class="zh" lang="zh-Hans">把立</span></a><a data-app href="boitier.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg><span class="fr">Boîtier</span><span class="en" lang="en">BB</span><span class="zh" lang="zh-Hans">中轴</span></a><div class="app-grp sec"><button type="button" class="app-gb" data-pop="lab" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg><span class="app-gl"><span class="fr">Labo</span><span class="en" lang="en">Lab</span><span class="zh" lang="zh-Hans">实验</span><i>▴</i></span></button><div class="app-pop" id="app-pop-lab" role="menu"><a data-app href="ligne-de-chaine.html" class="app-pi"><span class="app-pic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="12" r="3"/><path d="M5 9h14M5 15h14"/></svg></span><span class="app-pt"><b><span class="fr">Ligne de chaîne</span><span class="en" lang="en">Chainline</span><span class="zh" lang="zh-Hans">链线</span></b><small><span class="fr">Fixie ou vitesses : décalage, angle, méthode de mesure.</span><span class="en" lang="en">Fixie or geared: offset, angle, how to measure.</span><span class="zh" lang="zh-Hans">死飞或多速：偏移、角度、测量方法。</span></small></span></a><a data-app href="compatibilite.html" class="app-pi"><span class="app-pic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18M12.5 14.5l1.8 1.8 3.2-3.6"/></svg></span><span class="app-pt"><b><span class="fr">Compatibilité et chapes</span><span class="en" lang="en">Compatibility and cages</span><span class="zh" lang="zh-Hans">兼容性与导轮笼</span></b><small><span class="fr">Levier ↔ dérailleur, capacité de chape, longueur de chaîne.</span><span class="en" lang="en">Shifter ↔ derailleur, cage capacity, chain length.</span><span class="zh" lang="zh-Hans">指拨 ↔ 拨链器、后拨容量、链条长度。</span></small></span></a><a data-app href="labo-tirages.html" class="app-pi"><span class="app-pic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 15h9"/></svg></span><span class="app-pt"><b><span class="fr">Labo des tirages</span><span class="en" lang="en">Cable pull lab</span><span class="zh" lang="zh-Hans">拉线实验室</span></b><small><span class="fr">Tirage × ratio = pas : leviers, dérailleurs, adaptateurs.</span><span class="en" lang="en">Pull × ratio = pitch: levers, derailleurs, adapters.</span><span class="zh" lang="zh-Hans">拉线 × 比例 = 间距：指拨、后拨、转换器。</span></small></span></a></div></div><button type="button" class="tdc-lab-hint app-lockt" aria-label="???"><b>🔒</b>???</button></nav><div class="app-scrimpop"></div><div class="app-off">📴 Hors ligne : tout marche quand même</div>
-<script>
+<script>window.TDC_VER='tdc-atelier-v14';</script><script>
 (function(){
 function sync(){var h=location.hash,c=document.documentElement.classList;c.toggle('l-en',h==='#tdc-en');c.toggle('l-zh',h==='#tdc-zh');try{localStorage.setItem('tdc-lang',h)}catch(e){}}
 try{var s=localStorage.getItem('tdc-lang');if(s){if(!location.hash){history.replaceState(null,'',s)}}}catch(e){}
@@ -1153,5 +1220,58 @@ var D=['Touche <span class="sh">⬆︎</span> Partager en bas de Safari, puis «
 el.querySelector('.app-iost').textContent=T[L];el.querySelector('.app-iosd').innerHTML=D[L];
 setTimeout(function(){el.hidden=false},1500);
 el.querySelector('.app-iosx').addEventListener('click',function(){el.hidden=true;try{localStorage.setItem('tdc-ios','1')}catch(e){}});})();</script>
+<div class="app-mj" id="app-mj" hidden><div class="app-mjb" role="dialog" aria-modal="true" aria-labelledby="app-mj-t"><span class="app-mjk">🆕 MàJ</span><h2 id="app-mj-t"></h2><p class="app-mjs" id="app-mj-s"></p><div class="app-mjl" id="app-mj-l"></div><p class="app-mje" id="app-mj-e" hidden></p><div class="app-mja"><button type="button" class="app-mjno" id="app-mj-no"></button><button type="button" class="app-mjgo" id="app-mj-go"></button></div></div></div>
+<style>
+.app-mj{position:fixed;inset:0;z-index:10002;background:rgba(14,18,48,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + env(safe-area-inset-bottom))}
+.app-mj[hidden]{display:none}
+.app-mjb{box-sizing:border-box;width:100%;max-width:480px;max-height:82vh;overflow:auto;background:#fff;color:#0e1230;border:3px solid #0e1230;border-radius:26px;box-shadow:8px 8px 0 #ff4f9a;padding:20px;font:600 15px/1.45 Inter,system-ui,sans-serif;animation:iosin .35s cubic-bezier(.2,.9,.2,1.2)}
+.app-mjk{display:inline-block;background:#0e1230;color:#fff;border-radius:99px;padding:5px 12px;font-weight:800;font-size:12px;letter-spacing:.06em}
+.app-mjb h2{margin:10px 0 4px;font:400 28px/1.05 "Archivo Black",Impact,sans-serif}
+.app-mjs{margin:0 0 12px;font-weight:700;opacity:.8}
+.app-mjl{display:grid;gap:10px}
+.app-mjl>div{background:#ffe3ef;border:2px solid #0e1230;border-radius:16px;padding:10px 14px}
+.app-mjl b{font-weight:800}
+.app-mjl ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.app-mje{margin:12px 0 0;background:#fff3cc;border-radius:12px;padding:10px 12px;font-weight:700}
+.app-mja{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:16px}
+.app-mja button{all:unset;box-sizing:border-box;text-align:center;cursor:pointer;border:3px solid #0e1230;border-radius:16px;padding:13px 10px;font-weight:800;font-size:15px;min-height:48px}
+.app-mja .app-mjgo{background:#ff4f9a;box-shadow:4px 4px 0 #0e1230}
+.app-mja .app-mjgo[disabled]{opacity:.7;cursor:progress}
+.app-mja .app-mjno{background:#fff}
+</style>
+<script>(function(){
+var V=window.TDC_VER||'';
+function num(v){var m=/(\d+)$/.exec(v||'');return m?+m[1]:0}
+function lg(){var c=document.documentElement.classList;return c.contains('l-en')?1:(c.contains('l-zh')?2:0)}
+function t(a){return a[lg()]}
+var M=document.getElementById('app-mj');if(!M)return;
+function q(i){return document.getElementById(i)}
+function mo(b){var x=(b/1048576).toFixed(1);return lg()===0?x.replace('.',',')+' Mo':x+' MB'}
+var J=null;
+function show(j){J=j;var mine=num(V),h='';
+ (j.log||[]).forEach(function(e){if(e.n<=mine)return;h+='<div><b>v'+e.n+' · '+e.d+'</b><ul>'+e.i.map(function(x){return '<li>'+x[lg()]+'</li>'}).join('')+'</ul></div>'});
+ q('app-mj-t').textContent=t(['Une mise à jour est dispo','An update is available','有可用更新']);
+ q('app-mj-s').textContent=t(['Version ','Version ','版本 '])+num(j.v)+' · '+t(['environ ','about ','约 '])+mo(j.size||0)+t([' à télécharger',' to download',' 待下载']);
+ q('app-mj-l').innerHTML=h;q('app-mj-e').hidden=true;
+ q('app-mj-no').textContent=t(['Plus tard','Later','稍后']);
+ var g=q('app-mj-go');g.disabled=false;g.textContent=t(['Mettre à jour','Update','更新']);
+ M.hidden=false;if(window.tdcHaptic)window.tdcHaptic('MEDIUM');
+}
+function fail(name){caches.delete(name);var g=q('app-mj-go');g.disabled=false;g.textContent=t(['Réessayer','Try again','重试']);var e=q('app-mj-e');e.hidden=false;e.textContent=t(['Téléchargement interrompu. Rien n’a changé, ton atelier marche toujours. Réessaie avec du réseau.','Download interrupted. Nothing changed, your workshop still works. Try again with a connection.','下载中断。一切未变，工作室照常可用。请在联网时重试。'])}
+function go(){var j=J;if(!j)return;var name='tdc-v:'+j.v,files=j.files||[],g=q('app-mj-go'),i=0;g.disabled=true;
+ caches.open(name).then(function(c){
+  function next(){if(i>=files.length)return Promise.resolve();var f=files[i];i++;g.textContent=t(['Téléchargement… ','Downloading… ','下载中… '])+i+'/'+files.length;
+   return fetch(f+(f.indexOf('?')<0?'?':'&')+'upd='+encodeURIComponent(j.v),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('http');return c.put(new Request(new URL(f,location.href).href),r)}).then(next)}
+  return next()
+ }).then(function(){return caches.keys()}).then(function(k){return Promise.all(k.filter(function(x){return x!==name}).filter(function(x){return x!=='tdc-fonts'}).map(function(x){return caches.delete(x)}))}).then(function(){if(window.tdcHaptic)window.tdcHaptic('OK');location.reload()}).catch(function(){fail(name)});
+}
+q('app-mj-go').addEventListener('click',go);
+q('app-mj-no').addEventListener('click',function(){M.hidden=true});
+function check(){if(window.Capacitor)return;if(!navigator.onLine)return;if(!('caches' in window))return;if(!navigator.serviceWorker)return;if(!navigator.serviceWorker.controller)return;
+ try{if(sessionStorage.getItem('tdc-upd-chk'))return;sessionStorage.setItem('tdc-upd-chk','1')}catch(e){}
+ fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;if(!j.v)return;if(num(j.v)<=num(V))return;show(j)}).catch(function(){})}
+window.tdcCheckUpd=function(){try{sessionStorage.removeItem('tdc-upd-chk')}catch(e){}check()};
+window.addEventListener('load',function(){setTimeout(check,document.getElementById('ap-splash')?2600:800)});
+})();</script>
 </body>
 </html>

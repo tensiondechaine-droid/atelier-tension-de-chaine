@@ -17,6 +17,7 @@ jobs:
           if [ ! -f www/index.html ]; then
             mkdir -p www/icons
             cp *.html sw.js manifest.webmanifest www/
+            cp version.json www/ || true
             cp icon-192.png icon-512.png maskable-512.png www/icons/
             cp apple-touch-icon.png www/icons/ || true
           fi
@@ -98,6 +99,7 @@ jobs:
           if [ ! -f www/index.html ]; then
             mkdir -p www/icons
             cp *.html sw.js manifest.webmanifest www/
+            cp version.json www/ || true
             cp icon-192.png icon-512.png maskable-512.png www/icons/
             cp apple-touch-icon.png www/icons/ || true
           fi
