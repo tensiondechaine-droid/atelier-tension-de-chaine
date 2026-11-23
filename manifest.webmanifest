@@ -1,7 +1,7 @@
 {
  "name": "L’atelier Tension de chaine",
  "short_name": "Atelier TDC",
- "description": "Ratio fixie, comparateur de transmissions, ligne de chaîne et compatibilité : les outils de bike tuning de Tension de chaine, hors ligne.",
+ "description": "Ratio fixie, comparateur de transmissions, ligne de chaîne et compatibilité : les outils vélo de Tension de chaine, hors ligne.",
  "id": "./",
  "start_url": "./index.html",
  "scope": "./",
@@ -74,6 +74,16 @@
    ]
   },
   {
+   "name": "Axes de roue",
+   "url": "axes.html",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
    "name": "La potence parfaite",
    "url": "potence.html",
    "icons": [
@@ -86,6 +96,16 @@
   {
    "name": "Boîtier de pédalier",
    "url": "boitier.html",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Jeu de direction",
+   "url": "direction.html",
    "icons": [
     {
      "src": "icons/icon-192.png",
