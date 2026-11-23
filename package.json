@@ -1,12 +1,12 @@
 {
   "name": "atelier-tension-de-chaine",
-  "version": "1.0.0",
+  "version": "1.14.0",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^7.0.0",
-    "@capacitor/cli": "^7.0.0",
-    "@capacitor/core": "^7.0.0",
-    "@capacitor/haptics": "^7.0.0"
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/haptics": "^8.0.0"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5"

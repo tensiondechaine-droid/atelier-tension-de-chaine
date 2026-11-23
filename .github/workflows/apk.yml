@@ -70,11 +70,43 @@ jobs:
       - name: Copier l'app dans le projet Android
         run: npx cap sync android
 
+      - name: Numéro de version
+        run: |
+          F=android/app/build.gradle
+          VN="1.$(python3 -c "import json;print(json.load(open('version.json'))['v'].split('-v')[-1])").0"
+          VC=$((1000 + ${{ github.run_number }}))
+          sed -i -E "s/versionCode [0-9]+/versionCode $VC/" $F
+          sed -i -E "s/versionName \"[^\"]*\"/versionName \"$VN\"/" $F
+          grep -E "versionCode|versionName" $F
+          grep -E "targetSdkVersion|compileSdkVersion" android/variables.gradle
+
       - name: Construire l'APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
+
+      - name: Construire le bundle Play Store (AAB signé)
+        env:
+          KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          if [ -z "$KS_B64" ]; then echo "Pas de clé de signature dans les secrets : AAB non construit"; exit 0; fi
+          cd android
+          ./gradlew bundleRelease
+          echo "$KS_B64" | base64 -d > /tmp/upload.jks
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          jarsigner -keystore /tmp/upload.jks -storepass "$KS_PASS" -keypass "$KS_PASS" -sigalg SHA256withRSA -digestalg SHA-256 "$AAB" upload
+          jarsigner -verify "$AAB" | tail -1
+          rm /tmp/upload.jks
+          mkdir -p ../play && cp "$AAB" ../play/atelier-tension-de-chaine.aab
+
+      - name: Mettre le bundle Play Store à disposition
+        if: hashFiles('play/atelier-tension-de-chaine.aab') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: atelier-play-store-aab
+          path: play/atelier-tension-de-chaine.aab
 
       - name: Mettre l'APK à disposition
         uses: actions/upload-artifact@v4
