@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Test capteurs SYNCD – L’atelier Tension de chaine</title>
+<title>Test capteur de pression – L’atelier Tension de chaine</title>
 <meta name="robots" content="noindex">
-<meta name="description" content="Test des capteurs SYNCD.">
+<meta name="description" content="Test du capteur de pression.">
 <meta name="theme-color" content="#0e1230">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
@@ -1042,10 +1042,11 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!M.hidde
 <div class="tp-gv"><b id="tp-r-b">–</b><small>bar</small></div><div class="tp-gp" id="tp-r-p">– psi</div><div class="tp-gl" id="tp-r-l"><span class="fr">Arrière</span><span class="en" lang="en">Rear</span><span class="zh" lang="zh-Hans">后轮</span></div></div></div>
   <div class="tp-warn" id="tp-w"></div>
   <div class="sy" id="sy" hidden>
-  <div class="sy-h"><b>📡 <span class="fr">Mes capteurs SYNCD</span><span class="en" lang="en">My SYNCD sensors</span><span class="zh" lang="zh-Hans">我的 SYNCD 传感器</span></b><small>Tubolito</small></div>
+  <div class="sy-h"><b>📡 <span class="fr">Connecte ton capteur de pression</span><span class="en" lang="en">Connect your pressure sensor</span><span class="zh" lang="zh-Hans">连接你的胎压传感器</span></b></div>
   <div class="sy-row" id="sy-f" data-st="idle"><span class="sy-lab"><span class="fr">Avant</span><span class="en" lang="en">Front</span><span class="zh" lang="zh-Hans">前轮</span></span><span class="sy-val" id="sy-f-v">–</span><span class="sy-dt" id="sy-f-d"></span><button type="button" class="sy-btn" data-sy="f"><i class="sy-a"><span class="fr">Associer</span><span class="en" lang="en">Pair</span><span class="zh" lang="zh-Hans">配对</span></i><i class="sy-c"><span class="fr">Changer</span><span class="en" lang="en">Change</span><span class="zh" lang="zh-Hans">更换</span></i></button></div>
   <div class="sy-row" id="sy-r" data-st="idle"><span class="sy-lab"><span class="fr">Arrière</span><span class="en" lang="en">Rear</span><span class="zh" lang="zh-Hans">后轮</span></span><span class="sy-val" id="sy-r-v">–</span><span class="sy-dt" id="sy-r-d"></span><button type="button" class="sy-btn" data-sy="r"><i class="sy-a"><span class="fr">Associer</span><span class="en" lang="en">Pair</span><span class="zh" lang="zh-Hans">配对</span></i><i class="sy-c"><span class="fr">Changer</span><span class="en" lang="en">Change</span><span class="zh" lang="zh-Hans">更换</span></i></button></div>
   <p class="sy-msg" id="sy-m"></p>
+  <p class="sy-compat"><span class="fr">Compatibilité actuelle : Tubolito SYNCD</span><span class="en" lang="en">Currently compatible: Tubolito SYNCD</span><span class="zh" lang="zh-Hans">目前兼容：Tubolito SYNCD</span></p>
   <p class="sy-raw" id="sy-raw"></p>
 </div>
 </div>
@@ -1158,6 +1159,7 @@ fill();update();
 .sy-row[data-st="ko"]{background:#b3123c;border-color:#ff9ab4}
 .sy-row[data-st="wait"] .sy-val{opacity:.6;font-size:14px}
 .sy-row[data-st="old"]{opacity:.55}
+.sy-compat{margin:0!important;font:700 11px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em;opacity:.7}
 .sy-msg{margin:0!important;font-weight:700;font-size:13px;line-height:1.35}
 .sy-msg:empty,.sy-raw:empty{display:none}
 .sy-raw{margin:0!important;font:600 11px ui-monospace,Menlo,Consolas,monospace;opacity:.7;word-break:break-all}
